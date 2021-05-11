@@ -51,7 +51,7 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 	}
 
 	var rootFile codegen.File
-	RootGenerator{}.Generate(&rootFile)
+	GenerateRootFile(&rootFile)
 	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
 		Name:    proto.String("root.go"),
 		Content: proto.String(string(rootFile.Content())),

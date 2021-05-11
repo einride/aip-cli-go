@@ -2,10 +2,7 @@ package plugin
 
 import "github.com/einride/ctl/internal/codegen"
 
-type RootGenerator struct {
-}
-
-func (m RootGenerator) Generate(f *codegen.File) {
+func GenerateRootFile(f *codegen.File) {
 	f.P(`
 package ctl
 
