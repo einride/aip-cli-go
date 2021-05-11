@@ -33,10 +33,10 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 
 			for j := 0; j < service.Methods().Len(); j++ {
 				method := service.Methods().Get(j)
-				f.P("var ", methodCmdVarName(method), " = &cobra.Command{")
-				f.P("Use: \"", methodCmdName(method), "\",")
+				f.Pf("var %s = &cobra.Command{", methodCmdVarName(method))
+				f.Pfq("Use: %s,", methodCmdName(method))
 				f.P("Run: func(cmd *cobra.Command, args []string) {")
-				f.P("fmt.Println(\"", methodCmdName(method), " called\")")
+				f.Pfq("fmt.Println(%s)", methodCmdName(method) + " called")
 				f.P("},")
 				f.P("}")
 				f.P()
@@ -48,10 +48,10 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 	for _, file := range p.files {
 		for i := 0; i < file.Services().Len(); i++ {
 			service := file.Services().Get(i)
-			f.P("rootCmd.AddCommand(", serviceCmdVarName(service), ")")
+			f.Pf("rootCmd.AddCommand(%s)", serviceCmdVarName(service))
 			for j := 0; j < service.Methods().Len(); j++ {
 				method := service.Methods().Get(j)
-				f.P(serviceCmdVarName(service), ".AddCommand(", methodCmdVarName(method), ")")
+				f.Pf("%s.AddCommand(%s)", serviceCmdVarName(service), methodCmdVarName(method))
 			}
 		}
 	}
