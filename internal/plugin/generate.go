@@ -34,14 +34,14 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 
 	var res pluginpb.CodeGeneratorResponse
 	for pkg, files := range packaged {
-		var index codegen.File
+		index := codegen.NewFile("ctl")
 		pkgElements := strings.Split(string(pkg), ".")
 		filename := strings.Join(pkgElements, "_")
 
 		if err := (PackageGenerator{
 			name:  pkg,
 			files: files,
-		}.Generate(&index)); err != nil {
+		}.Generate(index)); err != nil {
 			return nil, err
 		}
 		res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
@@ -50,15 +50,15 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 		})
 	}
 
-	var rootFile codegen.File
-	GenerateRootFile(&rootFile)
+	rootFile := codegen.NewFile("ctl")
+	GenerateRootFile(rootFile)
 	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
 		Name:    proto.String("root.go"),
 		Content: proto.String(string(rootFile.Content())),
 	})
 
-	var connectFile codegen.File
-	GenerateConnectFile(&connectFile)
+	connectFile := codegen.NewFile("ctl")
+	GenerateConnectFile(connectFile)
 	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
 		Name:    proto.String("connect.go"),
 		Content: proto.String(string(connectFile.Content())),

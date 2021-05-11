@@ -6,7 +6,6 @@ import (
 
 func GenerateConnectFile(f *codegen.File) {
 	f.P(`
-package ctl
 
 import (
 	"fmt"

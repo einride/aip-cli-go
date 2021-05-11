@@ -16,7 +16,6 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 	}
 	goPkg := getGoPkg(p.files[0])
 
-	f.P("package ctl")
 	f.Pf(`import (
 	"fmt"
 	"github.com/spf13/cobra"
