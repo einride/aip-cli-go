@@ -49,6 +49,8 @@ func isSupportedOptionType(field protoreflect.FieldDescriptor) bool {
 		return true
 	case protoreflect.Int32Kind:
 		return true
+	case protoreflect.BoolKind:
+		return true
 	default:
 		return false
 	}
@@ -60,6 +62,8 @@ func optionFlagVarType(field protoreflect.FieldDescriptor) string {
 		return "string"
 	case protoreflect.Int32Kind:
 		return "int32"
+	case protoreflect.BoolKind:
+		return "bool"
 	default:
 		return ""
 	}
@@ -71,6 +75,8 @@ func optionFlagCreateFunc(field protoreflect.FieldDescriptor) string {
 		return "StringVar"
 	case protoreflect.Int32Kind:
 		return "Int32Var"
+	case protoreflect.BoolKind:
+		return "BoolVar"
 	default:
 		return ""
 	}
@@ -82,6 +88,8 @@ func optionDefaultValue(field protoreflect.FieldDescriptor) string {
 		return strconv.Quote("")
 	case protoreflect.Int32Kind:
 		return "0"
+	case protoreflect.BoolKind:
+		return "false"
 	default:
 		return ""
 	}
