@@ -30,4 +30,5 @@ $(protoc_gen_einridectl):
 .PHONY: buf-generate
 buf-generate: $(buf) $(protoc_gen_einridectl)
 	$(info [$@] generating protobuf...)
+	@rm -rf gen
 	@$(buf) generate image.bin

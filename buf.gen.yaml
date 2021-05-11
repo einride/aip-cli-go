@@ -3,4 +3,4 @@ version: v1beta1
 
 plugins:
   - name: einridectl
-    out: .
+    out: gen/einridectl
