@@ -23,6 +23,7 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 )`, goPkg.name, goPkg.path)
 	f.P("var _ = fmt.Sprintf")
 	f.P("var _ = cobra.Command{}")
+	f.P("var _ = cobra.Command{}")
 
 	for _, file := range p.files {
 		for i := 0; i < file.Services().Len(); i++ {
