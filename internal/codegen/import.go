@@ -56,6 +56,7 @@ func (i Imports) Bytes() []byte {
 	sort.Slice(stdPkgs, func(i, j int) bool {
 		return stdPkgs[i].importPath < stdPkgs[j].importPath
 	})
+
 	sort.Slice(nonStdPkgs, func(i, j int) bool {
 		return nonStdPkgs[i].importPath < nonStdPkgs[j].importPath
 	})
@@ -70,31 +71,20 @@ func (i Imports) Bytes() []byte {
 		_ = b.WriteByte('\n')
 	}
 	for _, nonStdPkg := range nonStdPkgs {
-		if nonStdPkg.packageName == path.Base(nonStdPkg.importPath) {
-			_, _ = b.WriteString(strconv.Quote(nonStdPkg.importPath))
-			_ = b.WriteByte('\n')
-		} else {
-			_, _ = b.WriteString(nonStdPkg.packageName)
-			_ = b.WriteByte(' ')
-			_, _ = b.WriteString(strconv.Quote(nonStdPkg.importPath))
-			_ = b.WriteByte('\n')
-		}
+		_, _ = b.WriteString(nonStdPkg.packageName)
+		_ = b.WriteByte(' ')
+		_, _ = b.WriteString(strconv.Quote(nonStdPkg.importPath))
+		_ = b.WriteByte('\n')
+
 	}
 	_ = b.WriteByte(')')
+	_, _ = b.WriteString("\n")
 	return b.Bytes()
 }
 
 // importPathToAssumedName is copy-pasted from golang.org/x/tools.
 func importPathToAssumedName(importPath string) string {
 	base := path.Base(importPath)
-	if strings.HasPrefix(base, "v") {
-		if _, err := strconv.Atoi(base[1:]); err == nil {
-			dir := path.Dir(importPath)
-			if dir != "." {
-				base = path.Base(dir)
-			}
-		}
-	}
 	base = strings.TrimPrefix(base, "go-")
 	if i := strings.IndexFunc(base, func(r rune) bool {
 		return !('a' <= r && r <= 'z' || 'A' <= r && r <= 'Z' || '0' <= r && r <= '9' || r == '_' ||

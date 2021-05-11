@@ -10,7 +10,9 @@ type ServiceGenerator struct {
 }
 
 func (s ServiceGenerator) GenerateCmd(f *codegen.File) {
-	f.Pf("var %s = &cobra.Command{", serviceCmdVarName(s.service))
+	cobra := f.Import("github.com/spf13/cobra")
+
+	f.Pf("var %s = &%s.Command{", serviceCmdVarName(s.service), cobra)
 	f.Pfq("Use: %s,", serviceCmdName(s.service))
 	f.P("}")
 	f.P()

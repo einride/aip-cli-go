@@ -16,24 +16,26 @@ type MethodGenerator struct {
 }
 
 func (m MethodGenerator) GenerateCmd(f *codegen.File) {
+	cobra := f.Import("github.com/spf13/cobra")
+	fmtPkg := f.Import("fmt")
+	pbPkg := f.Import(getGoPkg(m.method).path)
 
-	f.Pf("var %s %s", methodInputVarName(m.method), methodInputVarType(m.method))
+	f.Pf("var %s %s.%s", methodInputVarName(m.method), pbPkg, m.method.Input().Name())
 
-	f.Pf("var %s = &cobra.Command{", methodCmdVarName(m.method))
+	f.Pf("var %s = &%s.Command{", methodCmdVarName(m.method), cobra)
 	f.Pfq("Use: %s,", methodCmdName(m.method))
-	f.P("RunE: func(cmd *cobra.Command, args []string) error {")
-	f.Pfq("fmt.Println(%s)", methodCmdName(m.method)+" called")
+	f.Pf("RunE: func(cmd *%s.Command, args []string) error {", cobra)
 	f.P("conn, err := connect(cmd.Context())")
 	f.P("if err != nil {")
 	f.P("return err")
 	f.P("}")
-	f.Pf("client := %s.New%sClient(conn)", getGoPkg(m.method).name, m.service.Name())
+	f.Pf("client := %s.New%sClient(conn)", pbPkg, m.service.Name())
 	f.Pf("result, err := client.%s(cmd.Context(), &%s)", m.method.Name(), methodInputVarName(m.method))
 	f.Pf("if err != nil {")
 	f.Pf("return err")
 	f.Pf("}")
 	f.P("_ = result")
-	f.P("fmt.Printf(\"%v\", result)")
+	f.Pf("%s.Printf(\"%%v\", result)", fmtPkg)
 	f.P("return nil")
 	f.P("},")
 	f.P("}")

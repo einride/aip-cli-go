@@ -4,8 +4,6 @@ import "github.com/einride/ctl/internal/codegen"
 
 func GenerateRootFile(f *codegen.File) {
 	f.P(`
-package ctl
-
 import (
 	"fmt"
 	"os"

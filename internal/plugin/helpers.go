@@ -30,10 +30,6 @@ func methodInputVarName(method protoreflect.MethodDescriptor) string {
 	return strings.Join(segments, "_")
 }
 
-func methodInputVarType(m protoreflect.MethodDescriptor) string {
-	return fmt.Sprintf("%s.%s", getGoPkg(m).name, m.Input().Name())
-}
-
 func methodCmdName(method protoreflect.MethodDescriptor) string {
 	return string(method.Name())
 }
@@ -51,6 +47,9 @@ func optionFlagDescription(field protoreflect.FieldDescriptor) string {
 }
 
 func isSupportedOptionType(field protoreflect.FieldDescriptor) bool {
+	if field.ContainingOneof() != nil {
+		return false
+	}
 	if field.IsList() || field.IsMap() {
 		return false
 	}
