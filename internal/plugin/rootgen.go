@@ -51,7 +51,7 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
     rootCmd.PersistentFlags().StringVar(&token, "token", "", "token please")
-  	rootCmd.PersistentFlags().BoolVar(&prod, "prod", false, "")
+    rootCmd.PersistentFlags().BoolVarP(&prod, "prod", "p", false, "use production environment")
 }
 
 // initConfig reads in config file and ENV variables if set.
