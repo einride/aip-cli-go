@@ -19,15 +19,15 @@ func (f *File) P(v ...interface{}) {
 }
 
 func (f *File) Pf(format string, a ...interface{}) {
-	f.P(fmt.Sprintf(format, a))
+	f.P(fmt.Sprintf(format, a...))
 }
 
 func (f *File) Pfq(format string, a ...string) {
-	ss := make([]string, 0, len(a))
+	ss := make([]interface{}, 0, len(a))
 	for _, s := range a {
 		ss = append(ss, strconv.Quote(s))
 	}
-	f.Pf(format, ss)
+	f.Pf(format, ss...)
 }
 
 func (f *File) Content() []byte {

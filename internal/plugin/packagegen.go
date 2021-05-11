@@ -24,7 +24,7 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 		for i := 0; i < file.Services().Len(); i++ {
 			service := file.Services().Get(i)
 			f.Pf("var %s = &cobra.Command{", serviceCmdVarName(service))
-			f.Pfq("Use: %s", serviceCmdName(service))
+			f.Pfq("Use: %s,", serviceCmdName(service))
 			f.P("Run: func(cmd *cobra.Command, args []string) {")
 			f.Pfq("fmt.Println(%s)", serviceCmdName(service)+" called")
 			f.P("},")
