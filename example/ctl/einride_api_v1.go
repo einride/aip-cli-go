@@ -1,4 +1,12 @@
 package ctl
-// einride.api.v1
-// einride/api/v1/data_classification.proto
-// einride/api/v1/annotations.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+
+func init() {
+}

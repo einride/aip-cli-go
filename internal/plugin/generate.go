@@ -44,17 +44,25 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 		}.Generate(&index)); err != nil {
 			return nil, err
 		}
+		content, err := index.Content()
+		if err != nil {
+			return nil, fmt.Errorf("generated content: %w", err)
+		}
 		res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
 			Name:    proto.String(filename + ".go"),
-			Content: proto.String(string(index.Content())),
+			Content: proto.String(string(content)),
 		})
 	}
 
 	var rootFile codegen.File
 	RootGenerator{}.Generate(&rootFile)
+	content, err := rootFile.Content()
+	if err != nil {
+		return nil, fmt.Errorf("generated content: %w", err)
+	}
 	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
-		Name: proto.String("root.go"),
-		Content: proto.String(string(rootFile.Content())),
+		Name:    proto.String("root.go"),
+		Content: proto.String(string(content)),
 	})
 
 	return &res, nil

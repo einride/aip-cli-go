@@ -1,18 +1,47 @@
 package ctl
-// einride.planning.v1
-// einride/planning/v1/allocate_shipments_job.proto
-// einride/planning/v1/allocate_shipments_job_execution.proto
-// einride/planning/v1/allocate_shipments_service.proto
-// einride/planning/v1/reccurrence_rule.proto
-// einride/planning/v1/task_type.proto
-// einride/planning/v1/schedule.proto
-// einride/planning/v1/schedule_booking_spec.proto
-// einride/planning/v1/schedule_booking.proto
-// einride/planning/v1/schedule_booking_instance.proto
-// einride/planning/v1/schedule_booking_service.proto
-// einride/planning/v1/schedule_service.proto
-// einride/planning/v1/task.proto
-// einride/planning/v1/task_changed_event.proto
-// einride/planning/v1/task_service.proto
-// einride/planning/v1/transport_installation.proto
-// einride/planning/v1/transport_installation_service.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+var einride_planning_v1_AllocateShipmentsService = &cobra.Command{
+	Use: "einride.planning.v1.AllocateShipments",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planning.v1.AllocateShipments called")
+	},
+}
+var einride_planning_v1_ScheduleBookingService = &cobra.Command{
+	Use: "einride.planning.v1.ScheduleBooking",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planning.v1.ScheduleBooking called")
+	},
+}
+var einride_planning_v1_ScheduleService = &cobra.Command{
+	Use: "einride.planning.v1.Schedule",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planning.v1.Schedule called")
+	},
+}
+var einride_planning_v1_TaskService = &cobra.Command{
+	Use: "einride.planning.v1.Task",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planning.v1.Task called")
+	},
+}
+var einride_planning_v1_TransportInstallationService = &cobra.Command{
+	Use: "einride.planning.v1.TransportInstallation",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planning.v1.TransportInstallation called")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(einride_planning_v1_AllocateShipmentsService)
+	rootCmd.AddCommand(einride_planning_v1_ScheduleBookingService)
+	rootCmd.AddCommand(einride_planning_v1_ScheduleService)
+	rootCmd.AddCommand(einride_planning_v1_TaskService)
+	rootCmd.AddCommand(einride_planning_v1_TransportInstallationService)
+}

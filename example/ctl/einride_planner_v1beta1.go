@@ -1,20 +1,61 @@
 package ctl
-// einride.planner.v1beta1
-// einride/planner/v1beta1/default_schedule.proto
-// einride/planner/v1beta1/default_schedule_service.proto
-// einride/planner/v1beta1/planner_site_settings.proto
-// einride/planner/v1beta1/planner_site_settings_service.proto
-// einride/planner/v1beta1/schedule_booking.proto
-// einride/planner/v1beta1/schedule_booking_service.proto
-// einride/planner/v1beta1/shipment_allocation_settings.proto
-// einride/planner/v1beta1/shipment_allocation_status.proto
-// einride/planner/v1beta1/shipment_allocation_service.proto
-// einride/planner/v1beta1/shipment_assignment_source.proto
-// einride/planner/v1beta1/task.proto
-// einride/planner/v1beta1/transport_installation.proto
-// einride/planner/v1beta1/transport_installation_service.proto
-// einride/planner/v1beta1/transport_schedule.proto
-// einride/planner/v1beta1/transport_schedule_service.proto
-// einride/planner/v1beta1/vehicle_plan.proto
-// einride/planner/v1beta1/vehicle_task.proto
-// einride/planner/v1beta1/vehicle_plan_service.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+var einride_planner_v1beta1_DefaultScheduleService = &cobra.Command{
+	Use: "einride.planner.v1beta1.DefaultSchedule",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.DefaultSchedule called")
+	},
+}
+var einride_planner_v1beta1_PlannerSiteSettingsService = &cobra.Command{
+	Use: "einride.planner.v1beta1.PlannerSiteSettings",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.PlannerSiteSettings called")
+	},
+}
+var einride_planner_v1beta1_ScheduleBookingService = &cobra.Command{
+	Use: "einride.planner.v1beta1.ScheduleBooking",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.ScheduleBooking called")
+	},
+}
+var einride_planner_v1beta1_ShipmentAllocationService = &cobra.Command{
+	Use: "einride.planner.v1beta1.ShipmentAllocation",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.ShipmentAllocation called")
+	},
+}
+var einride_planner_v1beta1_TransportInstallationService = &cobra.Command{
+	Use: "einride.planner.v1beta1.TransportInstallation",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.TransportInstallation called")
+	},
+}
+var einride_planner_v1beta1_TransportScheduleService = &cobra.Command{
+	Use: "einride.planner.v1beta1.TransportSchedule",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.TransportSchedule called")
+	},
+}
+var einride_planner_v1beta1_VehiclePlanService = &cobra.Command{
+	Use: "einride.planner.v1beta1.VehiclePlan",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.planner.v1beta1.VehiclePlan called")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(einride_planner_v1beta1_DefaultScheduleService)
+	rootCmd.AddCommand(einride_planner_v1beta1_PlannerSiteSettingsService)
+	rootCmd.AddCommand(einride_planner_v1beta1_ScheduleBookingService)
+	rootCmd.AddCommand(einride_planner_v1beta1_ShipmentAllocationService)
+	rootCmd.AddCommand(einride_planner_v1beta1_TransportInstallationService)
+	rootCmd.AddCommand(einride_planner_v1beta1_TransportScheduleService)
+	rootCmd.AddCommand(einride_planner_v1beta1_VehiclePlanService)
+}

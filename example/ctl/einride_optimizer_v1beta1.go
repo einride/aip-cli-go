@@ -1,3 +1,12 @@
 package ctl
-// einride.optimizer.v1beta1
-// einride/optimizer/v1beta1/optimizer.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+
+func init() {
+}

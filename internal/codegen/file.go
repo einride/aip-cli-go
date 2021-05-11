@@ -3,6 +3,7 @@ package codegen
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 )
 
 type File struct {
@@ -16,6 +17,6 @@ func (f *File) P(v ...interface{}) {
 	_, _ = fmt.Fprintln(&f.buf)
 }
 
-func (f *File) Content() []byte {
-	return f.buf.Bytes()
+func (f *File) Content() ([]byte, error) {
+	return format.Source(f.buf.Bytes())
 }

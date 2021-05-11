@@ -1,16 +1,33 @@
 package ctl
-// einride.carrier.v1beta1
-// einride/carrier/v1beta1/address.proto
-// einride/carrier/v1beta1/carrier.proto
-// einride/carrier/v1beta1/carrier_service.proto
-// einride/carrier/v1beta1/drive_type.proto
-// einride/carrier/v1beta1/driver.proto
-// einride/carrier/v1beta1/drivetrain.proto
-// einride/carrier/v1beta1/load_unit.proto
-// einride/carrier/v1beta1/load_capacity.proto
-// einride/carrier/v1beta1/vehicle.proto
-// einride/carrier/v1beta1/vehicle_availability.proto
-// einride/carrier/v1beta1/vehicle_class.proto
-// einride/carrier/v1beta1/vehicle_service.proto
-// einride/carrier/v1beta1/vehicle_type.proto
-// einride/carrier/v1beta1/vehicle_type_service.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+var einride_carrier_v1beta1_CarrierService = &cobra.Command{
+	Use: "einride.carrier.v1beta1.Carrier",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.carrier.v1beta1.Carrier called")
+	},
+}
+var einride_carrier_v1beta1_VehicleService = &cobra.Command{
+	Use: "einride.carrier.v1beta1.Vehicle",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.carrier.v1beta1.Vehicle called")
+	},
+}
+var einride_carrier_v1beta1_VehicleTypeService = &cobra.Command{
+	Use: "einride.carrier.v1beta1.VehicleType",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.carrier.v1beta1.VehicleType called")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(einride_carrier_v1beta1_CarrierService)
+	rootCmd.AddCommand(einride_carrier_v1beta1_VehicleService)
+	rootCmd.AddCommand(einride_carrier_v1beta1_VehicleTypeService)
+}

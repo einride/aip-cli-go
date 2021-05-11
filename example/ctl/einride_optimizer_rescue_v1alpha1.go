@@ -1,11 +1,19 @@
 package ctl
-// einride.optimizer.rescue.v1alpha1
-// einride/optimizer/rescue/v1alpha1/time_period.proto
-// einride/optimizer/rescue/v1alpha1/charger.proto
-// einride/optimizer/rescue/v1alpha1/path_summary.proto
-// einride/optimizer/rescue/v1alpha1/place.proto
-// einride/optimizer/rescue/v1alpha1/shipment.proto
-// einride/optimizer/rescue/v1alpha1/sequence.proto
-// einride/optimizer/rescue/v1alpha1/vehicle.proto
-// einride/optimizer/rescue/v1alpha1/vehicle_plan.proto
-// einride/optimizer/rescue/v1alpha1/rescue_service.proto
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+)
+
+var _ = fmt.Sprintf
+var _ = cobra.Command{}
+var einride_optimizer_rescue_v1alpha1_RescueService = &cobra.Command{
+	Use: "einride.optimizer.rescue.v1alpha1.Rescue",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("einride.optimizer.rescue.v1alpha1.Rescue called")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(einride_optimizer_rescue_v1alpha1_RescueService)
+}
