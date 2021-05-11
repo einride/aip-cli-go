@@ -11,7 +11,7 @@ include tools/buf/rules.mk
 .PHONY: clean
 clean:
 	$(info [$@] removing generated files...)
-	@rm -rf build gen tools/*/*/
+	@rm -rf build example/ctl tools/*/*/
 
 
 .PHONY: buildprotoc-gen-einridectl

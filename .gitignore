@@ -2,3 +2,5 @@ build
 bin
 tools/*/*/
 gen
+example/ctl
+.idea/
