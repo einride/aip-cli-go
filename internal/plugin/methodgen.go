@@ -1,7 +1,10 @@
 package plugin
 
 import (
+	"fmt"
 	"strconv"
+
+	"github.com/stoewer/go-strcase"
 
 	"github.com/einride/ctl/internal/codegen"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -13,6 +16,9 @@ type MethodGenerator struct {
 }
 
 func (m MethodGenerator) GenerateCmd(f *codegen.File) {
+
+	f.Pf("var %s %s", methodInputVarName(m.method), methodInputVarType(m.method))
+
 	f.Pf("var %s = &cobra.Command{", methodCmdVarName(m.method))
 	f.Pfq("Use: %s,", methodCmdName(m.method))
 	f.P("RunE: func(cmd *cobra.Command, args []string) error {")
@@ -45,10 +51,11 @@ func (m MethodGenerator) GenerateInit(f *codegen.File) {
 			"%s.Flags().%s(&%s, %s, %s, %s)",
 			methodCmdVarName(m.method),
 			optionFlagCreateFunc(field),
-			optionFlagVarName(m.method, field),
+			fmt.Sprintf("%s.%s", methodInputVarName(m.method), strcase.UpperCamelCase(string(field.Name()))),
 			strconv.Quote(optionFlagName(field)),
 			optionDefaultValue(field),
 			strconv.Quote(optionFlagDescription(field)),
 		)
 	}
+	f.P()
 }

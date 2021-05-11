@@ -25,6 +25,15 @@ func methodCmdVarName(method protoreflect.MethodDescriptor) string {
 	return strings.Join(segments, "_")
 }
 
+func methodInputVarName(method protoreflect.MethodDescriptor) string {
+	segments := strings.Split(string(method.Input().FullName()), ".")
+	return strings.Join(segments, "_")
+}
+
+func methodInputVarType(m protoreflect.MethodDescriptor) string {
+	return fmt.Sprintf("%s.%s", getGoPkg(m).name, m.Input().Name())
+}
+
 func methodCmdName(method protoreflect.MethodDescriptor) string {
 	return string(method.Name())
 }
