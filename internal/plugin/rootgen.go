@@ -2,8 +2,12 @@ package plugin
 
 import "github.com/einride/ctl/internal/codegen"
 
+const programName string = "einridectl"
+const devHost string = "api-g4oz7jceaa-ew.a.run.app:443"
+const prodHost string = "api-pe3g7ntwkq-ew.a.run.app:443"
+
 func GenerateRootFile(f *codegen.File) {
-	f.P(`
+	f.Pf(`
 import (
 	"context"
 	"fmt"
@@ -17,10 +21,11 @@ import (
 )
 
 var cfgFile string
+const programName string = "%s"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "ctl",
+	Use:   programName,
 	Short: "A brief description of your application",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
@@ -42,8 +47,8 @@ var address string
 var insecure bool
 var prod bool
 
-const devHost string = "api-g4oz7jceaa-ew.a.run.app:443"
-const prodHost string = "api-pe3g7ntwkq-ew.a.run.app:443"
+const devHost string = "%s"
+const prodHost string = "%s"
 
 func init() {
 	cobra.OnInitialize(initConfig)
@@ -85,5 +90,5 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
-}`)
+}`, programName, devHost, prodHost)
 }

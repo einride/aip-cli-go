@@ -63,5 +63,12 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 		Name:    proto.String("connect.go"),
 		Content: proto.String(string(connectFile.Content())),
 	})
+
+	completionFile := codegen.NewFile("ctl")
+	GenerateCompletionFile(completionFile)
+	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
+		Name:    proto.String("completion.go"),
+		Content: proto.String(string(completionFile.Content())),
+	})
 	return &res, nil
 }
