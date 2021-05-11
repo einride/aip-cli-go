@@ -1,10 +1,7 @@
 package plugin
 
 import (
-	"fmt"
 	"strconv"
-
-	"github.com/stoewer/go-strcase"
 
 	"github.com/einride/ctl/internal/codegen"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -43,20 +40,6 @@ func (m MethodGenerator) GenerateCmd(f *codegen.File) {
 
 func (m MethodGenerator) GenerateInit(f *codegen.File) {
 	f.Pf("%s.AddCommand(%s)", serviceCmdVarName(m.service), methodCmdVarName(m.method))
-	for k := 0; k < m.method.Input().Fields().Len(); k++ {
-		field := m.method.Input().Fields().Get(k)
-		if !isSupportedOptionType(field) {
-			continue
-		}
-		f.Pf(
-			"%s.Flags().%s(&%s, %s, %s, %s)",
-			methodCmdVarName(m.method),
-			optionFlagCreateFunc(field),
-			fmt.Sprintf("%s.%s", methodInputVarName(m.method), strcase.UpperCamelCase(string(field.Name()))),
-			strconv.Quote(optionFlagName(field)),
-			optionDefaultValue(field),
-			strconv.Quote(optionFlagDescription(field)),
-		)
-	}
+	FieldGenerator{method: m.method, message: m.method.Input()}.Generate(f)
 	f.P()
 }
