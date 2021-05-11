@@ -8,7 +8,6 @@ func GenerateConnectFile(f *codegen.File) {
 	f.P(`
 
 import (
-	"fmt"
     "context"
 
 	"google.golang.org/grpc"
@@ -22,7 +21,6 @@ func connect(ctx context.Context) (*grpc.ClientConn, error) {
 	if prod {
       addr = prodHost
     }
-	fmt.Println(addr, token)
 
 	return transport.DialGRPC(
 		ctx,
