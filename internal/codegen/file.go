@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"strconv"
 )
 
 type File struct {
@@ -15,6 +16,18 @@ func (f *File) P(v ...interface{}) {
 		_, _ = fmt.Fprint(&f.buf, x)
 	}
 	_, _ = fmt.Fprintln(&f.buf)
+}
+
+func (f *File) Pf(format string, a ...interface{}) {
+	f.P(fmt.Sprintf(format, a))
+}
+
+func (f *File) Pfq(format string, a ...string) {
+	ss := make([]string, 0, len(a))
+	for _, s := range a {
+		ss = append(ss, strconv.Quote(s))
+	}
+	f.Pf(format, ss)
 }
 
 func (f *File) Content() ([]byte, error) {
