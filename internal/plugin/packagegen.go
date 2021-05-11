@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/einride/ctl/internal/codegen"
@@ -45,6 +47,13 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 				f.P("return nil")
 				f.P("},")
 				f.P("}")
+				for k := 0; k < method.Input().Fields().Len(); k++ {
+					field := method.Input().Fields().Get(k)
+					if !isSupportedOptionType(field) {
+						continue
+					}
+					f.Pf("var %s %s", optionFlagVarName(method, field), optionFlagVarType(field))
+				}
 				f.P()
 			}
 		}
@@ -58,6 +67,21 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 			for j := 0; j < service.Methods().Len(); j++ {
 				method := service.Methods().Get(j)
 				f.Pf("%s.AddCommand(%s)", serviceCmdVarName(service), methodCmdVarName(method))
+				for k := 0; k < method.Input().Fields().Len(); k++ {
+					field := method.Input().Fields().Get(k)
+					if !isSupportedOptionType(field) {
+						continue
+					}
+					f.Pf(
+						"%s.Flags().%s(&%s, %s, %s, %s)",
+						methodCmdVarName(method),
+						optionFlagCreateFunc(field),
+						optionFlagVarName(method, field),
+						strconv.Quote(optionFlagName(field)),
+						strconv.Quote(""),
+						strconv.Quote(optionFlagDescription(field)),
+					)
+				}
 			}
 		}
 	}
@@ -84,4 +108,52 @@ func methodCmdVarName(method protoreflect.MethodDescriptor) string {
 
 func methodCmdName(method protoreflect.MethodDescriptor) string {
 	return string(method.Name())
+}
+
+func optionFlagVarName(method protoreflect.MethodDescriptor, field protoreflect.FieldDescriptor) string {
+	return fmt.Sprintf("%s_%s", methodCmdVarName(method), field.Name())
+}
+
+func optionFlagName(field protoreflect.FieldDescriptor) string {
+	return string(field.Name())
+}
+
+func optionFlagDescription(field protoreflect.FieldDescriptor) string {
+	return field.ParentFile().SourceLocations().ByDescriptor(field).LeadingComments
+}
+
+func isSupportedOptionType(field protoreflect.FieldDescriptor) bool {
+	if field.IsList() || field.IsMap() {
+		return false
+	}
+	switch field.Kind() {
+	case protoreflect.StringKind:
+		return true
+	case protoreflect.Int32Kind:
+		return true
+	default:
+		return false
+	}
+}
+
+func optionFlagVarType(field protoreflect.FieldDescriptor) string {
+	switch field.Kind() {
+	case protoreflect.StringKind:
+		return "string"
+	case protoreflect.Int32Kind:
+		return "int32"
+	default:
+		return ""
+	}
+}
+
+func optionFlagCreateFunc(field protoreflect.FieldDescriptor) string {
+	switch field.Kind() {
+	case protoreflect.StringKind:
+		return "StringVar"
+	case protoreflect.Int32Kind:
+		return "Int32Var"
+	default:
+		return ""
+	}
 }
