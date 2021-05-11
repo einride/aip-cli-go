@@ -1,0 +1,11 @@
+package ctl
+// einride.optimizer.rescue.v1alpha1
+// einride/optimizer/rescue/v1alpha1/time_period.proto
+// einride/optimizer/rescue/v1alpha1/charger.proto
+// einride/optimizer/rescue/v1alpha1/path_summary.proto
+// einride/optimizer/rescue/v1alpha1/place.proto
+// einride/optimizer/rescue/v1alpha1/shipment.proto
+// einride/optimizer/rescue/v1alpha1/sequence.proto
+// einride/optimizer/rescue/v1alpha1/vehicle.proto
+// einride/optimizer/rescue/v1alpha1/vehicle_plan.proto
+// einride/optimizer/rescue/v1alpha1/rescue_service.proto

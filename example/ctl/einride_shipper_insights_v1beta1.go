@@ -1,0 +1,17 @@
+package ctl
+// einride.shipper.insights.v1beta1
+// einride/shipper/insights/v1beta1/e_truck_recommendation.proto
+// einride/shipper/insights/v1beta1/e_truck_recommendation_service.proto
+// einride/shipper/insights/v1beta1/map_insights.proto
+// einride/shipper/insights/v1beta1/map_insights_service.proto
+// einride/shipper/insights/v1beta1/shipping_cost.proto
+// einride/shipper/insights/v1beta1/time_interval.proto
+// einride/shipper/insights/v1beta1/shipping_cost_service.proto
+// einride/shipper/insights/v1beta1/shipping_emissions.proto
+// einride/shipper/insights/v1beta1/shipping_emissions_service.proto
+// einride/shipper/insights/v1beta1/shipping_forecast.proto
+// einride/shipper/insights/v1beta1/shipping_forecast_service.proto
+// einride/shipper/insights/v1beta1/shipping_stats.proto
+// einride/shipper/insights/v1beta1/shipping_stats_service.proto
+// einride/shipper/insights/v1beta1/transformation_assessment.proto
+// einride/shipper/insights/v1beta1/transformation_assessment_service.proto

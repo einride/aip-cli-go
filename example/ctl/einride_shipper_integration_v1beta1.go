@@ -1,0 +1,11 @@
+package ctl
+// einride.shipper.integration.v1beta1
+// einride/shipper/integration/v1beta1/file_format.proto
+// einride/shipper/integration/v1beta1/integration_bucket.proto
+// einride/shipper/integration/v1beta1/integration_bucket_service.proto
+// einride/shipper/integration/v1beta1/integration_file.proto
+// einride/shipper/integration/v1beta1/integration_file_log_entry.proto
+// einride/shipper/integration/v1beta1/integration_file_log_service.proto
+// einride/shipper/integration/v1beta1/integration_file_service.proto
+// einride/shipper/integration/v1beta1/integration_log_entry.proto
+// einride/shipper/integration/v1beta1/integration_log_service.proto

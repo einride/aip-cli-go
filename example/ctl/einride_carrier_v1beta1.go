@@ -1,0 +1,16 @@
+package ctl
+// einride.carrier.v1beta1
+// einride/carrier/v1beta1/address.proto
+// einride/carrier/v1beta1/carrier.proto
+// einride/carrier/v1beta1/carrier_service.proto
+// einride/carrier/v1beta1/drive_type.proto
+// einride/carrier/v1beta1/driver.proto
+// einride/carrier/v1beta1/drivetrain.proto
+// einride/carrier/v1beta1/load_unit.proto
+// einride/carrier/v1beta1/load_capacity.proto
+// einride/carrier/v1beta1/vehicle.proto
+// einride/carrier/v1beta1/vehicle_availability.proto
+// einride/carrier/v1beta1/vehicle_class.proto
+// einride/carrier/v1beta1/vehicle_service.proto
+// einride/carrier/v1beta1/vehicle_type.proto
+// einride/carrier/v1beta1/vehicle_type_service.proto

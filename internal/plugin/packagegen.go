@@ -11,6 +11,7 @@ type PackageGenerator struct {
 }
 
 func (p PackageGenerator) Generate(f *codegen.File) error {
+	f.P("package ctl")
 	f.P("// ", p.name)
 	for _, file := range p.files {
 		f.P("// ", file.Path())

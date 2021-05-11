@@ -3,5 +3,5 @@ version: v1beta1
 
 plugins:
   - name: einridectl
-    out: gen/einridectl
+    out: example/ctl
     strategy: all

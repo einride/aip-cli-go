@@ -1,12 +1,4 @@
-package plugin
 
-import "github.com/einride/ctl/internal/codegen"
-
-type RootGenerator struct {
-}
-
-func (m RootGenerator) Generate(f *codegen.File) {
-	f.P(`
 package ctl
 
 import (
@@ -69,5 +61,4 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
-}`)
 }
