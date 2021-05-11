@@ -19,6 +19,7 @@ func (m MethodGenerator) GenerateCmd(f *codegen.File) {
 	cobra := f.Import("github.com/spf13/cobra")
 	fmtPkg := f.Import("fmt")
 	pbPkg := f.Import(getGoPkg(m.method).path)
+	protoJSON := f.Import("google.golang.org/protobuf/encoding/protojson")
 
 	f.Pf("var %s %s.%s", methodInputVarName(m.method), pbPkg, m.method.Input().Name())
 
@@ -34,18 +35,10 @@ func (m MethodGenerator) GenerateCmd(f *codegen.File) {
 	f.Pf("if err != nil {")
 	f.Pf("return err")
 	f.Pf("}")
-	f.P("_ = result")
-	f.Pf("%s.Printf(\"%%v\", result)", fmtPkg)
+	f.P(fmtPkg, ".Println(", protoJSON, ".Format(result))")
 	f.P("return nil")
 	f.P("},")
 	f.P("}")
-	for k := 0; k < m.method.Input().Fields().Len(); k++ {
-		field := m.method.Input().Fields().Get(k)
-		if !isSupportedOptionType(field) {
-			continue
-		}
-		f.Pf("var %s %s", optionFlagVarName(m.method, field), optionFlagVarType(field))
-	}
 }
 
 func (m MethodGenerator) GenerateInit(f *codegen.File) {
