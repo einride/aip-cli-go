@@ -30,6 +30,12 @@ func (f *File) Pfq(format string, a ...string) {
 	f.Pf(format, ss)
 }
 
-func (f *File) Content() ([]byte, error) {
-	return format.Source(f.buf.Bytes())
+func (f *File) Content() []byte {
+	bs := f.buf.Bytes()
+	// try to format
+	formatted, err := format.Source(bs)
+	if err == nil {
+		return formatted
+	}
+	return bs
 }
