@@ -57,5 +57,11 @@ func Generate(request *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorRe
 		Content: proto.String(string(rootFile.Content())),
 	})
 
+	var connectFile codegen.File
+	GenerateConnectFile(&connectFile)
+	res.File = append(res.File, &pluginpb.CodeGeneratorResponse_File{
+		Name:    proto.String("connect.go"),
+		Content: proto.String(string(connectFile.Content())),
+	})
 	return &res, nil
 }
