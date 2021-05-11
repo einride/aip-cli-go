@@ -8,6 +8,7 @@ func GenerateConnectFile(f *codegen.File) {
 	f.P(`
 import (
     "context"
+	"fmt"
 
 	"google.golang.org/grpc"
 	"golang.org/x/oauth2"
@@ -16,6 +17,15 @@ import (
 )
 
 func connect(ctx context.Context) (*grpc.ClientConn, error) {
+	if CustomConnect != nil {
+	  customConnection, err := CustomConnect(ctx)
+	  if err != nil {
+		return nil, err
+      }
+	  if customConnection != nil {
+		return customConnection, nil
+	  }
+	}
 	addr := devHost
 	if prod {
       addr = prodHost
@@ -50,18 +60,6 @@ func connect(ctx context.Context) (*grpc.ClientConn, error) {
 		ctx,
 		opts...,
 	)
-}
-
-type tokenCredentials string
-
-func (t tokenCredentials) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
-	return map[string]string{
-		"authorization": "bearer " + string(t),
-	}, nil
-}
-
-func (t tokenCredentials) RequireTransportSecurity() bool {
-	return false
 }
 `)
 }

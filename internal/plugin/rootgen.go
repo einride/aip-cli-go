@@ -5,13 +5,15 @@ import "github.com/einride/ctl/internal/codegen"
 func GenerateRootFile(f *codegen.File) {
 	f.P(`
 import (
+	"context"
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
-
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
+	"github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 )
 
 var cfgFile string
@@ -25,8 +27,14 @@ var rootCmd = &cobra.Command{
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
+var CustomConnect func(ctx context.Context) (*grpc.ClientConn, error)
+
 func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
+}
+
+func RootFlags() *pflag.FlagSet {
+	return rootCmd.PersistentFlags()
 }
 
 var token string
