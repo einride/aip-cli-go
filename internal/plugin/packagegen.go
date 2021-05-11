@@ -1,9 +1,10 @@
 package plugin
 
 import (
+	"strings"
+
 	"github.com/einride/ctl/internal/codegen"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"strings"
 )
 
 type PackageGenerator struct {
@@ -25,9 +26,21 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 			f.P("var ", serviceCmdVarName(service), " = &cobra.Command{")
 			f.P("Use: \"", serviceCmdName(service), "\",")
 			f.P("Run: func(cmd *cobra.Command, args []string) {")
-			f.P("fmt.Println(\"", serviceCmdName(service)," called\")")
+			f.P("fmt.Println(\"", serviceCmdName(service), " called\")")
 			f.P("},")
 			f.P("}")
+			f.P()
+
+			for j := 0; j < service.Methods().Len(); j++ {
+				method := service.Methods().Get(j)
+				f.P("var ", methodCmdVarName(method), " = &cobra.Command{")
+				f.P("Use: \"", methodCmdName(method), "\",")
+				f.P("Run: func(cmd *cobra.Command, args []string) {")
+				f.P("fmt.Println(\"", methodCmdName(method), " called\")")
+				f.P("},")
+				f.P("}")
+				f.P()
+			}
 		}
 	}
 
@@ -35,7 +48,11 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 	for _, file := range p.files {
 		for i := 0; i < file.Services().Len(); i++ {
 			service := file.Services().Get(i)
-			f.P("rootCmd.AddCommand(", serviceCmdVarName(service),")")
+			f.P("rootCmd.AddCommand(", serviceCmdVarName(service), ")")
+			for j := 0; j < service.Methods().Len(); j++ {
+				method := service.Methods().Get(j)
+				f.P(serviceCmdVarName(service), ".AddCommand(", methodCmdVarName(method), ")")
+			}
 		}
 	}
 	f.P("}")
@@ -52,4 +69,13 @@ func serviceCmdName(service protoreflect.ServiceDescriptor) string {
 	segments := strings.Split(string(service.FullName()), ".")
 	segments[len(segments)-1] = strings.Replace(segments[len(segments)-1], "Service", "", 1)
 	return strings.Join(segments, ".")
+}
+
+func methodCmdVarName(method protoreflect.MethodDescriptor) string {
+	segments := strings.Split(string(method.FullName()), ".")
+	return strings.Join(segments, "_")
+}
+
+func methodCmdName(method protoreflect.MethodDescriptor) string {
+	return string(method.Name())
 }

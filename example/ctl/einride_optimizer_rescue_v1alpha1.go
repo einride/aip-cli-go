@@ -14,6 +14,14 @@ var einride_optimizer_rescue_v1alpha1_RescueService = &cobra.Command{
 	},
 }
 
+var einride_optimizer_rescue_v1alpha1_RescueService_ComputeVehiclePlans = &cobra.Command{
+	Use: "ComputeVehiclePlans",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("ComputeVehiclePlans called")
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(einride_optimizer_rescue_v1alpha1_RescueService)
+	einride_optimizer_rescue_v1alpha1_RescueService.AddCommand(einride_optimizer_rescue_v1alpha1_RescueService_ComputeVehiclePlans)
 }
