@@ -31,6 +31,12 @@ func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
 }
 
+var token string
+var prod bool
+
+const devHost string = "api-g4oz7jceaa-ew.a.run.app:443"
+const prodHost string = "api-pe3g7ntwkq-ew.a.run.app:443"
+
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -43,6 +49,9 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+    rootCmd.PersistentFlags().StringVar(&token, "token", "", "token please")
+  	rootCmd.PersistentFlags().BoolVar(&prod, "prod", false, "")
 }
 
 // initConfig reads in config file and ENV variables if set.

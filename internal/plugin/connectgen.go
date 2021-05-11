@@ -9,13 +9,34 @@ func GenerateConnectFile(f *codegen.File) {
 package ctl
 
 import (
+	"fmt"
+    "context"
+
 	"google.golang.org/grpc"
+	"golang.org/x/oauth2"
+	"google.golang.org/api/option"
+	"google.golang.org/api/transport"
 )
 
-func connect() (*grpc.ClientConn, error) {
-	const addr = "api-g4oz7jceaa-ew.a.run.app:443"
-	conn, err := grpc.Dial(addr)
-	return conn, err
+func connect(ctx context.Context) (*grpc.ClientConn, error) {
+	addr := devHost
+	if prod {
+      addr = prodHost
+    }
+	fmt.Println(addr, token)
+
+	return transport.DialGRPC(
+		ctx,
+		option.WithEndpoint(addr),
+		option.WithTokenSource(
+			oauth2.StaticTokenSource(
+				&oauth2.Token{
+					TokenType:   "Bearer",
+					AccessToken: token,
+				},
+			),
+		),
+	)
 }
 `)
 }
