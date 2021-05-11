@@ -12,9 +12,6 @@ type ServiceGenerator struct {
 func (s ServiceGenerator) GenerateCmd(f *codegen.File) {
 	f.Pf("var %s = &cobra.Command{", serviceCmdVarName(s.service))
 	f.Pfq("Use: %s,", serviceCmdName(s.service))
-	f.P("Run: func(cmd *cobra.Command, args []string) {")
-	f.Pfq("fmt.Println(%s)", serviceCmdName(s.service)+" called")
-	f.P("},")
 	f.P("}")
 	f.P()
 	for j := 0; j < s.service.Methods().Len(); j++ {
