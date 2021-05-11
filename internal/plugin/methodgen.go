@@ -23,14 +23,14 @@ func (m MethodGenerator) GenerateCmd(f *codegen.File) {
 
 	f.Pf("var %s %s.%s", methodInputVarName(m.method), pbPkg, m.method.Input().Name())
 
-	f.Pf("var %s = &%s.Command{", methodCmdVarName(m.method), cobra)
-	f.Pfq("Use: %s,", methodCmdName(m.method))
-	f.Pf("RunE: func(cmd *%s.Command, args []string) error {", cobra)
+	f.P("var ", methodCmdVarName(m.method), " = &", cobra, ".Command{")
+	f.P("Use: ", strconv.Quote(methodCmdName(m.method)), ",")
+	f.P("RunE: func(cmd *", cobra, ".Command, args []string) error {")
 	f.P("conn, err := connect(cmd.Context())")
 	f.P("if err != nil {")
 	f.P("return err")
 	f.P("}")
-	f.Pf("client := %s.New%sClient(conn)", pbPkg, m.service.Name())
+	f.P("client := ", pbPkg, ".New", m.service.Name(), "Client(conn)")
 	f.Pf("result, err := client.%s(cmd.Context(), &%s)", m.method.Name(), methodInputVarName(m.method))
 	f.Pf("if err != nil {")
 	f.Pf("return err")
