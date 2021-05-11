@@ -30,6 +30,8 @@ func Execute() {
 }
 
 var token string
+var address string
+var insecure bool
 var prod bool
 
 const devHost string = "api-g4oz7jceaa-ew.a.run.app:443"
@@ -49,6 +51,8 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
     rootCmd.PersistentFlags().StringVar(&token, "token", "", "token please")
+	rootCmd.PersistentFlags().StringVarP(&address, "address", "a", "", "custom address")
+	rootCmd.PersistentFlags().BoolVar(&insecure, "insecure", false, "make insecure request")
     rootCmd.PersistentFlags().BoolVarP(&prod, "prod", "p", false, "use production environment")
 }
 
