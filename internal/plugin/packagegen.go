@@ -11,11 +11,17 @@ type PackageGenerator struct {
 }
 
 func (p PackageGenerator) Generate(f *codegen.File) error {
+	if len(p.files) == 0 {
+		return nil
+	}
+	goPkg := getGoPkg(p.files[0])
+
 	f.P("package ctl")
-	f.P(`import (
+	f.Pf(`import (
 	"fmt"
 	"github.com/spf13/cobra"
-)`)
+	%s "%s"
+)`, goPkg.name, goPkg.path)
 	f.P("var _ = fmt.Sprintf")
 	f.P("var _ = cobra.Command{}")
 

@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -92,5 +93,26 @@ func optionDefaultValue(field protoreflect.FieldDescriptor) string {
 		return "false"
 	default:
 		return ""
+	}
+}
+
+type goPkg struct {
+	path string
+	name string
+}
+
+func getGoPkg(desc protoreflect.Descriptor) goPkg {
+	pkg := protodesc.ToFileDescriptorProto(desc.ParentFile()).Options.GetGoPackage()
+
+	if strings.Contains(pkg, ";") {
+		parts := strings.Split(pkg, ";")
+		return goPkg{
+			path: parts[0],
+			name: parts[1],
+		}
+	}
+	return goPkg{
+		path: pkg,
+		name: "pb",
 	}
 }
