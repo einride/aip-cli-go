@@ -78,7 +78,7 @@ func (p PackageGenerator) Generate(f *codegen.File) error {
 						optionFlagCreateFunc(field),
 						optionFlagVarName(method, field),
 						strconv.Quote(optionFlagName(field)),
-						strconv.Quote(""),
+						optionDefaultValue(field),
 						strconv.Quote(optionFlagDescription(field)),
 					)
 				}
@@ -153,6 +153,17 @@ func optionFlagCreateFunc(field protoreflect.FieldDescriptor) string {
 		return "StringVar"
 	case protoreflect.Int32Kind:
 		return "Int32Var"
+	default:
+		return ""
+	}
+}
+
+func optionDefaultValue(field protoreflect.FieldDescriptor) string {
+	switch field.Kind() {
+	case protoreflect.StringKind:
+		return strconv.Quote("")
+	case protoreflect.Int32Kind:
+		return "0"
 	default:
 		return ""
 	}
