@@ -61,9 +61,9 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ctl.yaml)")
 
-    rootCmd.PersistentFlags().StringVar(&token, "token", "", "token please")
-	rootCmd.PersistentFlags().StringVarP(&address, "address", "a", "", "custom address")
-	rootCmd.PersistentFlags().BoolVar(&insecure, "insecure", false, "make insecure request")
+    rootCmd.PersistentFlags().StringVarP(&token, "token", "t", "", "identity token")
+	rootCmd.PersistentFlags().StringVarP(&address, "address", "a", "", "custom address, e.g localhost:8080")
+	rootCmd.PersistentFlags().BoolVarP(&insecure, "insecure", "i", false, "make insecure request")
     rootCmd.PersistentFlags().BoolVarP(&prod, "prod", "p", false, "use production environment")
 }
 
