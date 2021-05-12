@@ -2,9 +2,11 @@ package plugin
 
 import "github.com/einride/ctl/internal/codegen"
 
-const programName string = "einridectl"
-const devHost string = "api-g4oz7jceaa-ew.a.run.app:443"
-const prodHost string = "api-pe3g7ntwkq-ew.a.run.app:443"
+const (
+	programName string = "einridectl2"
+	devHost     string = "api-g4oz7jceaa-ew.a.run.app:443"
+	prodHost    string = "api-pe3g7ntwkq-ew.a.run.app:443"
+)
 
 func GenerateRootFile(f *codegen.File) {
 	f.Pf(`
