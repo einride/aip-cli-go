@@ -15,10 +15,11 @@ type MethodGenerator struct {
 func (m MethodGenerator) GenerateCmd(f *codegen.File) {
 	cobra := f.Import("github.com/spf13/cobra")
 	fmtPkg := f.Import("fmt")
+	inputPkg := f.Import(getInputPkg(m.method).path)
 	pbPkg := f.Import(getGoPkg(m.method).path)
 	protoJSON := f.Import("google.golang.org/protobuf/encoding/protojson")
 
-	f.Pf("var %s %s.%s", methodInputVarName(m.method), pbPkg, m.method.Input().Name())
+	f.Pf("var %s %s.%s", methodInputVarName(m.method), inputPkg, m.method.Input().Name())
 
 	f.P("var ", methodCmdVarName(m.method), " = &", cobra, ".Command{")
 	f.P("Use: ", strconv.Quote(methodCmdName(m.method)), ",")

@@ -3,6 +3,8 @@ package plugin
 import (
 	"strings"
 
+	"google.golang.org/protobuf/types/descriptorpb"
+
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -37,9 +39,8 @@ type goPkg struct {
 	name string
 }
 
-func getGoPkg(desc protoreflect.Descriptor) goPkg {
-	pkg := protodesc.ToFileDescriptorProto(desc.ParentFile()).Options.GetGoPackage()
-
+func getFileGoPkg(fileDesc *descriptorpb.FileDescriptorProto) goPkg {
+	pkg := fileDesc.Options.GetGoPackage()
 	if strings.Contains(pkg, ";") {
 		parts := strings.Split(pkg, ";")
 		return goPkg{
@@ -51,4 +52,12 @@ func getGoPkg(desc protoreflect.Descriptor) goPkg {
 		path: pkg,
 		name: "pb",
 	}
+}
+
+func getInputPkg(meth protoreflect.MethodDescriptor) goPkg {
+	return getFileGoPkg(protodesc.ToFileDescriptorProto(meth.Input().ParentFile()))
+}
+
+func getGoPkg(desc protoreflect.Descriptor) goPkg {
+	return getFileGoPkg(protodesc.ToFileDescriptorProto(desc.ParentFile()))
 }
