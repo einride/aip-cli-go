@@ -24,6 +24,9 @@ func main() {
 		if err := genctl.GenerateRootFile(gen, rootPackage); err != nil {
 			return err
 		}
+		if err := genctl.GenerateCompletionFile(gen, rootPackage); err != nil {
+			return err
+		}
 		return nil
 	})
 }

@@ -146,6 +146,7 @@ func GenerateRootFile(gen *protogen.Plugin, rootPackage string) error {
 			g.P(addServiceCommandFunction, "(Command)")
 		}
 	}
+	g.P("AddCompletion(Command)")
 	g.P("}")
 	return nil
 }

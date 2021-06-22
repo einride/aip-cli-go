@@ -86,4 +86,5 @@ func init() {
 	v1beta111.AddTelematicsSampleServiceCommand(Command)
 	v1beta111.AddVehicleConnectionServiceCommand(Command)
 	v1beta112.AddFileServiceCommand(Command)
+	AddCompletion(Command)
 }
