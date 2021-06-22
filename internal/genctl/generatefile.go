@@ -29,27 +29,58 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 	for _, service := range file.Services {
 		g.Unskip()
 		g.P()
-		g.P("var ", serviceCommandVariableGoName(service), " = &", cobraCommand, "{")
+		client := g.QualifiedGoIdent(protogen.GoIdent{
+			GoImportPath: file.GoImportPath,
+			GoName:       service.GoName + "Client",
+		})
+		parseDialConfig := g.QualifiedGoIdent(protogen.GoIdent{
+			GoImportPath: "github.com/einride/ctl",
+			GoName:       "ParseDialConfig",
+		})
+		dial := g.QualifiedGoIdent(protogen.GoIdent{
+			GoImportPath: "github.com/einride/ctl",
+			GoName:       "Dial",
+		})
+		newClient := g.QualifiedGoIdent(protogen.GoIdent{
+			GoImportPath: file.GoImportPath,
+			GoName:       "New" + service.GoName + "Client",
+		})
+		g.P("// ", service.Desc.FullName(), ".")
+		g.P("var (")
+		g.P(serviceClientVariableGoName(service), " ", client)
+		g.P(serviceCommandVariableGoName(service), " = &", cobraCommand, "{")
 		g.P("Use: ", strconv.Quote(string(service.Desc.FullName())), ",")
+		g.P("PersistentPreRunE: func(cmd *", cobraCommand, ", args []string) error {")
+		g.P("config, err := ", parseDialConfig, "(cmd.Flags())")
+		g.P("if err != nil {")
+		g.P("return err")
 		g.P("}")
+		g.P("conn, err := ", dial, "(cmd.Context(), config)")
+		g.P("if err != nil {")
+		g.P("return err")
+		g.P("}")
+		g.P(serviceClientVariableGoName(service), " = ", newClient, "(conn)")
+		g.P("return nil")
+		g.P("},")
+		g.P("}")
+		g.P(")")
 		for _, method := range service.Methods {
 			g.P()
-			request := g.QualifiedGoIdent(protogen.GoIdent{
-				GoImportPath: file.GoImportPath,
-				GoName:       method.Input.GoIdent.GoName,
-			})
 			logPrintln := g.QualifiedGoIdent(protogen.GoIdent{
 				GoImportPath: "log",
 				GoName:       "Println",
 			})
-			g.P("var ", requestVariableGoName(method), " ", request)
-			g.P("var ", methodCommandVariableGoName(method), " = &", cobraCommand, "{")
+			g.P("// ", method.Desc.FullName(), ".")
+			g.P("var (")
+			g.P(requestVariableGoName(method), " ", method.Input.GoIdent)
+			g.P(methodCommandVariableGoName(method), " = &", cobraCommand, "{")
 			g.P("Use: ", strconv.Quote(string(method.Desc.Name())), ",")
 			g.P("RunE: func(cmd *", cobraCommand, ", args []string) error {")
 			g.P(logPrintln, "(", strconv.Quote(string(method.Desc.FullName())), ")")
 			g.P("return nil")
 			g.P("},")
 			g.P("}")
+			g.P(")")
 		}
 	}
 	for _, service := range file.Services {
@@ -85,6 +116,11 @@ func GenerateRootFile(gen *protogen.Plugin, rootPackage string) error {
 	g.P("}")
 	g.P()
 	g.P("func init() {")
+	g.P("flags := Command.PersistentFlags()")
+	g.P(`flags.Bool("insecure", false, "make insecure client connection, must be used with 'address' option")`)
+	g.P(`flags.String("address", "", "address to connect to")`)
+	g.P(`flags.String("token", "", "bearer token used by client")`)
+	g.P(`flags.String("project", "einride-dev", "GCP project")`)
 	for _, file := range gen.Files {
 		if !file.Generate {
 			continue
@@ -123,12 +159,24 @@ func serviceCommandVariableGoName(service *protogen.Service) string {
 	return strings.ReplaceAll(string(service.Desc.FullName()), ".", "_")
 }
 
+func serviceClientVariableGoName(service *protogen.Service) string {
+	return strings.ReplaceAll(string(service.Desc.FullName()), ".", "_") + "Client"
+}
+
+func serviceConfigVariableGoName(service *protogen.Service) string {
+	return strings.ReplaceAll(string(service.Desc.FullName()), ".", "_") + "Config"
+}
+
+func serviceConfigInitFunctionGoName(service *protogen.Service) string {
+	return "init_" + strings.ReplaceAll(string(service.Desc.FullName()), ".", "_") + "Config"
+}
+
 func methodCommandVariableGoName(method *protogen.Method) string {
 	return strings.ReplaceAll(string(method.Desc.FullName()), ".", "_")
 }
 
 func requestVariableGoName(method *protogen.Method) string {
-	return strings.ReplaceAll(string(method.Input.Desc.FullName()), ".", "_")
+	return strings.ReplaceAll(string(method.Desc.FullName()), ".", "_") + "_Request"
 }
 
 func addCommandFunctionGoName(service *protogen.Service) string {

@@ -1,104 +1,151 @@
 package accountv1beta1
 
 import (
+	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/account/v1beta1"
 	cobra "github.com/spf13/cobra"
 	log "log"
 )
 
-var einride_account_v1beta1_FeatureFlagsService = &cobra.Command{
-	Use: "einride.account.v1beta1.FeatureFlagsService",
-}
+// einride.account.v1beta1.FeatureFlagsService.
+var (
+	einride_account_v1beta1_FeatureFlagsServiceClient v1beta1.FeatureFlagsServiceClient
+	einride_account_v1beta1_FeatureFlagsService       = &cobra.Command{
+		Use: "einride.account.v1beta1.FeatureFlagsService",
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			config, err := ctl.ParseDialConfig(cmd.Flags())
+			if err != nil {
+				return err
+			}
+			conn, err := ctl.Dial(cmd.Context(), config)
+			if err != nil {
+				return err
+			}
+			einride_account_v1beta1_FeatureFlagsServiceClient = v1beta1.NewFeatureFlagsServiceClient(conn)
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_GetUserFeatureFlagsRequest v1beta1.GetUserFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_GetUserFeatureFlags = &cobra.Command{
-	Use: "GetUserFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.GetUserFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.GetUserFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_GetUserFeatureFlags_Request v1beta1.GetUserFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_GetUserFeatureFlags         = &cobra.Command{
+		Use: "GetUserFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.GetUserFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_UpdateUserFeatureFlagsRequest v1beta1.UpdateUserFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_UpdateUserFeatureFlags = &cobra.Command{
-	Use: "UpdateUserFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateUserFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.UpdateUserFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_UpdateUserFeatureFlags_Request v1beta1.UpdateUserFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_UpdateUserFeatureFlags         = &cobra.Command{
+		Use: "UpdateUserFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateUserFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_AddUserFeatureFlagRequest v1beta1.AddUserFeatureFlagRequest
-var einride_account_v1beta1_FeatureFlagsService_AddUserFeatureFlag = &cobra.Command{
-	Use: "AddUserFeatureFlag",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.AddUserFeatureFlag")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.AddUserFeatureFlag.
+var (
+	einride_account_v1beta1_FeatureFlagsService_AddUserFeatureFlag_Request v1beta1.AddUserFeatureFlagRequest
+	einride_account_v1beta1_FeatureFlagsService_AddUserFeatureFlag         = &cobra.Command{
+		Use: "AddUserFeatureFlag",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.AddUserFeatureFlag")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_RemoveUserFeatureFlagRequest v1beta1.RemoveUserFeatureFlagRequest
-var einride_account_v1beta1_FeatureFlagsService_RemoveUserFeatureFlag = &cobra.Command{
-	Use: "RemoveUserFeatureFlag",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.RemoveUserFeatureFlag")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.RemoveUserFeatureFlag.
+var (
+	einride_account_v1beta1_FeatureFlagsService_RemoveUserFeatureFlag_Request v1beta1.RemoveUserFeatureFlagRequest
+	einride_account_v1beta1_FeatureFlagsService_RemoveUserFeatureFlag         = &cobra.Command{
+		Use: "RemoveUserFeatureFlag",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.RemoveUserFeatureFlag")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_GetTenantFeatureFlagsRequest v1beta1.GetTenantFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_GetTenantFeatureFlags = &cobra.Command{
-	Use: "GetTenantFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.GetTenantFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.GetTenantFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_GetTenantFeatureFlags_Request v1beta1.GetTenantFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_GetTenantFeatureFlags         = &cobra.Command{
+		Use: "GetTenantFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.GetTenantFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_UpdateTenantFeatureFlagsRequest v1beta1.UpdateTenantFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_UpdateTenantFeatureFlags = &cobra.Command{
-	Use: "UpdateTenantFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateTenantFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.UpdateTenantFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_UpdateTenantFeatureFlags_Request v1beta1.UpdateTenantFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_UpdateTenantFeatureFlags         = &cobra.Command{
+		Use: "UpdateTenantFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateTenantFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_ComputeEffectiveFeatureFlagsRequest v1beta1.ComputeEffectiveFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_ComputeEffectiveFeatureFlags = &cobra.Command{
-	Use: "ComputeEffectiveFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeEffectiveFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.ComputeEffectiveFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_ComputeEffectiveFeatureFlags_Request v1beta1.ComputeEffectiveFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_ComputeEffectiveFeatureFlags         = &cobra.Command{
+		Use: "ComputeEffectiveFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeEffectiveFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_ComputeUserFeatureFlagsRequest v1beta1.ComputeUserFeatureFlagsRequest
-var einride_account_v1beta1_FeatureFlagsService_ComputeUserFeatureFlags = &cobra.Command{
-	Use: "ComputeUserFeatureFlags",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeUserFeatureFlags")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.ComputeUserFeatureFlags.
+var (
+	einride_account_v1beta1_FeatureFlagsService_ComputeUserFeatureFlags_Request v1beta1.ComputeUserFeatureFlagsRequest
+	einride_account_v1beta1_FeatureFlagsService_ComputeUserFeatureFlags         = &cobra.Command{
+		Use: "ComputeUserFeatureFlags",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeUserFeatureFlags")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_CreateFeatureFlagRequest v1beta1.CreateFeatureFlagRequest
-var einride_account_v1beta1_FeatureFlagsService_CreateFeatureFlag = &cobra.Command{
-	Use: "CreateFeatureFlag",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.CreateFeatureFlag")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.CreateFeatureFlag.
+var (
+	einride_account_v1beta1_FeatureFlagsService_CreateFeatureFlag_Request v1beta1.CreateFeatureFlagRequest
+	einride_account_v1beta1_FeatureFlagsService_CreateFeatureFlag         = &cobra.Command{
+		Use: "CreateFeatureFlag",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.CreateFeatureFlag")
+			return nil
+		},
+	}
+)
 
-var einride_account_v1beta1_DeleteFeatureFlagRequest v1beta1.DeleteFeatureFlagRequest
-var einride_account_v1beta1_FeatureFlagsService_DeleteFeatureFlag = &cobra.Command{
-	Use: "DeleteFeatureFlag",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("einride.account.v1beta1.FeatureFlagsService.DeleteFeatureFlag")
-		return nil
-	},
-}
+// einride.account.v1beta1.FeatureFlagsService.DeleteFeatureFlag.
+var (
+	einride_account_v1beta1_FeatureFlagsService_DeleteFeatureFlag_Request v1beta1.DeleteFeatureFlagRequest
+	einride_account_v1beta1_FeatureFlagsService_DeleteFeatureFlag         = &cobra.Command{
+		Use: "DeleteFeatureFlag",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			log.Println("einride.account.v1beta1.FeatureFlagsService.DeleteFeatureFlag")
+			return nil
+		},
+	}
+)
 
 func AddFeatureFlagsServiceCommand(parent *cobra.Command) {
 	parent.AddCommand(einride_account_v1beta1_FeatureFlagsService)
