@@ -93,8 +93,42 @@ func AddSMSMessageServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_messenger_v1beta1_SMSMessageService.AddCommand(einride_messenger_v1beta1_SMSMessageService_GetSMSMessage)
+
+	einride_messenger_v1beta1_SMSMessageService_GetSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_GetSMSMessage_Request.Name, "name", "", "Resource name of the SMS message to retrieve.\nFormat: `tenants/{tenant}/smsMessages/{sms_message}`.")
 	einride_messenger_v1beta1_SMSMessageService.AddCommand(einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage)
+
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.Parent, "parent", "", "Resource name of the parent tenant where the new SMS message will be created.\nPattern: `tenants/{tenant}`.")
+
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessage = new(v1beta1.SMSMessage)
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessage.Name, "smsMessage.name", "", "The resource name of the SMS.")
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessage.Etag, "smsMessage.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessage.PhoneNumber, "smsMessage.phoneNumber", "", "The phone number the SMS is sent to.")
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessage.Content = new(v1beta1.SMSMessage_Content)
+	// TODO: one-of: PlainText
+	// TODO: one-of: ShipmentEtaNotification
+
+	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request.SmsMessageId, "smsMessageId", "", "The ID to use for the SMSMessage.\nWill become the final component of the site charger's resource name.\nIf an ID is not provided, a unique ID will be selected by the service.")
 	einride_messenger_v1beta1_SMSMessageService.AddCommand(einride_messenger_v1beta1_SMSMessageService_ListSMSMessages)
+
+	einride_messenger_v1beta1_SMSMessageService_ListSMSMessages.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_ListSMSMessages_Request.Parent, "parent", "", "Resource name of the parent tenant.\nPattern: `tenants/{tenant}`.")
+
+	einride_messenger_v1beta1_SMSMessageService_ListSMSMessages.Flags().Int32Var(&einride_messenger_v1beta1_SMSMessageService_ListSMSMessages_Request.PageSize, "pageSize", 10, "The maximum number of SMS messages to return.\nThe service may return fewer site chargers than this value.\nIf unspecified, at most 50 site chargers will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_messenger_v1beta1_SMSMessageService_ListSMSMessages.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_ListSMSMessages_Request.PageToken, "pageToken", "", "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\nWhen paginating, all other parameters must match the call that provided the page token.")
 	einride_messenger_v1beta1_SMSMessageService.AddCommand(einride_messenger_v1beta1_SMSMessageService_SendSMSMessage)
+
+	einride_messenger_v1beta1_SMSMessageService_SendSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendSMSMessage_Request.Name, "name", "", "Resource name of the SMS message to send.\nFormat: `tenants/{tenant}/smsMessages/{sms_message}`.")
 	einride_messenger_v1beta1_SMSMessageService.AddCommand(einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage)
+
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.Parent, "parent", "", "Resource name of the parent tenant where the new SMS message will be created.\nPattern: `tenants/{tenant}`.")
+
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessage = new(v1beta1.SMSMessage)
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessage.Name, "smsMessage.name", "", "The resource name of the SMS.")
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessage.Etag, "smsMessage.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessage.PhoneNumber, "smsMessage.phoneNumber", "", "The phone number the SMS is sent to.")
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessage.Content = new(v1beta1.SMSMessage_Content)
+	// TODO: one-of: PlainText
+	// TODO: one-of: ShipmentEtaNotification
+
+	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage.Flags().StringVar(&einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request.SmsMessageId, "smsMessageId", "", "The ID to use for the SMS message.\nWill become the final component of the site charger's resource name.\nIf an ID is not provided, a unique ID will be selected by the service.")
 }

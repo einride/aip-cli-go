@@ -69,6 +69,22 @@ func AddVehicleConnectionServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_telematics_v1beta1_VehicleConnectionService.AddCommand(einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections)
+
+	einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections_Request.Parent, "parent", "", "Resource name of the parent vehicle.")
+
+	einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections.Flags().Int32Var(&einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections_Request.PageSize, "pageSize", 10, "The maximum number of results to return.")
+
+	einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections_Request.PageToken, "pageToken", "", "A page token, received from a previous List call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
+
+	einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections_Request.Filter, "filter", "", "A filter.\n\nCurrently the only supported format is:\n\n`telematics_device = \"<string>\"`")
 	einride_telematics_v1beta1_VehicleConnectionService.AddCommand(einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice)
+
+	einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice_Request.Vehicle, "vehicle", "", "Resource name of the vehicle.")
+
+	einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice_Request.TelematicsDevice, "telematicsDevice", "", "Resource name of the telematics device to connect.")
 	einride_telematics_v1beta1_VehicleConnectionService.AddCommand(einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice)
+
+	einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice_Request.Vehicle, "vehicle", "", "Resource name of the vehicle.")
+
+	einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice_Request.TelematicsDevice, "telematicsDevice", "", "Resource name of the telematics device to disconnect.")
 }

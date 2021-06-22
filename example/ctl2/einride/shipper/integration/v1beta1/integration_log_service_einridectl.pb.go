@@ -69,6 +69,21 @@ func AddIntegrationLogServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_integration_v1beta1_IntegrationLogService.AddCommand(einride_shipper_integration_v1beta1_IntegrationLogService_GetIntegrationLogEntry)
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_GetIntegrationLogEntry.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_GetIntegrationLogEntry_Request.Name, "name", "", "Resource name of the integration log entry to retrieve.")
 	einride_shipper_integration_v1beta1_IntegrationLogService.AddCommand(einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries)
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries_Request.Parent, "parent", "", "Resource name of the parent shipper.")
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries.Flags().Int32Var(&einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries_Request.PageSize, "pageSize", 10, "The maximum number of results to return.")
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries_Request.PageToken, "pageToken", "", "A page token, received from a previous List call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_shipper_integration_v1beta1_IntegrationLogService.AddCommand(einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry)
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry_Request.Parent, "parent", "", "Resource name of the parent shipper where this integration log entry will be created.")
+
+	einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry_Request.IntegrationLogEntry = new(v1beta1.IntegrationLogEntry)
+	einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry_Request.IntegrationLogEntry.Name, "integrationLogEntry.name", "", "The resource name of the integration log entry.")
+	// TODO: enum Severity
+	einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry.Flags().StringVar(&einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry_Request.IntegrationLogEntry.Text, "integrationLogEntry.text", "", "Free-text message in log entry.")
 }

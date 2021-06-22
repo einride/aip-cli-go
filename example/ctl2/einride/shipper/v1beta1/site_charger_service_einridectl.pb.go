@@ -4,6 +4,7 @@ import (
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	log "log"
 )
 
@@ -117,10 +118,45 @@ func AddSiteChargerServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_GetSiteCharger)
+
+	einride_shipper_v1beta1_SiteChargerService_GetSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_GetSiteCharger_Request.Name, "name", "", "Resource name of the site charger to retrieve.\nFormat: `shippers/{shipper}/sites/{site}/chargers/{charger}`.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger)
+
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.Parent, "parent", "", "Resource name of the parent site where this site charger will be created.\nPattern: `shippers/{shipper}/sites/{site}`.")
+
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteCharger = new(v1beta1.SiteCharger)
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteCharger.Name, "siteCharger.name", "", "The resource name.")
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteCharger.Etag, "siteCharger.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteCharger.DisplayName, "siteCharger.displayName", "", "Free-text display name for the charger.")
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().Float32Var(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteCharger.PowerWatts, "siteCharger.powerWatts", 10, "The power of the charger (W).")
+
+	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request.SiteChargerId, "siteChargerId", "", "The ID to use for the site charger.\nWill become the final component of the site charger's resource name.\nIf an ID is not provided, a unique ID will be selected by the service.\nThe ID should be 3-63 characters and valid characters are /[a-zA-Z0-9]/.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger)
+
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.SiteCharger = new(v1beta1.SiteCharger)
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.SiteCharger.Name, "siteCharger.name", "", "The resource name.")
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.SiteCharger.Etag, "siteCharger.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.SiteCharger.DisplayName, "siteCharger.displayName", "", "Free-text display name for the charger.")
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger.Flags().Float32Var(&einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.SiteCharger.PowerWatts, "siteCharger.powerWatts", 10, "The power of the charger (W).")
+
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.UpdateMask = new(fieldmaskpb.FieldMask)
+	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger.Flags().StringSliceVar(&einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request.UpdateMask.Paths, "updateMask.paths", []string{}, "The set of field mask paths.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_DeleteSiteCharger)
+
+	einride_shipper_v1beta1_SiteChargerService_DeleteSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_DeleteSiteCharger_Request.Name, "name", "", "Resource name of the site charger to delete.\nFormat: `shippers/{shipper}/sites/{site}/chargers/{charger}`.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_UndeleteSiteCharger)
+
+	einride_shipper_v1beta1_SiteChargerService_UndeleteSiteCharger.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_UndeleteSiteCharger_Request.Name, "name", "", "Resource name of the site charger to undelete.\nFormat: `shippers/{shipper}/sites/{site}/chargers/{charger}`.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_ListSiteChargers)
+
+	einride_shipper_v1beta1_SiteChargerService_ListSiteChargers.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_ListSiteChargers_Request.Parent, "parent", "", "Resource name of the parent site.\nPattern: `shippers/{shipper}/sites/{site}`.")
+
+	einride_shipper_v1beta1_SiteChargerService_ListSiteChargers.Flags().Int32Var(&einride_shipper_v1beta1_SiteChargerService_ListSiteChargers_Request.PageSize, "pageSize", 10, "The maximum number of site chargers to return.\nThe service may return fewer site chargers than this value.\nIf unspecified, at most 50 site chargers will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_shipper_v1beta1_SiteChargerService_ListSiteChargers.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_ListSiteChargers_Request.PageToken, "pageToken", "", "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\nWhen paginating, all other parameters must match the call that provided the page token.")
 	einride_shipper_v1beta1_SiteChargerService.AddCommand(einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers)
+
+	einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers.Flags().StringVar(&einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers_Request.Parent, "parent", "", "Resource name of the parent site shared by all site chargers being retrieved.\nIf set, the parent of all site chargers specified in `names` must match this field.\nPattern: `shippers/{shipper}/sites/{site}`.")
+
+	einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers.Flags().StringSliceVar(&einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers_Request.Names, "names", []string{}, "Resource names of the site chargers to retrieve.\nA maximum of 1000 site chargers can be retrieved in a batch.")
 }

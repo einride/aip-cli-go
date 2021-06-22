@@ -45,4 +45,6 @@ func AddAuthenticationServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_account_v1beta1_AuthenticationService.AddCommand(einride_account_v1beta1_AuthenticationService_AuthenticateUserIdentityToken)
+
+	einride_account_v1beta1_AuthenticationService_AuthenticateUserIdentityToken.Flags().StringVar(&einride_account_v1beta1_AuthenticationService_AuthenticateUserIdentityToken_Request.IdentityToken, "identityToken", "", "The raw user identity token to authenticate.")
 }

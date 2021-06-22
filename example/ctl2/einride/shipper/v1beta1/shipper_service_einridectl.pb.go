@@ -4,6 +4,7 @@ import (
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	log "log"
 )
 
@@ -117,10 +118,53 @@ func AddShipperServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_CreateShipper)
+
+	einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper = new(v1beta1.Shipper)
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Name, "shipper.name", "", "The resource name of the shipper.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Etag, "shipper.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.DisplayName, "shipper.displayName", "", "Display name of the shipper.\nFor example: \"Lemon Beverages Ltd.\"")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.DefaultTimeZone, "shipper.defaultTimeZone", "", "The shipper's default time zone. Used for e.g. stats aggregations.\nMust be on the IANA Time Zone Database format.\nDefaults to UTC if not specified.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.DefaultSite, "shipper.defaultSite", "", "Resource name of the shipper's default site.\nLikely a well-known site with plenty of shipping activity.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter = new(v1beta1.Address)
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter.DisplayName, "shipper.headquarter.displayName", "", "Who its intended for, can be a multiline string with C/O.\nFor example: Olle Svensson / Example Company AB / etc.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter.Street, "shipper.headquarter.street", "", "The street.\nFor example: Ringvägen 30.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter.PostalCode, "shipper.headquarter.postalCode", "", "The postal code.\nFor example: 820 40")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter.City, "shipper.headquarter.city", "", "For example: Göteborg.")
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.Shipper.Headquarter.RegionCode, "shipper.headquarter.regionCode", "", "Fields representing individual countries or nations must use the Unicode CLDR region codes,\nsuch as US or CH.\nFor region codes see: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry\nFor example: \"SE\"")
+
+	einride_shipper_v1beta1_ShipperService_CreateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_CreateShipper_Request.ShipperId, "shipperId", "", "The ID to use for the shipper, which will become the final component of\nthe shipper's resource name.\n\nIf a shipper ID is not provided, a shipper ID will be automatically\ngenerated.\n\nThis value should be 4-63 characters, and valid characters\nare /[a-zA-Z0-9]/.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_ListShippers)
+
+	einride_shipper_v1beta1_ShipperService_ListShippers.Flags().Int32Var(&einride_shipper_v1beta1_ShipperService_ListShippers_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.")
+
+	einride_shipper_v1beta1_ShipperService_ListShippers.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_ListShippers_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_GetShipper)
+
+	einride_shipper_v1beta1_ShipperService_GetShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_GetShipper_Request.Name, "name", "", "Resource name of the shipper to retrieve.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_BatchGetShippers)
+
+	einride_shipper_v1beta1_ShipperService_BatchGetShippers.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipperService_BatchGetShippers_Request.Names, "names", []string{}, "Resource names of the shippers to retrieve.\nA maximum of 1000 shippers can be retrieved in a batch.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_UpdateShipper)
+
+	einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper = new(v1beta1.Shipper)
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Name, "shipper.name", "", "The resource name of the shipper.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Etag, "shipper.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.DisplayName, "shipper.displayName", "", "Display name of the shipper.\nFor example: \"Lemon Beverages Ltd.\"")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.DefaultTimeZone, "shipper.defaultTimeZone", "", "The shipper's default time zone. Used for e.g. stats aggregations.\nMust be on the IANA Time Zone Database format.\nDefaults to UTC if not specified.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.DefaultSite, "shipper.defaultSite", "", "Resource name of the shipper's default site.\nLikely a well-known site with plenty of shipping activity.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter = new(v1beta1.Address)
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter.DisplayName, "shipper.headquarter.displayName", "", "Who its intended for, can be a multiline string with C/O.\nFor example: Olle Svensson / Example Company AB / etc.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter.Street, "shipper.headquarter.street", "", "The street.\nFor example: Ringvägen 30.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter.PostalCode, "shipper.headquarter.postalCode", "", "The postal code.\nFor example: 820 40")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter.City, "shipper.headquarter.city", "", "For example: Göteborg.")
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.Shipper.Headquarter.RegionCode, "shipper.headquarter.regionCode", "", "Fields representing individual countries or nations must use the Unicode CLDR region codes,\nsuch as US or CH.\nFor region codes see: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry\nFor example: \"SE\"")
+
+	einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.UpdateMask = new(fieldmaskpb.FieldMask)
+	einride_shipper_v1beta1_ShipperService_UpdateShipper.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipperService_UpdateShipper_Request.UpdateMask.Paths, "updateMask.paths", []string{}, "The set of field mask paths.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_DeleteShipper)
+
+	einride_shipper_v1beta1_ShipperService_DeleteShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_DeleteShipper_Request.Name, "name", "", "Resource name of the shipper to delete.")
 	einride_shipper_v1beta1_ShipperService.AddCommand(einride_shipper_v1beta1_ShipperService_UndeleteShipper)
+
+	einride_shipper_v1beta1_ShipperService_UndeleteShipper.Flags().StringVar(&einride_shipper_v1beta1_ShipperService_UndeleteShipper_Request.Name, "name", "", "Resource name of the shipper to undelete.")
 }

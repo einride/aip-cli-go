@@ -7,6 +7,7 @@ require (
 	github.com/einride/proto v0.713.0
 	github.com/spf13/cobra v1.1.3
 	google.golang.org/genproto v0.0.0-20210608205507-b6d2f5bf0d7d
+	google.golang.org/protobuf v1.26.0
 )
 
 replace github.com/einride/ctl => ../

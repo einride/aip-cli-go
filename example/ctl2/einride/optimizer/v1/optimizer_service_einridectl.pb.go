@@ -45,4 +45,7 @@ func AddOptimizerServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_optimizer_v1_OptimizerService.AddCommand(einride_optimizer_v1_OptimizerService_OptimizeProblemParameters)
+
+	einride_optimizer_v1_OptimizerService_OptimizeProblemParameters_Request.ProblemParameters = new(v1.ProblemParameters)
+	einride_optimizer_v1_OptimizerService_OptimizeProblemParameters.Flags().StringSliceVar(&einride_optimizer_v1_OptimizerService_OptimizeProblemParameters_Request.ProblemParameters.ProblemGcsUris, "problemParameters.problemGcsUris", []string{}, "The paths of the directory containing the problem instance file within\nCloud Storage, of the format \"gs://bucket_name/path/to/dir\". This is\nexpected to contain a file entitled \"problem\".\nThe solution is also written to the same directory as \"solution\".")
 }

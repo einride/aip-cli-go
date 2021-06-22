@@ -57,5 +57,11 @@ func AddShippingEmissionsServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_insights_v1beta1_ShippingEmissionsService.AddCommand(einride_shipper_insights_v1beta1_ShippingEmissionsService_GetShipmentShippingEmission)
+
+	einride_shipper_insights_v1beta1_ShippingEmissionsService_GetShipmentShippingEmission.Flags().StringVar(&einride_shipper_insights_v1beta1_ShippingEmissionsService_GetShipmentShippingEmission_Request.Name, "name", "", "Resource name of the shipment shipping cost to retrieve.")
 	einride_shipper_insights_v1beta1_ShippingEmissionsService.AddCommand(einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions)
+
+	einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions.Flags().StringVar(&einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions_Request.Parent, "parent", "", "Resource name of the parent shipment shared by all shipment shipping costs.\nThe last segment of the parent resource name may be a wildcard to get\nshipment shipping costs for multiple shipments.")
+
+	einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions.Flags().StringSliceVar(&einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions_Request.Names, "names", []string{}, "Resource names of the shipment shipping costs.")
 }

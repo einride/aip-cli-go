@@ -69,6 +69,17 @@ func AddTelematicsDeviceServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_telematics_v1beta1_TelematicsDeviceService.AddCommand(einride_telematics_v1beta1_TelematicsDeviceService_GetTelematicsDevice)
+
+	einride_telematics_v1beta1_TelematicsDeviceService_GetTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_TelematicsDeviceService_GetTelematicsDevice_Request.Name, "name", "", "Resource name of the telematics device to fetch")
 	einride_telematics_v1beta1_TelematicsDeviceService.AddCommand(einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices)
+
+	einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices.Flags().Int32Var(&einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices_Request.PageSize, "pageSize", 10, "The maximum number of results to return.")
+
+	einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices.Flags().StringVar(&einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices_Request.PageToken, "pageToken", "", "A page token, received from a previous List call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_telematics_v1beta1_TelematicsDeviceService.AddCommand(einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice)
+
+	einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice_Request.TelematicsDevice = new(v1beta1.TelematicsDevice)
+	einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice_Request.TelematicsDevice.Name, "telematicsDevice.name", "", "The resource name of the device.")
+	// TODO: enum Category
+	einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice.Flags().StringVar(&einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice_Request.TelematicsDevice.Id, "telematicsDevice.id", "", "ID is a generic identifier for various types of devices.\nFor Aplicom devices it will be the IMEI of the device. For\nBalena devices it will be a UUID. The ID must be unique, that is the only requirement.\nIMEI (International Mobile Equipment Identity) code.\nExample: \"352099001761481\".\nBalena device UUID.\nFor example: \"123e4567-e89b-12d3-a456-426655440000\"")
 }

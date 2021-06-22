@@ -57,5 +57,13 @@ func AddElectrificationPlannerServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerService.AddCommand(einride_prospect_shipper_v1beta1_ElectrificationPlannerService_GetDatasetNetwork)
+
+	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_GetDatasetNetwork.Flags().StringVar(&einride_prospect_shipper_v1beta1_ElectrificationPlannerService_GetDatasetNetwork_Request.Name, "name", "", "Resource name of the network to get.")
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerService.AddCommand(einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights)
+
+	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights.Flags().StringVar(&einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights_Request.Dataset, "dataset", "", "Resource name of the network to get insights for.")
+
+	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights.Flags().StringVar(&einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights_Request.Hub, "hub", "", "id of a site that also has to be a hub.\nSpecifying hub will return insights in the context of the specified hub.")
+
+	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights.Flags().StringSliceVar(&einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights_Request.Sites, "sites", []string{}, "A list of site ids to include in the calculation of the insights.\nAn empty list includes all sites in the scope (hub or network).")
 }

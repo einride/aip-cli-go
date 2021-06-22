@@ -94,6 +94,15 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 	for _, service := range file.Services {
 		for _, method := range service.Methods {
 			g.P(serviceCommandVariableGoName(service), ".AddCommand(", methodCommandVariableGoName(method), ")")
+			for _, field := range method.Input.Fields {
+				e := env{
+					g:      g,
+					method: method,
+					field:  field,
+				}
+				g.P()
+				e.generate()
+			}
 		}
 	}
 	g.P("}")

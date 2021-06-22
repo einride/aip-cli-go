@@ -69,6 +69,21 @@ func AddShipmentAttachmentServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_v1beta1_ShipmentAttachmentService.AddCommand(einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment)
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request.Parent, "parent", "", "Resource name of the parent shipment where this shipment attachment will be created.")
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request.ShipmentAttachment = new(v1beta1.ShipmentAttachment)
+	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request.ShipmentAttachment.Name, "shipmentAttachment.name", "", "The resource name of the shipment attachment.")
+	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request.ShipmentAttachment.Description, "shipmentAttachment.description", "", "Free text description of the attachment.")
+	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request.ShipmentAttachment.Files, "shipmentAttachment.files", []string{}, "Resource names of files attached to the attachment.")
 	einride_shipper_v1beta1_ShipmentAttachmentService.AddCommand(einride_shipper_v1beta1_ShipmentAttachmentService_GetShipmentAttachment)
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_GetShipmentAttachment.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_GetShipmentAttachment_Request.Name, "name", "", "Resource name of the shipment attachment to retrieve.")
 	einride_shipper_v1beta1_ShipmentAttachmentService.AddCommand(einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments)
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments_Request.Parent, "parent", "", "Resource name of the parent shipment.")
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments.Flags().Int32Var(&einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments.Flags().StringVar(&einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 }

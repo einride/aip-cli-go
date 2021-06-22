@@ -4,6 +4,7 @@ import (
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	log "log"
 )
 
@@ -69,6 +70,20 @@ func AddPlannerSiteSettingsServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_planner_v1beta1_PlannerSiteSettingsService.AddCommand(einride_planner_v1beta1_PlannerSiteSettingsService_GetPlannerSiteSettings)
+
+	einride_planner_v1beta1_PlannerSiteSettingsService_GetPlannerSiteSettings.Flags().StringVar(&einride_planner_v1beta1_PlannerSiteSettingsService_GetPlannerSiteSettings_Request.Name, "name", "", "Resource name of the planner site settings to retrieve.")
 	einride_planner_v1beta1_PlannerSiteSettingsService.AddCommand(einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings)
+
+	einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings.Flags().StringVar(&einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings_Request.Parent, "parent", "", "Resource name of the parent site shared by all planner site settings being\nretrieved.\n\nThe parent of all of the sites specified in `names` must match this field.")
+
+	einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings.Flags().StringSliceVar(&einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings_Request.Names, "names", []string{}, "Resource names of the planner site settings to retrieve.\nA maximum of 1000 resources can be retrieved in a batch.")
 	einride_planner_v1beta1_PlannerSiteSettingsService.AddCommand(einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings)
+
+	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request.PlannerSiteSettings = new(v1beta1.PlannerSiteSettings)
+	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings.Flags().StringVar(&einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request.PlannerSiteSettings.Name, "plannerSiteSettings.name", "", "The resource name.")
+	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings.Flags().StringVar(&einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request.PlannerSiteSettings.Etag, "plannerSiteSettings.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the\nclient has an up-to-date value before proceeding.")
+	// TODO: enum Mode
+
+	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request.UpdateMask = new(fieldmaskpb.FieldMask)
+	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings.Flags().StringSliceVar(&einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request.UpdateMask.Paths, "updateMask.paths", []string{}, "The set of field mask paths.")
 }

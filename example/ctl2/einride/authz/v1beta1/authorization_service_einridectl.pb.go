@@ -203,17 +203,97 @@ func AddAuthorizationServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_GetAuthorizationPolicy)
+
+	einride_authz_v1beta1_AuthorizationService_GetAuthorizationPolicy.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_GetAuthorizationPolicy_Request.Resource, "resource", "", "Resource name of the resource to get the authorization policy for.\n\n(-- api-linter: core::0131::request-unknown-fields=disabled\n    aip.dev/not-precedent: This is not a standard GET method. --)")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_SearchRoleBindings)
+
+	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request.Resource, "resource", "", "Resource name of the resource to search role bindings for.\nRole bindings applied to this resource, and its' descendants are\nreturned. For example, specifying shippers/1 would also return role bindings\napplied to shippers/1/sites/1.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request.User, "user", "", "Resource name of the user on a role binding.\nIf set, only role bindings which this user is a part of is returned, and will\nbe the only user of the role binding.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request.Tenant, "tenant", "", "Resource name of the tenant on a role binding.\nIf set, only role bindings which this tenant is a part of is returned, and will\nbe the only tenant of the role binding.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings.Flags().Int32Var(&einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_AddRoleBinding)
+
+	einride_authz_v1beta1_AuthorizationService_AddRoleBinding_Request.RoleBinding = new(v1beta1.RoleBinding)
+	einride_authz_v1beta1_AuthorizationService_AddRoleBinding.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_AddRoleBinding_Request.RoleBinding.Resource, "roleBinding.resource", "", "Resource name of the resource the role binding applies to.")
+	// TODO: enum Role
+	einride_authz_v1beta1_AuthorizationService_AddRoleBinding.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_AddRoleBinding_Request.RoleBinding.Users, "roleBinding.users", []string{}, "Resource names of the users bound to the role.")
+	einride_authz_v1beta1_AuthorizationService_AddRoleBinding.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_AddRoleBinding_Request.RoleBinding.Tenants, "roleBinding.tenants", []string{}, "Resource names of the tenants bound to the role.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding)
+
+	einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding_Request.RoleBinding = new(v1beta1.RoleBinding)
+	einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding_Request.RoleBinding.Resource, "roleBinding.resource", "", "Resource name of the resource the role binding applies to.")
+	// TODO: enum Role
+	einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding_Request.RoleBinding.Users, "roleBinding.users", []string{}, "Resource names of the users bound to the role.")
+	einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding_Request.RoleBinding.Tenants, "roleBinding.tenants", []string{}, "Resource names of the tenants bound to the role.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions)
+
+	einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions_Request.Resource, "resource", "", "Resource name of the resource to lookup effective permissions for.")
+
+	einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions_Request.User, "user", "", "Resource name of the user to lookup effective permissions for.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions)
+
+	einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions_Request.Resources, "resources", []string{}, "Resource names of the resources to lookup effective permissions for.\nA maximum of 1000 resources can be looked up in a batch.")
+
+	einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions_Request.User, "user", "", "Resource name of the user to lookup effective permissions for.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_LookupPermissionBindings)
+
+	// TODO: enum Permission
+
+	einride_authz_v1beta1_AuthorizationService_LookupPermissionBindings.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_LookupPermissionBindings_Request.User, "user", "", "Resource name of the user to lookup permissions for.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources)
+
+	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request.Parent, "parent", "", "Resource name of the parent to search under.\nIf not specified, all authorized resources will be returned.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request.Permission, "permission", "", "The permission to lookup authorized resources for.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request.Members, "members", []string{}, "The members to lookup authorized resources for.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources.Flags().Int32Var(&einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 10000; values above 10000 will be coerced to 10000.")
+
+	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_TestPermissions)
+
+	einride_authz_v1beta1_AuthorizationService_TestPermissions.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_TestPermissions_Request.Permissions, "permissions", []string{}, "The permissions to test.\nAll combinations of permissions, resources and members will be tested.")
+
+	einride_authz_v1beta1_AuthorizationService_TestPermissions.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_TestPermissions_Request.Resources, "resources", []string{}, "Resource names of the resources to test.\nAll combinations of permissions, resources and members will be tested.")
+
+	einride_authz_v1beta1_AuthorizationService_TestPermissions.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_TestPermissions_Request.Members, "members", []string{}, "The members to test.\nAll combinations of permissions, resources and members will be tested.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_SetIamPolicy)
+
+	einride_authz_v1beta1_AuthorizationService_SetIamPolicy.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_SetIamPolicy_Request.Resource, "resource", "", "REQUIRED: The resource for which the policy is being specified.\nSee the operation documentation for the appropriate value for this field.")
+
+	einride_authz_v1beta1_AuthorizationService_SetIamPolicy_Request.Policy = new(v1.Policy)
+	einride_authz_v1beta1_AuthorizationService_SetIamPolicy.Flags().Int32Var(&einride_authz_v1beta1_AuthorizationService_SetIamPolicy_Request.Policy.Version, "policy.version", 10, "Specifies the format of the policy.\n\nValid values are 0, 1, and 3. Requests specifying an invalid value will be\nrejected.\n\nOperations affecting conditional bindings must specify version 3. This can\nbe either setting a conditional policy, modifying a conditional binding,\nor removing a binding (conditional or unconditional) from the stored\nconditional policy.\nOperations on non-conditional policies may specify any valid value or\nleave the field unset.\n\nIf no etag is provided in the call to `setIamPolicy`, version compliance\nchecks against the stored policy is skipped.")
+	// TODO: list: Bindings message
+	// TODO: bytes Etag
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_GetIamPolicy)
+
+	einride_authz_v1beta1_AuthorizationService_GetIamPolicy.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_GetIamPolicy_Request.Resource, "resource", "", "REQUIRED: The resource for which the policy is being requested.\nSee the operation documentation for the appropriate value for this field.")
+
+	einride_authz_v1beta1_AuthorizationService_GetIamPolicy_Request.Options = new(v1.GetPolicyOptions)
+	einride_authz_v1beta1_AuthorizationService_GetIamPolicy.Flags().Int32Var(&einride_authz_v1beta1_AuthorizationService_GetIamPolicy_Request.Options.RequestedPolicyVersion, "options.requestedPolicyVersion", 10, "Optional. The policy format version to be returned.\n\nValid values are 0, 1, and 3. Requests specifying an invalid value will be\nrejected.\n\nRequests for policies with any conditional bindings must specify version 3.\nPolicies without any conditional bindings may specify any valid value or\nleave the field unset.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_TestIamPermissions)
+
+	einride_authz_v1beta1_AuthorizationService_TestIamPermissions.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_TestIamPermissions_Request.Resource, "resource", "", "REQUIRED: The resource for which the policy detail is being requested.\nSee the operation documentation for the appropriate value for this field.")
+
+	einride_authz_v1beta1_AuthorizationService_TestIamPermissions.Flags().StringSliceVar(&einride_authz_v1beta1_AuthorizationService_TestIamPermissions_Request.Permissions, "permissions", []string{}, "The set of permissions to check for the `resource`. Permissions with\nwildcards (such as '*' or 'storage.*') are not allowed. For more\ninformation see\n[IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_ListRoles)
+
+	einride_authz_v1beta1_AuthorizationService_ListRoles.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_ListRoles_Request.Parent, "parent", "", "The `parent` parameter's value depends on the target resource for the\nrequest, namely\n[`roles`](/iam/reference/rest/v1/roles),\n[`projects`](/iam/reference/rest/v1/projects.roles), or\n[`organizations`](/iam/reference/rest/v1/organizations.roles). Each\nresource type's `parent` value format is described below:\n\n* [`roles.list()`](/iam/reference/rest/v1/roles/list): An empty string.\n  This method doesn't require a resource; it simply returns all\n  [predefined roles](/iam/docs/understanding-roles#predefined_roles) in\n  Cloud IAM. Example request URL:\n  `https://iam.googleapis.com/v1/roles`\n\n* [`projects.roles.list()`](/iam/reference/rest/v1/projects.roles/list):\n  `projects/{PROJECT_ID}`. This method lists all project-level\n  [custom roles](/iam/docs/understanding-custom-roles).\n  Example request URL:\n  `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`\n\n* [`organizations.roles.list()`](/iam/reference/rest/v1/organizations.roles/list):\n  `organizations/{ORGANIZATION_ID}`. This method lists all\n  organization-level [custom roles](/iam/docs/understanding-custom-roles).\n  Example request URL:\n  `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`\n\nNote: Wildcard (*) values are invalid; you must specify a complete project\nID or organization ID.")
+
+	einride_authz_v1beta1_AuthorizationService_ListRoles.Flags().Int32Var(&einride_authz_v1beta1_AuthorizationService_ListRoles_Request.PageSize, "pageSize", 10, "Optional limit on the number of roles to include in the response.\n\nThe default is 300, and the maximum is 1,000.")
+
+	einride_authz_v1beta1_AuthorizationService_ListRoles.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_ListRoles_Request.PageToken, "pageToken", "", "Optional pagination token returned in an earlier ListRolesResponse.")
+
+	// TODO: enum View
+
+	einride_authz_v1beta1_AuthorizationService_ListRoles.Flags().BoolVar(&einride_authz_v1beta1_AuthorizationService_ListRoles_Request.ShowDeleted, "showDeleted", false, "Include Roles that have been deleted.")
 	einride_authz_v1beta1_AuthorizationService.AddCommand(einride_authz_v1beta1_AuthorizationService_GetRole)
+
+	einride_authz_v1beta1_AuthorizationService_GetRole.Flags().StringVar(&einride_authz_v1beta1_AuthorizationService_GetRole_Request.Name, "name", "", "The `name` parameter's value depends on the target resource for the\nrequest, namely\n[`roles`](/iam/reference/rest/v1/roles),\n[`projects`](/iam/reference/rest/v1/projects.roles), or\n[`organizations`](/iam/reference/rest/v1/organizations.roles). Each\nresource type's `name` value format is described below:\n\n* [`roles.get()`](/iam/reference/rest/v1/roles/get): `roles/{ROLE_NAME}`.\n  This method returns results from all\n  [predefined roles](/iam/docs/understanding-roles#predefined_roles) in\n  Cloud IAM. Example request URL:\n  `https://iam.googleapis.com/v1/roles/{ROLE_NAME}`\n\n* [`projects.roles.get()`](/iam/reference/rest/v1/projects.roles/get):\n  `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only\n  [custom roles](/iam/docs/understanding-custom-roles) that have been\n  created at the project level. Example request URL:\n  `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`\n\n* [`organizations.roles.get()`](/iam/reference/rest/v1/organizations.roles/get):\n  `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method\n  returns only [custom roles](/iam/docs/understanding-custom-roles) that\n  have been created at the organization level. Example request URL:\n  `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`\n\nNote: Wildcard (*) values are invalid; you must specify a complete project\nID or organization ID.")
 }

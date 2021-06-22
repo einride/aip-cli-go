@@ -4,6 +4,7 @@ import (
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/maps/v1"
 	cobra "github.com/spf13/cobra"
+	latlng "google.golang.org/genproto/googleapis/type/latlng"
 	log "log"
 )
 
@@ -45,4 +46,8 @@ func AddGeocodingServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_maps_v1_GeocodingService.AddCommand(einride_maps_v1_GeocodingService_ReverseGeocode)
+
+	einride_maps_v1_GeocodingService_ReverseGeocode_Request.LatLng = new(latlng.LatLng)
+	einride_maps_v1_GeocodingService_ReverseGeocode.Flags().Float64Var(&einride_maps_v1_GeocodingService_ReverseGeocode_Request.LatLng.Latitude, "latLng.latitude", 10, "The latitude in degrees. It must be in the range [-90.0, +90.0].")
+	einride_maps_v1_GeocodingService_ReverseGeocode.Flags().Float64Var(&einride_maps_v1_GeocodingService_ReverseGeocode_Request.LatLng.Longitude, "latLng.longitude", 10, "The longitude in degrees. It must be in the range [-180.0, +180.0].")
 }

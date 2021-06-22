@@ -4,6 +4,7 @@ import (
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	log "log"
 )
 
@@ -81,7 +82,32 @@ func AddShipmentClaimServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_v1beta1_ShipmentClaimService.AddCommand(einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim)
+
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.Parent, "parent", "", "Resource name of the parent shipment where this shipment claim will be created.")
+
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.ShipmentClaim = new(v1beta1.ShipmentClaim)
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.ShipmentClaim.Name, "shipmentClaim.name", "", "The resource name of the shipment claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.ShipmentClaim.DisplayName, "shipmentClaim.displayName", "", "The display name of the claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.ShipmentClaim.Description, "shipmentClaim.description", "", "Free text description of the claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipmentClaimService_CreateShipmentClaim_Request.ShipmentClaim.Images, "shipmentClaim.images", []string{}, "Resource names of image files attached to the claim.")
 	einride_shipper_v1beta1_ShipmentClaimService.AddCommand(einride_shipper_v1beta1_ShipmentClaimService_GetShipmentClaim)
+
+	einride_shipper_v1beta1_ShipmentClaimService_GetShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_GetShipmentClaim_Request.Name, "name", "", "Resource name of the shipment claim to retrieve.")
 	einride_shipper_v1beta1_ShipmentClaimService.AddCommand(einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim)
+
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.ShipmentClaim = new(v1beta1.ShipmentClaim)
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.ShipmentClaim.Name, "shipmentClaim.name", "", "The resource name of the shipment claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.ShipmentClaim.DisplayName, "shipmentClaim.displayName", "", "The display name of the claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.ShipmentClaim.Description, "shipmentClaim.description", "", "Free text description of the claim.")
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.ShipmentClaim.Images, "shipmentClaim.images", []string{}, "Resource names of image files attached to the claim.")
+
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.UpdateMask = new(fieldmaskpb.FieldMask)
+	einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim.Flags().StringSliceVar(&einride_shipper_v1beta1_ShipmentClaimService_UpdateShipmentClaim_Request.UpdateMask.Paths, "updateMask.paths", []string{}, "The set of field mask paths.")
 	einride_shipper_v1beta1_ShipmentClaimService.AddCommand(einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims)
+
+	einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims_Request.Parent, "parent", "", "Resource name of the parent shipment.")
+
+	einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims.Flags().Int32Var(&einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims.Flags().StringVar(&einride_shipper_v1beta1_ShipmentClaimService_ListShipmentClaims_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 }

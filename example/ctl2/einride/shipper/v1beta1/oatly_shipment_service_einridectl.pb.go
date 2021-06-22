@@ -45,4 +45,14 @@ func AddOatlyShipmentServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_v1beta1_OatlyShipmentService.AddCommand(einride_shipper_v1beta1_OatlyShipmentService_NextShipment)
+
+	einride_shipper_v1beta1_OatlyShipmentService_NextShipment.Flags().StringVar(&einride_shipper_v1beta1_OatlyShipmentService_NextShipment_Request.Parent, "parent", "", "Resource name of the shipper owning the next shipment to be retrieved.")
+
+	einride_shipper_v1beta1_OatlyShipmentService_NextShipment.Flags().StringVar(&einride_shipper_v1beta1_OatlyShipmentService_NextShipment_Request.DestinationSite, "destinationSite", "", "Resource name of the destination site of the shipment to be retrieved.")
+
+	einride_shipper_v1beta1_OatlyShipmentService_NextShipment.Flags().StringVar(&einride_shipper_v1beta1_OatlyShipmentService_NextShipment_Request.OriginSite, "originSite", "", "Resource name of the origin site of the shipment to be retrieved.")
+
+	einride_shipper_v1beta1_OatlyShipmentService_NextShipment.Flags().Float32Var(&einride_shipper_v1beta1_OatlyShipmentService_NextShipment_Request.MaxLoadQuantity, "maxLoadQuantity", 10, "Don't consider shipments with a total load quantity above this value.\nIf not set, all shipments are considered.")
+
+	// TODO: enum MaxLoadQuantityUnit
 }

@@ -105,9 +105,36 @@ func AddTenantServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_CreateTenant)
+
+	einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant = new(v1beta1.Tenant)
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant.Name, "tenant.name", "", "The resource name of the tenant.")
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant.Etag, "tenant.etag", "", "This checksum is computed by the server based on the value of other\nfields, and may be sent on update and delete requests to ensure the client\nhas an up-to-date value before proceeding.")
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant.DisplayName, "tenant.displayName", "", "Display name of the tenant.\nFor example: \"Johnson Trucking Co.\"")
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant.Shipper, "tenant.shipper", "", "Resource name of the tenant's shipper, if the tenant is a shipper.")
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.Tenant.Carrier, "tenant.carrier", "", "Resource name of the tenant's carrier, if the tenant is a carrier.")
+
+	einride_account_v1beta1_TenantService_CreateTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_CreateTenant_Request.TenantId, "tenantId", "", "The ID to use for the tenant, which will become the final component of\nthe role's resource name.\n\nThis value should be 4-20 characters, start with a letter and\nonly consist of letters, digits and hyphens.")
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_GetTenant)
+
+	einride_account_v1beta1_TenantService_GetTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_GetTenant_Request.Name, "name", "", "Resource name of the tenant to retrieve.")
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_BatchGetTenants)
+
+	einride_account_v1beta1_TenantService_BatchGetTenants.Flags().StringSliceVar(&einride_account_v1beta1_TenantService_BatchGetTenants_Request.Names, "names", []string{}, "Resource names of the tenants to retrieve.\nA maximum of 1000 tenants can be retrieved in a batch.")
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_ListTenants)
+
+	einride_account_v1beta1_TenantService_ListTenants.Flags().Int32Var(&einride_account_v1beta1_TenantService_ListTenants_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_account_v1beta1_TenantService_ListTenants.Flags().StringVar(&einride_account_v1beta1_TenantService_ListTenants_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_SearchTenants)
+
+	einride_account_v1beta1_TenantService_SearchTenants.Flags().Int32Var(&einride_account_v1beta1_TenantService_SearchTenants_Request.PageSize, "pageSize", 10, "The maximum number of results to return. The service may return fewer\nresults than this value.\n\nIf unspecified, at most 50 results will be returned.\nThe maximum value is 1000; values above 1000 will be coerced to 1000.")
+
+	einride_account_v1beta1_TenantService_SearchTenants.Flags().StringVar(&einride_account_v1beta1_TenantService_SearchTenants_Request.PageToken, "pageToken", "", "A page token, received from a previous call. Provide this to retrieve the\nsubsequent page.\n\nWhen paginating, all other parameters provided must match the call that\nprovided the page token.")
+
+	einride_account_v1beta1_TenantService_SearchTenants.Flags().StringVar(&einride_account_v1beta1_TenantService_SearchTenants_Request.UserEmail, "userEmail", "", "If set, only tenants that have a user with the provided email are returned.")
 	einride_account_v1beta1_TenantService.AddCommand(einride_account_v1beta1_TenantService_ResolveTenant)
+
+	einride_account_v1beta1_TenantService_ResolveTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_ResolveTenant_Request.UserEmail, "userEmail", "", "The user email to lookup tenants for")
+
+	einride_account_v1beta1_TenantService_ResolveTenant.Flags().StringVar(&einride_account_v1beta1_TenantService_ResolveTenant_Request.UserPassword, "userPassword", "", "The user password needed to verify the user's identity")
 }

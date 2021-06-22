@@ -69,6 +69,18 @@ func AddMapInsightsServiceCommand(parent *cobra.Command) {
 
 func init() {
 	einride_shipper_insights_v1beta1_MapInsightsService.AddCommand(einride_shipper_insights_v1beta1_MapInsightsService_BatchGetShipperMapInsights)
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetShipperMapInsights.Flags().StringVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetShipperMapInsights_Request.Parent, "parent", "", "Resource name of the parent shipper.\nUse `\"shippers/-\"` or leave unset to batch get for multiple shippers.")
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetShipperMapInsights.Flags().StringSliceVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetShipperMapInsights_Request.Names, "names", []string{}, "Resource names of the shipper map insights to get.\nA maximum of 1000 insights can be retrieved in a batch.")
 	einride_shipper_insights_v1beta1_MapInsightsService.AddCommand(einride_shipper_insights_v1beta1_MapInsightsService_BatchGetSiteMapInsights)
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetSiteMapInsights.Flags().StringVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetSiteMapInsights_Request.Parent, "parent", "", "Resource name of the shipper.")
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetSiteMapInsights.Flags().StringSliceVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetSiteMapInsights_Request.Names, "names", []string{}, "Resource names of the site map insights to get.\nA maximum of 1000 insights can be retrieved in a batch.")
 	einride_shipper_insights_v1beta1_MapInsightsService.AddCommand(einride_shipper_insights_v1beta1_MapInsightsService_BatchGetLaneMapInsights)
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetLaneMapInsights.Flags().StringVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetLaneMapInsights_Request.Parent, "parent", "", "Resource name of the shipper.")
+
+	einride_shipper_insights_v1beta1_MapInsightsService_BatchGetLaneMapInsights.Flags().StringSliceVar(&einride_shipper_insights_v1beta1_MapInsightsService_BatchGetLaneMapInsights_Request.Names, "names", []string{}, "Resource names of the lane map insights to get.\nA maximum of 1000 insights can be retrieved in a batch.")
 }
