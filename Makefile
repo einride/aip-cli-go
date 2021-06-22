@@ -1,34 +1,33 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all
 all: \
-	buf-generate
+	commitlint \
+	prettier-markdown \
+	proto \
+	go-lint \
+	go-review \
+	go-test \
+	go-mod-tidy \
+	git-verify-nodiff
 
-cwd := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+include tools/commitlint/rules.mk
+include tools/git-verify-nodiff/rules.mk
+include tools/golangci-lint/rules.mk
+include tools/goreview/rules.mk
+include tools/prettier/rules.mk
+include tools/semantic-release/rules.mk
 
-include tools/buf/rules.mk
+.PHONY: proto
+proto:
+	$(info [$@] building protos...)
+	@make -C proto
 
-.PHONY: clean
-clean:
-	$(info [$@] removing generated files...)
-	@rm -rf build example/ctl tools/*/*/
+.PHONY: go-test
+go-test:
+	$(info [$@] running Go tests...)
+	@go test -count 1 -cover -race ./...
 
-
-.PHONY: buildprotoc-gen-einridectl
-protoc-gen-einridectl:
-	go build -o build/$@ ./cmd/protoc-gen-einridectl
-
-protoc_gen_einridectl := ./bin/protoc-gen-einridectl
-export PATH := $(dir $(abspath $(protoc_gen_einridectl))):$(PATH)
-
-.PHONY: $(protoc_gen_einridectl)
-$(protoc_gen_einridectl):
-	$(info [$@] building protoc-gen-einridectl...)
-	@go build -o $@ ./cmd/protoc-gen-einridectl
-
-
-.PHONY: buf-generate
-buf-generate: $(buf) $(protoc_gen_einridectl)
-	$(info [$@] generating protobuf...)
-	@rm -rf example/ctl
-	@$(buf) generate image.bin
+.PHONY: go-mod-tidy
+go-mod-tidy:
+	$(info [$@] tidying Go module files...)
+	@go mod tidy -v

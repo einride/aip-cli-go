@@ -1,0 +1,22 @@
+version: v1
+
+name: buf.build/einride/protoc-gen-go-cli
+
+deps:
+  - buf.build/googleapis/googleapis
+
+breaking:
+  use:
+    - PACKAGE
+  ignore:
+    - google
+
+lint:
+  use:
+    - DEFAULT
+  except:
+    - RPC_RESPONSE_STANDARD_NAME
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - ENUM_VALUE_PREFIX
+  ignore:
+    - google
