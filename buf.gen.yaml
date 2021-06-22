@@ -3,5 +3,8 @@ version: v1beta1
 
 plugins:
   - name: einridectl
-    out: example/ctl
+    out: example/ctl2
     strategy: all
+    opt:
+      - module=github.com/einride/proto/gen/go
+      - rootPackage=ctl2

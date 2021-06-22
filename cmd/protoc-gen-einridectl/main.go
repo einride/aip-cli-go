@@ -1,42 +1,29 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-	"path/filepath"
+	"flag"
 
-	"github.com/einride/ctl/internal/plugin"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/pluginpb"
+	"github.com/einride/ctl/internal/genctl"
+	"google.golang.org/protobuf/compiler/protogen"
 )
 
 func main() {
-	if err := run(); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%s: %v\n", filepath.Base(os.Args[0]), err)
-		os.Exit(1)
-	}
-}
-
-func run() error {
-	in, err := ioutil.ReadAll(os.Stdin)
-	if err != nil {
-		return err
-	}
-	req := &pluginpb.CodeGeneratorRequest{}
-	if err := proto.Unmarshal(in, req); err != nil {
-		return err
-	}
-	resp, err := plugin.Generate(req)
-	if err != nil {
-		return err
-	}
-	out, err := proto.Marshal(resp)
-	if err != nil {
-		return err
-	}
-	if _, err := os.Stdout.Write(out); err != nil {
-		return err
-	}
-	return nil
+	flagSet := flag.NewFlagSet("protoc-gen-einridectl", flag.ExitOnError)
+	var rootPackage string
+	flagSet.StringVar(&rootPackage, "rootPackage", "", "TODO")
+	protogen.Options{
+		ParamFunc: flagSet.Set,
+	}.Run(func(gen *protogen.Plugin) error {
+		for _, f := range gen.Files {
+			if f.Generate {
+				if err := genctl.GenerateFile(gen, f); err != nil {
+					return err
+				}
+			}
+		}
+		if err := genctl.GenerateRootFile(gen, rootPackage); err != nil {
+			return err
+		}
+		return nil
+	})
 }
