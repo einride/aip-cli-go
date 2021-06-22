@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package einride.protoflag.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+// Syntax for proto flag conversion.
+message Syntax {
+  // Repeated string.
+  repeated string repeated_string = 1;
+  // Repeated string.
+  repeated bool repeated_bool = 2;
+  // Repeated int64.
+  repeated int64 repeated_int64 = 3;
+  // Repeated int32.
+  repeated int32 repeated_int32 = 4;
+  // Repeated double.
+  repeated double repeated_double = 5;
+  // Repeated float.
+  repeated float repeated_float = 6;
+  // Repeated timestamp.
+  repeated google.protobuf.Timestamp repeated_times = 7;
+  // Repeated duration.
+  repeated google.protobuf.Duration repeated_durations = 8;
+  // Map from string to string.
+  map<string, string> map_string_string = 9;
+  // Map from string to int64.
+  map<string, int64> map_string_int64 = 10;
+}

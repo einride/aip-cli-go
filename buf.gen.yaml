@@ -1,7 +1,0 @@
-# https://docs.buf.build/generate-usage/
-version: v1beta1
-
-plugins:
-  - name: einridectl
-    out: example/ctl
-    strategy: all

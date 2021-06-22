@@ -1,0 +1,29 @@
+version: v1
+
+managed:
+  enabled: true
+  go_package_prefix:
+    default: go.einride.tech/protoc-gen-go-cli/proto/cmd/examplectl
+    except:
+      - buf.build/googleapis/googleapis
+
+plugins:
+  - name: go
+    out: cmd/examplectl
+    opt: module=go.einride.tech/protoc-gen-go-cli/proto/cmd/examplectl
+    path: ./build/protoc-gen-go
+
+  - name: go-grpc
+    out: cmd/examplectl
+    opt: module=go.einride.tech/protoc-gen-go-cli/proto/cmd/examplectl
+    path: ./build/protoc-gen-go-grpc
+
+  - name: go-cli
+    out: cmd/examplectl
+    strategy: all
+    opt:
+      - module=go.einride.tech/protoc-gen-go-cli/proto/cmd/examplectl
+      - root=examplectl
+      - main=true
+      - gcloud_identity_tokens=true
+    path: ./build/protoc-gen-go-cli
