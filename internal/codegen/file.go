@@ -55,6 +55,7 @@ func (f *File) Content() []byte {
 func (f *File) content() []byte {
 	var b bytes.Buffer
 	_, _ = fmt.Fprintln(&b, "package", f.pkg)
+	_, _ = fmt.Fprintln(&b, "// Code generated. DO NOT EDIT.")
 	b.Write(f.imps.Bytes())
 	b.Write(f.buf.Bytes())
 	return b.Bytes()
