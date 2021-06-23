@@ -13,7 +13,9 @@ import (
 var (
 	einride_planner_v1beta1_DefaultScheduleServiceClient v1beta1.DefaultScheduleServiceClient
 	einride_planner_v1beta1_DefaultScheduleService       = &cobra.Command{
-		Use: "einride.planner.v1beta1.DefaultScheduleService",
+		Use:   "einride.planner.v1beta1.DefaultScheduleService",
+		Short: "Schedule booking service.",
+		Long:  "Schedule booking service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

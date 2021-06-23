@@ -50,6 +50,8 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 		g.P(serviceClientVariableGoName(service), " ", client)
 		g.P(serviceCommandVariableGoName(service), " = &", cobraCommand, "{")
 		g.P("Use: ", strconv.Quote(string(service.Desc.FullName())), ",")
+		g.P("Short: ", strconv.Quote(serviceShortComment(service)), ",")
+		g.P("Long: ", strconv.Quote(serviceLongComment(service)), ",")
 		g.P("PersistentPreRunE: func(cmd *", cobraCommand, ", args []string) error {")
 		g.P("config, err := ", parseDialConfig, "(cmd.Flags())")
 		g.P("if err != nil {")
@@ -199,4 +201,14 @@ func requestVariableGoName(method *protogen.Method) string {
 
 func addCommandFunctionGoName(service *protogen.Service) string {
 	return "Add" + string(service.GoName) + "Command"
+}
+
+func serviceShortComment(service *protogen.Service) string {
+	s := strings.Split(string(service.Comments.Leading), "\n")[0]
+	return strings.TrimSpace(s)
+}
+
+func serviceLongComment(service *protogen.Service) string {
+	s := strings.ReplaceAll(string(service.Comments.Leading), "\n ", "\n")
+	return strings.TrimSpace(s)
 }

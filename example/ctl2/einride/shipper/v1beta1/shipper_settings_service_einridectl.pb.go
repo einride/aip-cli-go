@@ -14,7 +14,9 @@ import (
 var (
 	einride_shipper_v1beta1_ShipperSettingsServiceClient v1beta1.ShipperSettingsServiceClient
 	einride_shipper_v1beta1_ShipperSettingsService       = &cobra.Command{
-		Use: "einride.shipper.v1beta1.ShipperSettingsService",
+		Use:   "einride.shipper.v1beta1.ShipperSettingsService",
+		Short: "Shipper settings service.",
+		Long:  "Shipper settings service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

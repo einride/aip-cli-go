@@ -12,7 +12,9 @@ import (
 var (
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerServiceClient v1beta1.ElectrificationPlannerServiceClient
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerService       = &cobra.Command{
-		Use: "einride.prospect.shipper.v1beta1.ElectrificationPlannerService",
+		Use:   "einride.prospect.shipper.v1beta1.ElectrificationPlannerService",
+		Short: "Electrification planner service.",
+		Long:  "Electrification planner service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

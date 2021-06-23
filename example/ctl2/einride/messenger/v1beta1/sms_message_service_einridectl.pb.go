@@ -12,7 +12,9 @@ import (
 var (
 	einride_messenger_v1beta1_SMSMessageServiceClient v1beta1.SMSMessageServiceClient
 	einride_messenger_v1beta1_SMSMessageService       = &cobra.Command{
-		Use: "einride.messenger.v1beta1.SMSMessageService",
+		Use:   "einride.messenger.v1beta1.SMSMessageService",
+		Short: "SMSMessage service.",
+		Long:  "SMSMessage service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

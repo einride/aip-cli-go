@@ -13,7 +13,9 @@ import (
 var (
 	einride_maps_v1_GeocodingServiceClient v1.GeocodingServiceClient
 	einride_maps_v1_GeocodingService       = &cobra.Command{
-		Use: "einride.maps.v1.GeocodingService",
+		Use:   "einride.maps.v1.GeocodingService",
+		Short: "Geocoding service.",
+		Long:  "Geocoding service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

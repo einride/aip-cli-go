@@ -12,7 +12,9 @@ import (
 var (
 	einride_telematics_v1beta1_VehicleConnectionServiceClient v1beta1.VehicleConnectionServiceClient
 	einride_telematics_v1beta1_VehicleConnectionService       = &cobra.Command{
-		Use: "einride.telematics.v1beta1.VehicleConnectionService",
+		Use:   "einride.telematics.v1beta1.VehicleConnectionService",
+		Short: "Vehicle connection service.",
+		Long:  "Vehicle connection service.\n\nConnections between telematics devices, vehicles and shipments ensure that\ntelematics samples can be stored and queried by device, vehicle and\nshipment.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

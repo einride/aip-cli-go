@@ -14,7 +14,9 @@ import (
 var (
 	einride_planning_v1_TaskServiceClient v1.TaskServiceClient
 	einride_planning_v1_TaskService       = &cobra.Command{
-		Use: "einride.planning.v1.TaskService",
+		Use:   "einride.planning.v1.TaskService",
+		Short: "Task service.",
+		Long:  "Task service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

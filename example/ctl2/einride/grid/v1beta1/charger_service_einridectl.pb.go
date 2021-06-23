@@ -14,7 +14,9 @@ import (
 var (
 	einride_grid_v1beta1_ChargerServiceClient v1beta1.ChargerServiceClient
 	einride_grid_v1beta1_ChargerService       = &cobra.Command{
-		Use: "einride.grid.v1beta1.ChargerService",
+		Use:   "einride.grid.v1beta1.ChargerService",
+		Short: "Charger service.",
+		Long:  "Charger service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

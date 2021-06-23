@@ -13,7 +13,9 @@ import (
 var (
 	einride_upload_v1beta1_FileServiceClient v1beta1.FileServiceClient
 	einride_upload_v1beta1_FileService       = &cobra.Command{
-		Use: "einride.upload.v1beta1.FileService",
+		Use:   "einride.upload.v1beta1.FileService",
+		Short: "An uploaded file.",
+		Long:  "An uploaded file.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

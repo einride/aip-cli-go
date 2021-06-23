@@ -12,7 +12,9 @@ import (
 var (
 	einride_optimizer_v1_OptimizerServiceClient v1.OptimizerServiceClient
 	einride_optimizer_v1_OptimizerService       = &cobra.Command{
-		Use: "einride.optimizer.v1.OptimizerService",
+		Use:   "einride.optimizer.v1.OptimizerService",
+		Short: "Optimizer service.",
+		Long:  "Optimizer service.\n\nImplements the standard google.longrunning API for optimization operations.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

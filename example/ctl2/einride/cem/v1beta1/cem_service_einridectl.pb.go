@@ -13,7 +13,9 @@ import (
 var (
 	einride_cem_v1beta1_CEMServiceClient v1beta1.CEMServiceClient
 	einride_cem_v1beta1_CEMService       = &cobra.Command{
-		Use: "einride.cem.v1beta1.CEMService",
+		Use:   "einride.cem.v1beta1.CEMService",
+		Short: "CEM (Cost and Environmental Model) service.",
+		Long:  "CEM (Cost and Environmental Model) service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

@@ -15,7 +15,9 @@ import (
 var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient v1beta1.ProspectiveShipperServiceClient
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService       = &cobra.Command{
-		Use: "einride.prospect.shipper.v1beta1.ProspectiveShipperService",
+		Use:   "einride.prospect.shipper.v1beta1.ProspectiveShipperService",
+		Short: "Prospective shipper service.",
+		Long:  "Prospective shipper service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

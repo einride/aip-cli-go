@@ -14,7 +14,9 @@ import (
 var (
 	einride_optimizer_rescue_v1alpha1_RescueServiceClient v1alpha1.RescueServiceClient
 	einride_optimizer_rescue_v1alpha1_RescueService       = &cobra.Command{
-		Use: "einride.optimizer.rescue.v1alpha1.RescueService",
+		Use:   "einride.optimizer.rescue.v1alpha1.RescueService",
+		Short: "Rescue service.",
+		Long:  "Rescue service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

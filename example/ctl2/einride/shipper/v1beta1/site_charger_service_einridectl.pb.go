@@ -13,7 +13,9 @@ import (
 var (
 	einride_shipper_v1beta1_SiteChargerServiceClient v1beta1.SiteChargerServiceClient
 	einride_shipper_v1beta1_SiteChargerService       = &cobra.Command{
-		Use: "einride.shipper.v1beta1.SiteChargerService",
+		Use:   "einride.shipper.v1beta1.SiteChargerService",
+		Short: "Site charger service.",
+		Long:  "Site charger service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

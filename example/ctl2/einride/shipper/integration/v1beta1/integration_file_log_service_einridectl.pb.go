@@ -12,7 +12,9 @@ import (
 var (
 	einride_shipper_integration_v1beta1_IntegrationFileLogServiceClient v1beta1.IntegrationFileLogServiceClient
 	einride_shipper_integration_v1beta1_IntegrationFileLogService       = &cobra.Command{
-		Use: "einride.shipper.integration.v1beta1.IntegrationFileLogService",
+		Use:   "einride.shipper.integration.v1beta1.IntegrationFileLogService",
+		Short: "Integration file log service.",
+		Long:  "Integration file log service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

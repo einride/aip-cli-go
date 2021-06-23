@@ -12,7 +12,9 @@ import (
 var (
 	einride_account_v1beta1_AuthenticationServiceClient v1beta1.AuthenticationServiceClient
 	einride_account_v1beta1_AuthenticationService       = &cobra.Command{
-		Use: "einride.account.v1beta1.AuthenticationService",
+		Use:   "einride.account.v1beta1.AuthenticationService",
+		Short: "Authentication service.",
+		Long:  "Authentication service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

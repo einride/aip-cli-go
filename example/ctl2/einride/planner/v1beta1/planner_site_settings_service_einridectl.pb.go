@@ -13,7 +13,9 @@ import (
 var (
 	einride_planner_v1beta1_PlannerSiteSettingsServiceClient v1beta1.PlannerSiteSettingsServiceClient
 	einride_planner_v1beta1_PlannerSiteSettingsService       = &cobra.Command{
-		Use: "einride.planner.v1beta1.PlannerSiteSettingsService",
+		Use:   "einride.planner.v1beta1.PlannerSiteSettingsService",
+		Short: "planner site settings service.",
+		Long:  "planner site settings service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

@@ -12,7 +12,9 @@ import (
 var (
 	einride_shipper_insights_v1beta1_ShippingEmissionsServiceClient v1beta1.ShippingEmissionsServiceClient
 	einride_shipper_insights_v1beta1_ShippingEmissionsService       = &cobra.Command{
-		Use: "einride.shipper.insights.v1beta1.ShippingEmissionsService",
+		Use:   "einride.shipper.insights.v1beta1.ShippingEmissionsService",
+		Short: "Shipping emission service.",
+		Long:  "Shipping emission service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

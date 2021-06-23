@@ -14,7 +14,9 @@ import (
 var (
 	einride_authz_v1beta1_AuthorizationServiceClient v1beta1.AuthorizationServiceClient
 	einride_authz_v1beta1_AuthorizationService       = &cobra.Command{
-		Use: "einride.authz.v1beta1.AuthorizationService",
+		Use:   "einride.authz.v1beta1.AuthorizationService",
+		Short: "Authorization service.",
+		Long:  "Authorization service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

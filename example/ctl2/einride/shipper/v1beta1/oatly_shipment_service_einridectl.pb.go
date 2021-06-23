@@ -12,7 +12,9 @@ import (
 var (
 	einride_shipper_v1beta1_OatlyShipmentServiceClient v1beta1.OatlyShipmentServiceClient
 	einride_shipper_v1beta1_OatlyShipmentService       = &cobra.Command{
-		Use: "einride.shipper.v1beta1.OatlyShipmentService",
+		Use:   "einride.shipper.v1beta1.OatlyShipmentService",
+		Short: "Oatly specific shipment service.",
+		Long:  "Oatly specific shipment service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

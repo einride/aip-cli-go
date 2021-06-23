@@ -13,7 +13,9 @@ import (
 var (
 	einride_carrier_v1beta1_CarrierServiceClient v1beta1.CarrierServiceClient
 	einride_carrier_v1beta1_CarrierService       = &cobra.Command{
-		Use: "einride.carrier.v1beta1.CarrierService",
+		Use:   "einride.carrier.v1beta1.CarrierService",
+		Short: "Carrier service.",
+		Long:  "Carrier service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

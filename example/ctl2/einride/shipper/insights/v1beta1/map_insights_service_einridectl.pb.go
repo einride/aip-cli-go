@@ -12,7 +12,9 @@ import (
 var (
 	einride_shipper_insights_v1beta1_MapInsightsServiceClient v1beta1.MapInsightsServiceClient
 	einride_shipper_insights_v1beta1_MapInsightsService       = &cobra.Command{
-		Use: "einride.shipper.insights.v1beta1.MapInsightsService",
+		Use:   "einride.shipper.insights.v1beta1.MapInsightsService",
+		Short: "Map insights service.",
+		Long:  "Map insights service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {

@@ -12,7 +12,9 @@ import (
 var (
 	einride_messenger_v1beta1_EmailServiceClient v1beta1.EmailServiceClient
 	einride_messenger_v1beta1_EmailService       = &cobra.Command{
-		Use: "einride.messenger.v1beta1.EmailService",
+		Use:   "einride.messenger.v1beta1.EmailService",
+		Short: "Email service.",
+		Long:  "Email service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			config, err := ctl.ParseDialConfig(cmd.Flags())
 			if err != nil {
