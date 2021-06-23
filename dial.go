@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/x509"
 	"log"
+	"os/exec"
 	"strconv"
 	"strings"
 
@@ -43,6 +44,15 @@ func ParseDialConfig(flags *pflag.FlagSet) (DialConfig, error) {
 	token, err := flags.GetString("token")
 	if err != nil {
 		return DialConfig{}, err
+	}
+	if token == "" {
+		var stdout strings.Builder
+		cmd := exec.Command("gcloud", "auth", "print-identity-token")
+		cmd.Stdout = &stdout
+		if err := cmd.Run(); err != nil {
+			return DialConfig{}, err
+		}
+		token = strings.TrimSpace(stdout.String())
 	}
 	return DialConfig{
 		Insecure: insecure,
