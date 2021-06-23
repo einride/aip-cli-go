@@ -12,7 +12,7 @@ import (
 var (
 	einride_shipper_integration_v1beta1_IntegrationLogServiceClient v1beta1.IntegrationLogServiceClient
 	einride_shipper_integration_v1beta1_IntegrationLogService       = &cobra.Command{
-		Use:   "einride.shipper.integration.v1beta1.IntegrationLogService",
+		Use:   "shipper.integration.v1beta1.IntegrationLogService",
 		Short: "Integration log service.",
 		Long:  "Integration log service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

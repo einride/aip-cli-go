@@ -13,7 +13,7 @@ import (
 var (
 	einride_planner_v1beta1_ScheduleBookingServiceClient v1beta1.ScheduleBookingServiceClient
 	einride_planner_v1beta1_ScheduleBookingService       = &cobra.Command{
-		Use:   "einride.planner.v1beta1.ScheduleBookingService",
+		Use:   "planner.v1beta1.ScheduleBookingService",
 		Short: "Schedule booking service.",
 		Long:  "Schedule booking service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

@@ -14,7 +14,7 @@ import (
 var (
 	einride_maps_v1_PathServiceClient v1.PathServiceClient
 	einride_maps_v1_PathService       = &cobra.Command{
-		Use:   "einride.maps.v1.PathService",
+		Use:   "maps.v1.PathService",
 		Short: "Path service.",
 		Long:  "Path service.\n\nAPI is based on the HERE Maps v7 routing API.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

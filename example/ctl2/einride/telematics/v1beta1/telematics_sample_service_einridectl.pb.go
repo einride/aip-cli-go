@@ -14,7 +14,7 @@ import (
 var (
 	einride_telematics_v1beta1_TelematicsSampleServiceClient v1beta1.TelematicsSampleServiceClient
 	einride_telematics_v1beta1_TelematicsSampleService       = &cobra.Command{
-		Use:   "einride.telematics.v1beta1.TelematicsSampleService",
+		Use:   "telematics.v1beta1.TelematicsSampleService",
 		Short: "Telematics sample service.",
 		Long:  "Telematics sample service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

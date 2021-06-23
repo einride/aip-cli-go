@@ -12,7 +12,7 @@ import (
 var (
 	einride_account_v1beta1_TenantServiceClient v1beta1.TenantServiceClient
 	einride_account_v1beta1_TenantService       = &cobra.Command{
-		Use:   "einride.account.v1beta1.TenantService",
+		Use:   "account.v1beta1.TenantService",
 		Short: "Tenant service.",
 		Long:  "Tenant service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

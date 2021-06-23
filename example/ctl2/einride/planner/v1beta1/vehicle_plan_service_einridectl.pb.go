@@ -16,7 +16,7 @@ import (
 var (
 	einride_planner_v1beta1_VehiclePlanServiceClient v1beta1.VehiclePlanServiceClient
 	einride_planner_v1beta1_VehiclePlanService       = &cobra.Command{
-		Use:   "einride.planner.v1beta1.VehiclePlanService",
+		Use:   "planner.v1beta1.VehiclePlanService",
 		Short: "Vehicle plan service.",
 		Long:  "Vehicle plan service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

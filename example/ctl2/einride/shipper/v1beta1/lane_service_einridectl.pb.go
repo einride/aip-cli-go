@@ -13,7 +13,7 @@ import (
 var (
 	einride_shipper_v1beta1_LaneServiceClient v1beta1.LaneServiceClient
 	einride_shipper_v1beta1_LaneService       = &cobra.Command{
-		Use:   "einride.shipper.v1beta1.LaneService",
+		Use:   "shipper.v1beta1.LaneService",
 		Short: "Lane resource service.",
 		Long:  "Lane resource service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

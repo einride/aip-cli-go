@@ -13,7 +13,7 @@ import (
 var (
 	einride_shipper_v1beta1_SiteServiceClient v1beta1.SiteServiceClient
 	einride_shipper_v1beta1_SiteService       = &cobra.Command{
-		Use:   "einride.shipper.v1beta1.SiteService",
+		Use:   "shipper.v1beta1.SiteService",
 		Short: "Site resource service.",
 		Long:  "Site resource service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

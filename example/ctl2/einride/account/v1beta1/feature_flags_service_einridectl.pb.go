@@ -13,7 +13,7 @@ import (
 var (
 	einride_account_v1beta1_FeatureFlagsServiceClient v1beta1.FeatureFlagsServiceClient
 	einride_account_v1beta1_FeatureFlagsService       = &cobra.Command{
-		Use:   "einride.account.v1beta1.FeatureFlagsService",
+		Use:   "account.v1beta1.FeatureFlagsService",
 		Short: "Feature flags service.",
 		Long:  "Feature flags service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

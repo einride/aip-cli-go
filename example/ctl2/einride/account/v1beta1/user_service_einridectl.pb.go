@@ -13,7 +13,7 @@ import (
 var (
 	einride_account_v1beta1_UserServiceClient v1beta1.UserServiceClient
 	einride_account_v1beta1_UserService       = &cobra.Command{
-		Use:   "einride.account.v1beta1.UserService",
+		Use:   "account.v1beta1.UserService",
 		Short: "User service.",
 		Long:  "User service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

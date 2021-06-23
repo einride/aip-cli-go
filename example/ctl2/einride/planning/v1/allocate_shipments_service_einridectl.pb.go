@@ -13,7 +13,7 @@ import (
 var (
 	einride_planning_v1_AllocateShipmentsServiceClient v1.AllocateShipmentsServiceClient
 	einride_planning_v1_AllocateShipmentsService       = &cobra.Command{
-		Use:   "einride.planning.v1.AllocateShipmentsService",
+		Use:   "planning.v1.AllocateShipmentsService",
 		Short: "A service for allocating shipments to pickup tasks.",
 		Long:  "A service for allocating shipments to pickup tasks.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

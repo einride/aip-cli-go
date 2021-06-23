@@ -13,7 +13,7 @@ import (
 var (
 	einride_shipper_integration_v1beta1_IntegrationBucketServiceClient v1beta1.IntegrationBucketServiceClient
 	einride_shipper_integration_v1beta1_IntegrationBucketService       = &cobra.Command{
-		Use:   "einride.shipper.integration.v1beta1.IntegrationBucketService",
+		Use:   "shipper.integration.v1beta1.IntegrationBucketService",
 		Short: "Integration bucket service.",
 		Long:  "Integration bucket service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

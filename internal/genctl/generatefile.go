@@ -49,7 +49,7 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 		g.P("var (")
 		g.P(serviceClientVariableGoName(service), " ", client)
 		g.P(serviceCommandVariableGoName(service), " = &", cobraCommand, "{")
-		g.P("Use: ", strconv.Quote(string(service.Desc.FullName())), ",")
+		g.P("Use: ", strconv.Quote(serviceCommandName(service)), ",")
 		g.P("Short: ", strconv.Quote(serviceShortComment(service)), ",")
 		g.P("Long: ", strconv.Quote(serviceLongComment(service)), ",")
 		g.P("PersistentPreRunE: func(cmd *", cobraCommand, ", args []string) error {")
@@ -117,6 +117,13 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 	}
 	g.P("}")
 	return nil
+}
+
+func serviceCommandName(service *protogen.Service) string {
+	fullName := string(service.Desc.FullName())
+	name := strings.TrimSpace(fullName)
+	name = strings.TrimPrefix(name, "einride.")
+	return name
 }
 
 func GenerateRootFile(gen *protogen.Plugin, rootPackage string) error {

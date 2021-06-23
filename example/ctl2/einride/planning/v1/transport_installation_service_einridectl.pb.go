@@ -13,7 +13,7 @@ import (
 var (
 	einride_planning_v1_TransportInstallationServiceClient v1.TransportInstallationServiceClient
 	einride_planning_v1_TransportInstallationService       = &cobra.Command{
-		Use:   "einride.planning.v1.TransportInstallationService",
+		Use:   "planning.v1.TransportInstallationService",
 		Short: "Transport installation service.",
 		Long:  "Transport installation service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

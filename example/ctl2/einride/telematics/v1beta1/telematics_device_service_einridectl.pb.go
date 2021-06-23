@@ -12,7 +12,7 @@ import (
 var (
 	einride_telematics_v1beta1_TelematicsDeviceServiceClient v1beta1.TelematicsDeviceServiceClient
 	einride_telematics_v1beta1_TelematicsDeviceService       = &cobra.Command{
-		Use:   "einride.telematics.v1beta1.TelematicsDeviceService",
+		Use:   "telematics.v1beta1.TelematicsDeviceService",
 		Short: "TelematicsDevice service.",
 		Long:  "TelematicsDevice service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

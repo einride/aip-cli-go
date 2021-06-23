@@ -13,7 +13,7 @@ import (
 var (
 	einride_shipper_integration_v1beta1_IntegrationFileServiceClient v1beta1.IntegrationFileServiceClient
 	einride_shipper_integration_v1beta1_IntegrationFileService       = &cobra.Command{
-		Use:   "einride.shipper.integration.v1beta1.IntegrationFileService",
+		Use:   "shipper.integration.v1beta1.IntegrationFileService",
 		Short: "Transport data integration service.",
 		Long:  "Transport data integration service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

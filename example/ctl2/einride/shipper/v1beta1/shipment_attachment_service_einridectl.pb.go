@@ -12,7 +12,7 @@ import (
 var (
 	einride_shipper_v1beta1_ShipmentAttachmentServiceClient v1beta1.ShipmentAttachmentServiceClient
 	einride_shipper_v1beta1_ShipmentAttachmentService       = &cobra.Command{
-		Use:   "einride.shipper.v1beta1.ShipmentAttachmentService",
+		Use:   "shipper.v1beta1.ShipmentAttachmentService",
 		Short: "Shipment attachment service.",
 		Long:  "Shipment attachment service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

@@ -14,7 +14,7 @@ import (
 var (
 	einride_shipper_v1beta1_SiteNotificationSettingsServiceClient v1beta1.SiteNotificationSettingsServiceClient
 	einride_shipper_v1beta1_SiteNotificationSettingsService       = &cobra.Command{
-		Use:   "einride.shipper.v1beta1.SiteNotificationSettingsService",
+		Use:   "shipper.v1beta1.SiteNotificationSettingsService",
 		Short: "Site notification settings service.",
 		Long:  "Site notification settings service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

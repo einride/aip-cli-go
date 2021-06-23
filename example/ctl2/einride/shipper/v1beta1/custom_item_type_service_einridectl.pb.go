@@ -13,7 +13,7 @@ import (
 var (
 	einride_shipper_v1beta1_CustomItemTypeServiceClient v1beta1.CustomItemTypeServiceClient
 	einride_shipper_v1beta1_CustomItemTypeService       = &cobra.Command{
-		Use:   "einride.shipper.v1beta1.CustomItemTypeService",
+		Use:   "shipper.v1beta1.CustomItemTypeService",
 		Short: "Custom item type service.",
 		Long:  "Custom item type service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

@@ -15,7 +15,7 @@ import (
 var (
 	einride_planner_v1beta1_ShipmentAllocationServiceClient v1beta1.ShipmentAllocationServiceClient
 	einride_planner_v1beta1_ShipmentAllocationService       = &cobra.Command{
-		Use:   "einride.planner.v1beta1.ShipmentAllocationService",
+		Use:   "planner.v1beta1.ShipmentAllocationService",
 		Short: "Shipment allocation service.",
 		Long:  "Shipment allocation service.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
