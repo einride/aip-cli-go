@@ -28,6 +28,7 @@ var Command = &cobra.Command{
 func init() {
 	flags := Command.PersistentFlags()
 	flags.Bool("insecure", false, "make insecure client connection, must be used with 'address' option")
+	flags.Bool("prod", false, "connect to prod")
 	flags.String("address", "", "address to connect to")
 	flags.String("token", "", "bearer token used by client")
 	flags.String("project", "einride-dev", "GCP project")

@@ -21,6 +21,10 @@ type DialConfig struct {
 }
 
 func ParseDialConfig(flags *pflag.FlagSet) (DialConfig, error) {
+	prod, err := flags.GetBool("prod")
+	if err != nil {
+		return DialConfig{}, err
+	}
 	insecure, err := flags.GetBool("insecure")
 	if err != nil {
 		return DialConfig{}, err
@@ -28,6 +32,13 @@ func ParseDialConfig(flags *pflag.FlagSet) (DialConfig, error) {
 	address, err := flags.GetString("address")
 	if err != nil {
 		return DialConfig{}, err
+	}
+	if address == "" {
+		if prod {
+			address = "api.einride.systems"
+		} else {
+			address = "api.einride.dev"
+		}
 	}
 	token, err := flags.GetString("token")
 	if err != nil {
