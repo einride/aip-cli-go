@@ -138,7 +138,6 @@ func GenerateRootFile(gen *protogen.Plugin, rootPackage string) error {
 	g.P(`flags.Bool("prod", false, "connect to prod")`)
 	g.P(`flags.String("address", "", "address to connect to")`)
 	g.P(`flags.String("token", "", "bearer token used by client")`)
-	g.P(`flags.String("project", "einride-dev", "GCP project")`)
 	for _, file := range gen.Files {
 		if !file.Generate {
 			continue

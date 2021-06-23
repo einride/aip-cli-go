@@ -31,7 +31,6 @@ func init() {
 	flags.Bool("prod", false, "connect to prod")
 	flags.String("address", "", "address to connect to")
 	flags.String("token", "", "bearer token used by client")
-	flags.String("project", "einride-dev", "GCP project")
 	v1beta1.AddAuthenticationServiceCommand(Command)
 	v1beta1.AddFeatureFlagsServiceCommand(Command)
 	v1beta1.AddTenantServiceCommand(Command)
