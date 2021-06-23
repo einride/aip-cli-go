@@ -1,11 +1,12 @@
 package accountv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/account/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.account.v1beta1.FeatureFlagsService.
@@ -34,7 +35,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_GetUserFeatureFlags         = &cobra.Command{
 		Use: "GetUserFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.GetUserFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.GetUserFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_GetUserFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_UpdateUserFeatureFlags         = &cobra.Command{
 		Use: "UpdateUserFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateUserFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.UpdateUserFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_UpdateUserFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_AddUserFeatureFlag         = &cobra.Command{
 		Use: "AddUserFeatureFlag",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.AddUserFeatureFlag")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.AddUserFeatureFlag(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_AddUserFeatureFlag_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_RemoveUserFeatureFlag         = &cobra.Command{
 		Use: "RemoveUserFeatureFlag",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.RemoveUserFeatureFlag")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.RemoveUserFeatureFlag(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_RemoveUserFeatureFlag_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_GetTenantFeatureFlags         = &cobra.Command{
 		Use: "GetTenantFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.GetTenantFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.GetTenantFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_GetTenantFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_UpdateTenantFeatureFlags         = &cobra.Command{
 		Use: "UpdateTenantFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.UpdateTenantFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.UpdateTenantFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_UpdateTenantFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_ComputeEffectiveFeatureFlags         = &cobra.Command{
 		Use: "ComputeEffectiveFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeEffectiveFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.ComputeEffectiveFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_ComputeEffectiveFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_ComputeUserFeatureFlags         = &cobra.Command{
 		Use: "ComputeUserFeatureFlags",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.ComputeUserFeatureFlags")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.ComputeUserFeatureFlags(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_ComputeUserFeatureFlags_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -130,7 +163,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_CreateFeatureFlag         = &cobra.Command{
 		Use: "CreateFeatureFlag",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.CreateFeatureFlag")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.CreateFeatureFlag(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_CreateFeatureFlag_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -142,7 +179,11 @@ var (
 	einride_account_v1beta1_FeatureFlagsService_DeleteFeatureFlag         = &cobra.Command{
 		Use: "DeleteFeatureFlag",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.FeatureFlagsService.DeleteFeatureFlag")
+			response, err := einride_account_v1beta1_FeatureFlagsServiceClient.DeleteFeatureFlag(cmd.Context(), &einride_account_v1beta1_FeatureFlagsService_DeleteFeatureFlag_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

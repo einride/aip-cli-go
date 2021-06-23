@@ -1,10 +1,11 @@
 package telematicsv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/telematics/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.telematics.v1beta1.TelematicsDeviceService.
@@ -33,7 +34,11 @@ var (
 	einride_telematics_v1beta1_TelematicsDeviceService_GetTelematicsDevice         = &cobra.Command{
 		Use: "GetTelematicsDevice",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsDeviceService.GetTelematicsDevice")
+			response, err := einride_telematics_v1beta1_TelematicsDeviceServiceClient.GetTelematicsDevice(cmd.Context(), &einride_telematics_v1beta1_TelematicsDeviceService_GetTelematicsDevice_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices         = &cobra.Command{
 		Use: "ListTelematicsDevices",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsDeviceService.ListTelematicsDevices")
+			response, err := einride_telematics_v1beta1_TelematicsDeviceServiceClient.ListTelematicsDevices(cmd.Context(), &einride_telematics_v1beta1_TelematicsDeviceService_ListTelematicsDevices_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice         = &cobra.Command{
 		Use: "CreateTelematicsDevice",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsDeviceService.CreateTelematicsDevice")
+			response, err := einride_telematics_v1beta1_TelematicsDeviceServiceClient.CreateTelematicsDevice(cmd.Context(), &einride_telematics_v1beta1_TelematicsDeviceService_CreateTelematicsDevice_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

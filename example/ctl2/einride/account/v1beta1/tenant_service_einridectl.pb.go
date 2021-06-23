@@ -1,10 +1,11 @@
 package accountv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/account/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.account.v1beta1.TenantService.
@@ -33,7 +34,11 @@ var (
 	einride_account_v1beta1_TenantService_CreateTenant         = &cobra.Command{
 		Use: "CreateTenant",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.CreateTenant")
+			response, err := einride_account_v1beta1_TenantServiceClient.CreateTenant(cmd.Context(), &einride_account_v1beta1_TenantService_CreateTenant_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_account_v1beta1_TenantService_GetTenant         = &cobra.Command{
 		Use: "GetTenant",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.GetTenant")
+			response, err := einride_account_v1beta1_TenantServiceClient.GetTenant(cmd.Context(), &einride_account_v1beta1_TenantService_GetTenant_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_account_v1beta1_TenantService_BatchGetTenants         = &cobra.Command{
 		Use: "BatchGetTenants",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.BatchGetTenants")
+			response, err := einride_account_v1beta1_TenantServiceClient.BatchGetTenants(cmd.Context(), &einride_account_v1beta1_TenantService_BatchGetTenants_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -69,7 +82,11 @@ var (
 	einride_account_v1beta1_TenantService_ListTenants         = &cobra.Command{
 		Use: "ListTenants",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.ListTenants")
+			response, err := einride_account_v1beta1_TenantServiceClient.ListTenants(cmd.Context(), &einride_account_v1beta1_TenantService_ListTenants_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -81,7 +98,11 @@ var (
 	einride_account_v1beta1_TenantService_SearchTenants         = &cobra.Command{
 		Use: "SearchTenants",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.SearchTenants")
+			response, err := einride_account_v1beta1_TenantServiceClient.SearchTenants(cmd.Context(), &einride_account_v1beta1_TenantService_SearchTenants_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -93,7 +114,11 @@ var (
 	einride_account_v1beta1_TenantService_ResolveTenant         = &cobra.Command{
 		Use: "ResolveTenant",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.TenantService.ResolveTenant")
+			response, err := einride_account_v1beta1_TenantServiceClient.ResolveTenant(cmd.Context(), &einride_account_v1beta1_TenantService_ResolveTenant_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

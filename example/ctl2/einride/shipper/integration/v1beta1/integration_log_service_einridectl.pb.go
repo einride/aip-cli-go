@@ -1,10 +1,11 @@
 package integrationv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/integration/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.shipper.integration.v1beta1.IntegrationLogService.
@@ -33,7 +34,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationLogService_GetIntegrationLogEntry         = &cobra.Command{
 		Use: "GetIntegrationLogEntry",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationLogService.GetIntegrationLogEntry")
+			response, err := einride_shipper_integration_v1beta1_IntegrationLogServiceClient.GetIntegrationLogEntry(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationLogService_GetIntegrationLogEntry_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries         = &cobra.Command{
 		Use: "ListIntegrationLogEntries",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationLogService.ListIntegrationLogEntries")
+			response, err := einride_shipper_integration_v1beta1_IntegrationLogServiceClient.ListIntegrationLogEntries(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationLogService_ListIntegrationLogEntries_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry         = &cobra.Command{
 		Use: "CreateIntegrationLogEntry",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationLogService.CreateIntegrationLogEntry")
+			response, err := einride_shipper_integration_v1beta1_IntegrationLogServiceClient.CreateIntegrationLogEntry(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationLogService_CreateIntegrationLogEntry_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

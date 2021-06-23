@@ -1,11 +1,12 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planner.v1beta1.ScheduleBookingService.
@@ -34,7 +35,11 @@ var (
 	einride_planner_v1beta1_ScheduleBookingService_CreateScheduleBooking         = &cobra.Command{
 		Use: "CreateScheduleBooking",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ScheduleBookingService.CreateScheduleBooking")
+			response, err := einride_planner_v1beta1_ScheduleBookingServiceClient.CreateScheduleBooking(cmd.Context(), &einride_planner_v1beta1_ScheduleBookingService_CreateScheduleBooking_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planner_v1beta1_ScheduleBookingService_UpdateScheduleBooking         = &cobra.Command{
 		Use: "UpdateScheduleBooking",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ScheduleBookingService.UpdateScheduleBooking")
+			response, err := einride_planner_v1beta1_ScheduleBookingServiceClient.UpdateScheduleBooking(cmd.Context(), &einride_planner_v1beta1_ScheduleBookingService_UpdateScheduleBooking_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planner_v1beta1_ScheduleBookingService_DeleteScheduleBooking         = &cobra.Command{
 		Use: "DeleteScheduleBooking",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ScheduleBookingService.DeleteScheduleBooking")
+			response, err := einride_planner_v1beta1_ScheduleBookingServiceClient.DeleteScheduleBooking(cmd.Context(), &einride_planner_v1beta1_ScheduleBookingService_DeleteScheduleBooking_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planner_v1beta1_ScheduleBookingService_GetScheduleBooking         = &cobra.Command{
 		Use: "GetScheduleBooking",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ScheduleBookingService.GetScheduleBooking")
+			response, err := einride_planner_v1beta1_ScheduleBookingServiceClient.GetScheduleBooking(cmd.Context(), &einride_planner_v1beta1_ScheduleBookingService_GetScheduleBooking_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_planner_v1beta1_ScheduleBookingService_SyncScheduleBookings         = &cobra.Command{
 		Use: "SyncScheduleBookings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ScheduleBookingService.SyncScheduleBookings")
+			response, err := einride_planner_v1beta1_ScheduleBookingServiceClient.SyncScheduleBookings(cmd.Context(), &einride_planner_v1beta1_ScheduleBookingService_SyncScheduleBookings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

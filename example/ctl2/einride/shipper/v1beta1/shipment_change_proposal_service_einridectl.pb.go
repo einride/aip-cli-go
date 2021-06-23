@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.ShipmentChangeProposalService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_CreateShipmentChangeProposal         = &cobra.Command{
 		Use: "CreateShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.CreateShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.CreateShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_CreateShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_GetShipmentChangeProposal         = &cobra.Command{
 		Use: "GetShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.GetShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.GetShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_GetShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_ListShipmentChangeProposals         = &cobra.Command{
 		Use: "ListShipmentChangeProposals",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.ListShipmentChangeProposals")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.ListShipmentChangeProposals(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_ListShipmentChangeProposals_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_UpdateShipmentChangeProposal         = &cobra.Command{
 		Use: "UpdateShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.UpdateShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.UpdateShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_UpdateShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_DeleteShipmentChangeProposal         = &cobra.Command{
 		Use: "DeleteShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.DeleteShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.DeleteShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_DeleteShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_ApproveShipmentChangeProposal         = &cobra.Command{
 		Use: "ApproveShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.ApproveShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.ApproveShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_ApproveShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_v1beta1_ShipmentChangeProposalService_RejectShipmentChangeProposal         = &cobra.Command{
 		Use: "RejectShipmentChangeProposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentChangeProposalService.RejectShipmentChangeProposal")
+			response, err := einride_shipper_v1beta1_ShipmentChangeProposalServiceClient.RejectShipmentChangeProposal(cmd.Context(), &einride_shipper_v1beta1_ShipmentChangeProposalService_RejectShipmentChangeProposal_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

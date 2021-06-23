@@ -1,14 +1,15 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
 	timeofday "google.golang.org/genproto/googleapis/type/timeofday"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.planner.v1beta1.VehiclePlanService.
@@ -37,7 +38,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_CreateVehiclePlan         = &cobra.Command{
 		Use: "CreateVehiclePlan",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.CreateVehiclePlan")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.CreateVehiclePlan(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_CreateVehiclePlan_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -49,7 +54,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_GetVehiclePlan         = &cobra.Command{
 		Use: "GetVehiclePlan",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.GetVehiclePlan")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.GetVehiclePlan(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_GetVehiclePlan_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -61,7 +70,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_BatchGetVehiclePlans         = &cobra.Command{
 		Use: "BatchGetVehiclePlans",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.BatchGetVehiclePlans")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.BatchGetVehiclePlans(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_BatchGetVehiclePlans_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -73,7 +86,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_ShipperSearchVehicleTasks         = &cobra.Command{
 		Use: "ShipperSearchVehicleTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.ShipperSearchVehicleTasks")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.ShipperSearchVehicleTasks(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_ShipperSearchVehicleTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -85,7 +102,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_SearchVehiclePlans         = &cobra.Command{
 		Use: "SearchVehiclePlans",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.SearchVehiclePlans")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.SearchVehiclePlans(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_SearchVehiclePlans_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -97,7 +118,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_ListVehiclePlans         = &cobra.Command{
 		Use: "ListVehiclePlans",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.ListVehiclePlans")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.ListVehiclePlans(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_ListVehiclePlans_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -109,7 +134,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_DeleteVehiclePlan         = &cobra.Command{
 		Use: "DeleteVehiclePlan",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.DeleteVehiclePlan")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.DeleteVehiclePlan(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_DeleteVehiclePlan_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -121,7 +150,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_UndeleteVehiclePlan         = &cobra.Command{
 		Use: "UndeleteVehiclePlan",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.UndeleteVehiclePlan")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.UndeleteVehiclePlan(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_UndeleteVehiclePlan_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -133,7 +166,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_CreateVehicleTask         = &cobra.Command{
 		Use: "CreateVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.CreateVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.CreateVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_CreateVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -145,7 +182,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_BatchCreateVehicleTasks         = &cobra.Command{
 		Use: "BatchCreateVehicleTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.BatchCreateVehicleTasks")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.BatchCreateVehicleTasks(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_BatchCreateVehicleTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -157,7 +198,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_UpdateVehicleTask         = &cobra.Command{
 		Use: "UpdateVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.UpdateVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.UpdateVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_UpdateVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -169,7 +214,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_ListVehicleTasks         = &cobra.Command{
 		Use: "ListVehicleTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.ListVehicleTasks")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.ListVehicleTasks(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_ListVehicleTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -181,7 +230,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_GetVehicleTask         = &cobra.Command{
 		Use: "GetVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.GetVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.GetVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_GetVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -193,7 +246,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_BatchGetVehicleTasks         = &cobra.Command{
 		Use: "BatchGetVehicleTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.BatchGetVehicleTasks")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.BatchGetVehicleTasks(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_BatchGetVehicleTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -205,7 +262,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_DeleteVehicleTask         = &cobra.Command{
 		Use: "DeleteVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.DeleteVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.DeleteVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_DeleteVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -217,7 +278,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_UndeleteVehicleTask         = &cobra.Command{
 		Use: "UndeleteVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.UndeleteVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.UndeleteVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_UndeleteVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -229,7 +294,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_StartVehicleTask         = &cobra.Command{
 		Use: "StartVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.StartVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.StartVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_StartVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -241,7 +310,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_CompleteVehicleTask         = &cobra.Command{
 		Use: "CompleteVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.CompleteVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.CompleteVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_CompleteVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -253,7 +326,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_AssignShipmentToPickupShipmentVehicleTask         = &cobra.Command{
 		Use: "AssignShipmentToPickupShipmentVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.AssignShipmentToPickupShipmentVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.AssignShipmentToPickupShipmentVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_AssignShipmentToPickupShipmentVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -265,7 +342,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_DeassignShipmentFromPickupShipmentVehicleTask         = &cobra.Command{
 		Use: "DeassignShipmentFromPickupShipmentVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.DeassignShipmentFromPickupShipmentVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.DeassignShipmentFromPickupShipmentVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_DeassignShipmentFromPickupShipmentVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -277,7 +358,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_RejectShipmentInPickupVehicleTask         = &cobra.Command{
 		Use: "RejectShipmentInPickupVehicleTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.RejectShipmentInPickupVehicleTask")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.RejectShipmentInPickupVehicleTask(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_RejectShipmentInPickupVehicleTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -289,7 +374,11 @@ var (
 	einride_planner_v1beta1_VehiclePlanService_ApproveDocking         = &cobra.Command{
 		Use: "ApproveDocking",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.VehiclePlanService.ApproveDocking")
+			response, err := einride_planner_v1beta1_VehiclePlanServiceClient.ApproveDocking(cmd.Context(), &einride_planner_v1beta1_VehiclePlanService_ApproveDocking_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

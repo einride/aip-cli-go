@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.CustomItemTypeService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_GetCustomItemType         = &cobra.Command{
 		Use: "GetCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.GetCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.GetCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_GetCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_CreateCustomItemType         = &cobra.Command{
 		Use: "CreateCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.CreateCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.CreateCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_CreateCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_UpdateCustomItemType         = &cobra.Command{
 		Use: "UpdateCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.UpdateCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.UpdateCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_UpdateCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_DeleteCustomItemType         = &cobra.Command{
 		Use: "DeleteCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.DeleteCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.DeleteCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_DeleteCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_UndeleteCustomItemType         = &cobra.Command{
 		Use: "UndeleteCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.UndeleteCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.UndeleteCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_UndeleteCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_ListCustomItemTypes         = &cobra.Command{
 		Use: "ListCustomItemTypes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.ListCustomItemTypes")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.ListCustomItemTypes(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_ListCustomItemTypes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_BatchGetCustomItemTypes         = &cobra.Command{
 		Use: "BatchGetCustomItemTypes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.BatchGetCustomItemTypes")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.BatchGetCustomItemTypes(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_BatchGetCustomItemTypes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_shipper_v1beta1_CustomItemTypeService_ReferenceCustomItemType         = &cobra.Command{
 		Use: "ReferenceCustomItemType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.CustomItemTypeService.ReferenceCustomItemType")
+			response, err := einride_shipper_v1beta1_CustomItemTypeServiceClient.ReferenceCustomItemType(cmd.Context(), &einride_shipper_v1beta1_CustomItemTypeService_ReferenceCustomItemType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

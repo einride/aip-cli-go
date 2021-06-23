@@ -1,10 +1,11 @@
 package messengerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/messenger/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.messenger.v1beta1.EmailService.
@@ -33,7 +34,11 @@ var (
 	einride_messenger_v1beta1_EmailService_GetEmail         = &cobra.Command{
 		Use: "GetEmail",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.EmailService.GetEmail")
+			response, err := einride_messenger_v1beta1_EmailServiceClient.GetEmail(cmd.Context(), &einride_messenger_v1beta1_EmailService_GetEmail_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_messenger_v1beta1_EmailService_CreateEmail         = &cobra.Command{
 		Use: "CreateEmail",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.EmailService.CreateEmail")
+			response, err := einride_messenger_v1beta1_EmailServiceClient.CreateEmail(cmd.Context(), &einride_messenger_v1beta1_EmailService_CreateEmail_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_messenger_v1beta1_EmailService_ListEmails         = &cobra.Command{
 		Use: "ListEmails",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.EmailService.ListEmails")
+			response, err := einride_messenger_v1beta1_EmailServiceClient.ListEmails(cmd.Context(), &einride_messenger_v1beta1_EmailService_ListEmails_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -69,7 +82,11 @@ var (
 	einride_messenger_v1beta1_EmailService_SendEmail         = &cobra.Command{
 		Use: "SendEmail",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.EmailService.SendEmail")
+			response, err := einride_messenger_v1beta1_EmailServiceClient.SendEmail(cmd.Context(), &einride_messenger_v1beta1_EmailService_SendEmail_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -81,7 +98,11 @@ var (
 	einride_messenger_v1beta1_EmailService_SendNewEmail         = &cobra.Command{
 		Use: "SendNewEmail",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.EmailService.SendNewEmail")
+			response, err := einride_messenger_v1beta1_EmailServiceClient.SendNewEmail(cmd.Context(), &einride_messenger_v1beta1_EmailService_SendNewEmail_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

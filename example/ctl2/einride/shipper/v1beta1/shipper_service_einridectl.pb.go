@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.ShipperService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_CreateShipper         = &cobra.Command{
 		Use: "CreateShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.CreateShipper")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.CreateShipper(cmd.Context(), &einride_shipper_v1beta1_ShipperService_CreateShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_ListShippers         = &cobra.Command{
 		Use: "ListShippers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.ListShippers")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.ListShippers(cmd.Context(), &einride_shipper_v1beta1_ShipperService_ListShippers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_GetShipper         = &cobra.Command{
 		Use: "GetShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.GetShipper")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.GetShipper(cmd.Context(), &einride_shipper_v1beta1_ShipperService_GetShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_BatchGetShippers         = &cobra.Command{
 		Use: "BatchGetShippers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.BatchGetShippers")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.BatchGetShippers(cmd.Context(), &einride_shipper_v1beta1_ShipperService_BatchGetShippers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_UpdateShipper         = &cobra.Command{
 		Use: "UpdateShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.UpdateShipper")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.UpdateShipper(cmd.Context(), &einride_shipper_v1beta1_ShipperService_UpdateShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_DeleteShipper         = &cobra.Command{
 		Use: "DeleteShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.DeleteShipper")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.DeleteShipper(cmd.Context(), &einride_shipper_v1beta1_ShipperService_DeleteShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_v1beta1_ShipperService_UndeleteShipper         = &cobra.Command{
 		Use: "UndeleteShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperService.UndeleteShipper")
+			response, err := einride_shipper_v1beta1_ShipperServiceClient.UndeleteShipper(cmd.Context(), &einride_shipper_v1beta1_ShipperService_UndeleteShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

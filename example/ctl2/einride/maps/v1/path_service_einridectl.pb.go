@@ -1,12 +1,13 @@
 package mapsv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/carrier/v1beta1"
 	v1 "github.com/einride/proto/gen/go/einride/maps/v1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
-	log "log"
 )
 
 // einride.maps.v1.PathService.
@@ -35,7 +36,11 @@ var (
 	einride_maps_v1_PathService_ComputePathSummaryMatrix         = &cobra.Command{
 		Use: "ComputePathSummaryMatrix",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.maps.v1.PathService.ComputePathSummaryMatrix")
+			response, err := einride_maps_v1_PathServiceClient.ComputePathSummaryMatrix(cmd.Context(), &einride_maps_v1_PathService_ComputePathSummaryMatrix_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_maps_v1_PathService_BatchComputePathSummaryMatrices         = &cobra.Command{
 		Use: "BatchComputePathSummaryMatrices",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.maps.v1.PathService.BatchComputePathSummaryMatrices")
+			response, err := einride_maps_v1_PathServiceClient.BatchComputePathSummaryMatrices(cmd.Context(), &einride_maps_v1_PathService_BatchComputePathSummaryMatrices_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

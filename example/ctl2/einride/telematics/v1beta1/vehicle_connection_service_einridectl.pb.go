@@ -1,10 +1,11 @@
 package telematicsv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/telematics/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.telematics.v1beta1.VehicleConnectionService.
@@ -33,7 +34,11 @@ var (
 	einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections         = &cobra.Command{
 		Use: "ListVehicleConnections",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.VehicleConnectionService.ListVehicleConnections")
+			response, err := einride_telematics_v1beta1_VehicleConnectionServiceClient.ListVehicleConnections(cmd.Context(), &einride_telematics_v1beta1_VehicleConnectionService_ListVehicleConnections_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice         = &cobra.Command{
 		Use: "ConnectTelematicsDevice",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.VehicleConnectionService.ConnectTelematicsDevice")
+			response, err := einride_telematics_v1beta1_VehicleConnectionServiceClient.ConnectTelematicsDevice(cmd.Context(), &einride_telematics_v1beta1_VehicleConnectionService_ConnectTelematicsDevice_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice         = &cobra.Command{
 		Use: "DisconnectTelematicsDevice",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.VehicleConnectionService.DisconnectTelematicsDevice")
+			response, err := einride_telematics_v1beta1_VehicleConnectionServiceClient.DisconnectTelematicsDevice(cmd.Context(), &einride_telematics_v1beta1_VehicleConnectionService_DisconnectTelematicsDevice_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

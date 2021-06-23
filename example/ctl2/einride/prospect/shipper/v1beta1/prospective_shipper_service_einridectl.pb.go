@@ -1,13 +1,14 @@
 package prospectiveshipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/prospect/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
 	v1 "google.golang.org/genproto/googleapis/iam/v1"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.prospect.shipper.v1beta1.ProspectiveShipperService.
@@ -36,7 +37,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipper         = &cobra.Command{
 		Use: "CreateProspectiveShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.CreateProspectiveShipper")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.CreateProspectiveShipper(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -48,7 +53,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipper         = &cobra.Command{
 		Use: "GetProspectiveShipper",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.GetProspectiveShipper")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.GetProspectiveShipper(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipper_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -60,7 +69,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShippers         = &cobra.Command{
 		Use: "ListProspectiveShippers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.ListProspectiveShippers")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.ListProspectiveShippers(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShippers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -72,7 +85,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipperFile         = &cobra.Command{
 		Use: "CreateProspectiveShipperFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.CreateProspectiveShipperFile")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.CreateProspectiveShipperFile(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipperFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -84,7 +101,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipperFile         = &cobra.Command{
 		Use: "GetProspectiveShipperFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.GetProspectiveShipperFile")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.GetProspectiveShipperFile(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipperFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -96,7 +117,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_GenerateFileUploadURI         = &cobra.Command{
 		Use: "GenerateFileUploadURI",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.GenerateFileUploadURI")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.GenerateFileUploadURI(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_GenerateFileUploadURI_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -108,7 +133,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipperDataset         = &cobra.Command{
 		Use: "CreateProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.CreateProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.CreateProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_CreateProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -120,7 +149,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_UpdateProspectiveShipperDataset         = &cobra.Command{
 		Use: "UpdateProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.UpdateProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.UpdateProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_UpdateProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -132,7 +165,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_ValidateProspectiveShipperDataset         = &cobra.Command{
 		Use: "ValidateProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.ValidateProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.ValidateProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_ValidateProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -144,7 +181,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_IngestProspectiveShipperDataset         = &cobra.Command{
 		Use: "IngestProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.IngestProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.IngestProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_IngestProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -156,7 +197,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipperDataset         = &cobra.Command{
 		Use: "GetProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.GetProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.GetProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -168,7 +213,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShipperDatasets         = &cobra.Command{
 		Use: "ListProspectiveShipperDatasets",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.ListProspectiveShipperDatasets")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.ListProspectiveShipperDatasets(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShipperDatasets_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -180,7 +229,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_ArchiveProspectiveShipperDataset         = &cobra.Command{
 		Use: "ArchiveProspectiveShipperDataset",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.ArchiveProspectiveShipperDataset")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.ArchiveProspectiveShipperDataset(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_ArchiveProspectiveShipperDataset_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -192,7 +245,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShipperValidationErrors         = &cobra.Command{
 		Use: "ListProspectiveShipperValidationErrors",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.ListProspectiveShipperValidationErrors")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.ListProspectiveShipperValidationErrors(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_ListProspectiveShipperValidationErrors_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -204,7 +261,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_SetIamPolicy         = &cobra.Command{
 		Use: "SetIamPolicy",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.SetIamPolicy")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.SetIamPolicy(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_SetIamPolicy_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -216,7 +277,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetIamPolicy         = &cobra.Command{
 		Use: "GetIamPolicy",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.GetIamPolicy")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.GetIamPolicy(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_GetIamPolicy_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -228,7 +293,11 @@ var (
 	einride_prospect_shipper_v1beta1_ProspectiveShipperService_TestIamPermissions         = &cobra.Command{
 		Use: "TestIamPermissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ProspectiveShipperService.TestIamPermissions")
+			response, err := einride_prospect_shipper_v1beta1_ProspectiveShipperServiceClient.TestIamPermissions(cmd.Context(), &einride_prospect_shipper_v1beta1_ProspectiveShipperService_TestIamPermissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

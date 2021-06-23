@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.SiteService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_SiteService_CreateSite         = &cobra.Command{
 		Use: "CreateSite",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.CreateSite")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.CreateSite(cmd.Context(), &einride_shipper_v1beta1_SiteService_CreateSite_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_SiteService_GetSite         = &cobra.Command{
 		Use: "GetSite",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.GetSite")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.GetSite(cmd.Context(), &einride_shipper_v1beta1_SiteService_GetSite_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_SiteService_BatchGetSites         = &cobra.Command{
 		Use: "BatchGetSites",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.BatchGetSites")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.BatchGetSites(cmd.Context(), &einride_shipper_v1beta1_SiteService_BatchGetSites_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_SiteService_UpdateSite         = &cobra.Command{
 		Use: "UpdateSite",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.UpdateSite")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.UpdateSite(cmd.Context(), &einride_shipper_v1beta1_SiteService_UpdateSite_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_SiteService_ReferenceSite         = &cobra.Command{
 		Use: "ReferenceSite",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.ReferenceSite")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.ReferenceSite(cmd.Context(), &einride_shipper_v1beta1_SiteService_ReferenceSite_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_SiteService_SearchSites         = &cobra.Command{
 		Use: "SearchSites",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteService.SearchSites")
+			response, err := einride_shipper_v1beta1_SiteServiceClient.SearchSites(cmd.Context(), &einride_shipper_v1beta1_SiteService_SearchSites_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

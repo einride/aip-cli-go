@@ -1,12 +1,13 @@
 package carrierv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/carrier/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
-	log "log"
 )
 
 // einride.carrier.v1beta1.VehicleTypeService.
@@ -35,7 +36,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_CreateVehicleType         = &cobra.Command{
 		Use: "CreateVehicleType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.CreateVehicleType")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.CreateVehicleType(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_CreateVehicleType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_GetVehicleType         = &cobra.Command{
 		Use: "GetVehicleType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.GetVehicleType")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.GetVehicleType(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_GetVehicleType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_BatchGetVehicleTypes         = &cobra.Command{
 		Use: "BatchGetVehicleTypes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.BatchGetVehicleTypes")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.BatchGetVehicleTypes(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_BatchGetVehicleTypes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_UpdateVehicleType         = &cobra.Command{
 		Use: "UpdateVehicleType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.UpdateVehicleType")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.UpdateVehicleType(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_UpdateVehicleType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -83,7 +100,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_ListVehicleTypes         = &cobra.Command{
 		Use: "ListVehicleTypes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.ListVehicleTypes")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.ListVehicleTypes(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_ListVehicleTypes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -95,7 +116,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_DeleteVehicleType         = &cobra.Command{
 		Use: "DeleteVehicleType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.DeleteVehicleType")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.DeleteVehicleType(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_DeleteVehicleType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -107,7 +132,11 @@ var (
 	einride_carrier_v1beta1_VehicleTypeService_UndeleteVehicleType         = &cobra.Command{
 		Use: "UndeleteVehicleType",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleTypeService.UndeleteVehicleType")
+			response, err := einride_carrier_v1beta1_VehicleTypeServiceClient.UndeleteVehicleType(cmd.Context(), &einride_carrier_v1beta1_VehicleTypeService_UndeleteVehicleType_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

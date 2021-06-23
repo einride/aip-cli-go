@@ -1,12 +1,13 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.SiteNotificationSettingsService.
@@ -35,7 +36,11 @@ var (
 	einride_shipper_v1beta1_SiteNotificationSettingsService_GetSiteNotificationSettings         = &cobra.Command{
 		Use: "GetSiteNotificationSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteNotificationSettingsService.GetSiteNotificationSettings")
+			response, err := einride_shipper_v1beta1_SiteNotificationSettingsServiceClient.GetSiteNotificationSettings(cmd.Context(), &einride_shipper_v1beta1_SiteNotificationSettingsService_GetSiteNotificationSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_shipper_v1beta1_SiteNotificationSettingsService_UpdateSiteNotificationSettings         = &cobra.Command{
 		Use: "UpdateSiteNotificationSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteNotificationSettingsService.UpdateSiteNotificationSettings")
+			response, err := einride_shipper_v1beta1_SiteNotificationSettingsServiceClient.UpdateSiteNotificationSettings(cmd.Context(), &einride_shipper_v1beta1_SiteNotificationSettingsService_UpdateSiteNotificationSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

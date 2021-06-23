@@ -1,11 +1,12 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planner.v1beta1.DefaultScheduleService.
@@ -34,7 +35,11 @@ var (
 	einride_planner_v1beta1_DefaultScheduleService_GetDefaultSchedule         = &cobra.Command{
 		Use: "GetDefaultSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.DefaultScheduleService.GetDefaultSchedule")
+			response, err := einride_planner_v1beta1_DefaultScheduleServiceClient.GetDefaultSchedule(cmd.Context(), &einride_planner_v1beta1_DefaultScheduleService_GetDefaultSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planner_v1beta1_DefaultScheduleService_UpdateDefaultSchedule         = &cobra.Command{
 		Use: "UpdateDefaultSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.DefaultScheduleService.UpdateDefaultSchedule")
+			response, err := einride_planner_v1beta1_DefaultScheduleServiceClient.UpdateDefaultSchedule(cmd.Context(), &einride_planner_v1beta1_DefaultScheduleService_UpdateDefaultSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planner_v1beta1_DefaultScheduleService_BookDefaultSchedule         = &cobra.Command{
 		Use: "BookDefaultSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.DefaultScheduleService.BookDefaultSchedule")
+			response, err := einride_planner_v1beta1_DefaultScheduleServiceClient.BookDefaultSchedule(cmd.Context(), &einride_planner_v1beta1_DefaultScheduleService_BookDefaultSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planner_v1beta1_DefaultScheduleService_BookDefaultSchedules         = &cobra.Command{
 		Use: "BookDefaultSchedules",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.DefaultScheduleService.BookDefaultSchedules")
+			response, err := einride_planner_v1beta1_DefaultScheduleServiceClient.BookDefaultSchedules(cmd.Context(), &einride_planner_v1beta1_DefaultScheduleService_BookDefaultSchedules_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

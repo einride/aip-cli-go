@@ -1,11 +1,12 @@
 package carrierv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/carrier/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.carrier.v1beta1.CarrierService.
@@ -34,7 +35,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_CreateCarrier         = &cobra.Command{
 		Use: "CreateCarrier",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.CreateCarrier")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.CreateCarrier(cmd.Context(), &einride_carrier_v1beta1_CarrierService_CreateCarrier_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_ListCarriers         = &cobra.Command{
 		Use: "ListCarriers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.ListCarriers")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.ListCarriers(cmd.Context(), &einride_carrier_v1beta1_CarrierService_ListCarriers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_GetCarrier         = &cobra.Command{
 		Use: "GetCarrier",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.GetCarrier")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.GetCarrier(cmd.Context(), &einride_carrier_v1beta1_CarrierService_GetCarrier_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_BatchGetCarriers         = &cobra.Command{
 		Use: "BatchGetCarriers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.BatchGetCarriers")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.BatchGetCarriers(cmd.Context(), &einride_carrier_v1beta1_CarrierService_BatchGetCarriers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_UpdateCarrier         = &cobra.Command{
 		Use: "UpdateCarrier",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.UpdateCarrier")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.UpdateCarrier(cmd.Context(), &einride_carrier_v1beta1_CarrierService_UpdateCarrier_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_DeleteCarrier         = &cobra.Command{
 		Use: "DeleteCarrier",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.DeleteCarrier")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.DeleteCarrier(cmd.Context(), &einride_carrier_v1beta1_CarrierService_DeleteCarrier_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_carrier_v1beta1_CarrierService_UndeleteCarrier         = &cobra.Command{
 		Use: "UndeleteCarrier",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.CarrierService.UndeleteCarrier")
+			response, err := einride_carrier_v1beta1_CarrierServiceClient.UndeleteCarrier(cmd.Context(), &einride_carrier_v1beta1_CarrierService_UndeleteCarrier_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

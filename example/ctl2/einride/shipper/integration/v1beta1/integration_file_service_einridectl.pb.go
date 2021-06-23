@@ -1,11 +1,12 @@
 package integrationv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/integration/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
-	log "log"
 )
 
 // einride.shipper.integration.v1beta1.IntegrationFileService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_CreateIntegrationFile         = &cobra.Command{
 		Use: "CreateIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.CreateIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.CreateIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_CreateIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_GetIntegrationFile         = &cobra.Command{
 		Use: "GetIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.GetIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.GetIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_GetIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_BatchGetIntegrationFiles         = &cobra.Command{
 		Use: "BatchGetIntegrationFiles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.BatchGetIntegrationFiles")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.BatchGetIntegrationFiles(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_BatchGetIntegrationFiles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_ListIntegrationFiles         = &cobra.Command{
 		Use: "ListIntegrationFiles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.ListIntegrationFiles")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.ListIntegrationFiles(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_ListIntegrationFiles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_IngestIntegrationFile         = &cobra.Command{
 		Use: "IngestIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.IngestIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.IngestIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_IngestIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_IngestAsyncIntegrationFile         = &cobra.Command{
 		Use: "IngestAsyncIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.IngestAsyncIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.IngestAsyncIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_IngestAsyncIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_DownloadIntegrationFile         = &cobra.Command{
 		Use: "DownloadIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.DownloadIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.DownloadIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_DownloadIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileService_UploadIntegrationFile         = &cobra.Command{
 		Use: "UploadIntegrationFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileService.UploadIntegrationFile")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileServiceClient.UploadIntegrationFile(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileService_UploadIntegrationFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

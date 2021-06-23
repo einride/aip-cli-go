@@ -1,11 +1,12 @@
 package cemv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/cem/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
-	log "log"
 )
 
 // einride.cem.v1beta1.CEMService.
@@ -34,7 +35,11 @@ var (
 	einride_cem_v1beta1_CEMService_CalculateResult         = &cobra.Command{
 		Use: "CalculateResult",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.cem.v1beta1.CEMService.CalculateResult")
+			response, err := einride_cem_v1beta1_CEMServiceClient.CalculateResult(cmd.Context(), &einride_cem_v1beta1_CEMService_CalculateResult_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_cem_v1beta1_CEMService_BatchCalculateResults         = &cobra.Command{
 		Use: "BatchCalculateResults",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.cem.v1beta1.CEMService.BatchCalculateResults")
+			response, err := einride_cem_v1beta1_CEMServiceClient.BatchCalculateResults(cmd.Context(), &einride_cem_v1beta1_CEMService_BatchCalculateResults_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

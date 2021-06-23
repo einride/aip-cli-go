@@ -1,11 +1,12 @@
 package carrierv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/carrier/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.carrier.v1beta1.VehicleService.
@@ -34,7 +35,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_CreateVehicle         = &cobra.Command{
 		Use: "CreateVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.CreateVehicle")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.CreateVehicle(cmd.Context(), &einride_carrier_v1beta1_VehicleService_CreateVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_GetVehicle         = &cobra.Command{
 		Use: "GetVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.GetVehicle")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.GetVehicle(cmd.Context(), &einride_carrier_v1beta1_VehicleService_GetVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_BatchGetVehicles         = &cobra.Command{
 		Use: "BatchGetVehicles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.BatchGetVehicles")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.BatchGetVehicles(cmd.Context(), &einride_carrier_v1beta1_VehicleService_BatchGetVehicles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_UpdateVehicle         = &cobra.Command{
 		Use: "UpdateVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.UpdateVehicle")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.UpdateVehicle(cmd.Context(), &einride_carrier_v1beta1_VehicleService_UpdateVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_ListVehicles         = &cobra.Command{
 		Use: "ListVehicles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.ListVehicles")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.ListVehicles(cmd.Context(), &einride_carrier_v1beta1_VehicleService_ListVehicles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_DeleteVehicle         = &cobra.Command{
 		Use: "DeleteVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.DeleteVehicle")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.DeleteVehicle(cmd.Context(), &einride_carrier_v1beta1_VehicleService_DeleteVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_UndeleteVehicle         = &cobra.Command{
 		Use: "UndeleteVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.UndeleteVehicle")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.UndeleteVehicle(cmd.Context(), &einride_carrier_v1beta1_VehicleService_UndeleteVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_carrier_v1beta1_VehicleService_SearchVehicles         = &cobra.Command{
 		Use: "SearchVehicles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.carrier.v1beta1.VehicleService.SearchVehicles")
+			response, err := einride_carrier_v1beta1_VehicleServiceClient.SearchVehicles(cmd.Context(), &einride_carrier_v1beta1_VehicleService_SearchVehicles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

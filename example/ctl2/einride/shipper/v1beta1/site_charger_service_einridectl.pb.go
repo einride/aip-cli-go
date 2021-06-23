@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.SiteChargerService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_GetSiteCharger         = &cobra.Command{
 		Use: "GetSiteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.GetSiteCharger")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.GetSiteCharger(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_GetSiteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger         = &cobra.Command{
 		Use: "CreateSiteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.CreateSiteCharger")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.CreateSiteCharger(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_CreateSiteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger         = &cobra.Command{
 		Use: "UpdateSiteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.UpdateSiteCharger")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.UpdateSiteCharger(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_UpdateSiteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_DeleteSiteCharger         = &cobra.Command{
 		Use: "DeleteSiteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.DeleteSiteCharger")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.DeleteSiteCharger(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_DeleteSiteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_UndeleteSiteCharger         = &cobra.Command{
 		Use: "UndeleteSiteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.UndeleteSiteCharger")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.UndeleteSiteCharger(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_UndeleteSiteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_ListSiteChargers         = &cobra.Command{
 		Use: "ListSiteChargers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.ListSiteChargers")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.ListSiteChargers(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_ListSiteChargers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers         = &cobra.Command{
 		Use: "BatchGetSiteChargers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.SiteChargerService.BatchGetSiteChargers")
+			response, err := einride_shipper_v1beta1_SiteChargerServiceClient.BatchGetSiteChargers(cmd.Context(), &einride_shipper_v1beta1_SiteChargerService_BatchGetSiteChargers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

@@ -3,8 +3,8 @@ module github.com/einride/ctl
 go 1.16
 
 require (
-	github.com/einride/proto v0.713.0
-	github.com/spf13/cobra v1.1.3
+	cloud.google.com/go v0.84.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.2.0
 	github.com/stretchr/testify v1.7.0 // indirect

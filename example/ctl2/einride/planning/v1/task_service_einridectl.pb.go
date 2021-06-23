@@ -1,12 +1,13 @@
 package planningv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/planning/v1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.planning.v1.TaskService.
@@ -35,7 +36,11 @@ var (
 	einride_planning_v1_TaskService_CreateTask         = &cobra.Command{
 		Use: "CreateTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.CreateTask")
+			response, err := einride_planning_v1_TaskServiceClient.CreateTask(cmd.Context(), &einride_planning_v1_TaskService_CreateTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_planning_v1_TaskService_GetTask         = &cobra.Command{
 		Use: "GetTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.GetTask")
+			response, err := einride_planning_v1_TaskServiceClient.GetTask(cmd.Context(), &einride_planning_v1_TaskService_GetTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_planning_v1_TaskService_BatchGetTasks         = &cobra.Command{
 		Use: "BatchGetTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.BatchGetTasks")
+			response, err := einride_planning_v1_TaskServiceClient.BatchGetTasks(cmd.Context(), &einride_planning_v1_TaskService_BatchGetTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_planning_v1_TaskService_SearchTasks         = &cobra.Command{
 		Use: "SearchTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.SearchTasks")
+			response, err := einride_planning_v1_TaskServiceClient.SearchTasks(cmd.Context(), &einride_planning_v1_TaskService_SearchTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -83,7 +100,11 @@ var (
 	einride_planning_v1_TaskService_UpdateTask         = &cobra.Command{
 		Use: "UpdateTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.UpdateTask")
+			response, err := einride_planning_v1_TaskServiceClient.UpdateTask(cmd.Context(), &einride_planning_v1_TaskService_UpdateTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -95,7 +116,11 @@ var (
 	einride_planning_v1_TaskService_DeleteTask         = &cobra.Command{
 		Use: "DeleteTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.DeleteTask")
+			response, err := einride_planning_v1_TaskServiceClient.DeleteTask(cmd.Context(), &einride_planning_v1_TaskService_DeleteTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -107,7 +132,11 @@ var (
 	einride_planning_v1_TaskService_UndeleteTask         = &cobra.Command{
 		Use: "UndeleteTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.UndeleteTask")
+			response, err := einride_planning_v1_TaskServiceClient.UndeleteTask(cmd.Context(), &einride_planning_v1_TaskService_UndeleteTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -119,7 +148,11 @@ var (
 	einride_planning_v1_TaskService_AllocatePickupTask         = &cobra.Command{
 		Use: "AllocatePickupTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.AllocatePickupTask")
+			response, err := einride_planning_v1_TaskServiceClient.AllocatePickupTask(cmd.Context(), &einride_planning_v1_TaskService_AllocatePickupTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -131,7 +164,11 @@ var (
 	einride_planning_v1_TaskService_DeallocatePickupTask         = &cobra.Command{
 		Use: "DeallocatePickupTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.DeallocatePickupTask")
+			response, err := einride_planning_v1_TaskServiceClient.DeallocatePickupTask(cmd.Context(), &einride_planning_v1_TaskService_DeallocatePickupTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -143,7 +180,11 @@ var (
 	einride_planning_v1_TaskService_MutateTasks         = &cobra.Command{
 		Use: "MutateTasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.MutateTasks")
+			response, err := einride_planning_v1_TaskServiceClient.MutateTasks(cmd.Context(), &einride_planning_v1_TaskService_MutateTasks_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -155,7 +196,11 @@ var (
 	einride_planning_v1_TaskService_StartTask         = &cobra.Command{
 		Use: "StartTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.StartTask")
+			response, err := einride_planning_v1_TaskServiceClient.StartTask(cmd.Context(), &einride_planning_v1_TaskService_StartTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -167,7 +212,11 @@ var (
 	einride_planning_v1_TaskService_CompleteTask         = &cobra.Command{
 		Use: "CompleteTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.CompleteTask")
+			response, err := einride_planning_v1_TaskServiceClient.CompleteTask(cmd.Context(), &einride_planning_v1_TaskService_CompleteTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -179,7 +228,11 @@ var (
 	einride_planning_v1_TaskService_ApproveDockTask         = &cobra.Command{
 		Use: "ApproveDockTask",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.TaskService.ApproveDockTask")
+			response, err := einride_planning_v1_TaskServiceClient.ApproveDockTask(cmd.Context(), &einride_planning_v1_TaskService_ApproveDockTask_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

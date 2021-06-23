@@ -1,10 +1,11 @@
 package accountv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/account/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.account.v1beta1.AuthenticationService.
@@ -33,7 +34,11 @@ var (
 	einride_account_v1beta1_AuthenticationService_AuthenticateUserIdentityToken         = &cobra.Command{
 		Use: "AuthenticateUserIdentityToken",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.AuthenticationService.AuthenticateUserIdentityToken")
+			response, err := einride_account_v1beta1_AuthenticationServiceClient.AuthenticateUserIdentityToken(cmd.Context(), &einride_account_v1beta1_AuthenticationService_AuthenticateUserIdentityToken_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

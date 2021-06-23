@@ -1,10 +1,11 @@
 package optimizerv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/optimizer/v1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.optimizer.v1.OptimizerService.
@@ -33,7 +34,11 @@ var (
 	einride_optimizer_v1_OptimizerService_OptimizeProblemParameters         = &cobra.Command{
 		Use: "OptimizeProblemParameters",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.optimizer.v1.OptimizerService.OptimizeProblemParameters")
+			response, err := einride_optimizer_v1_OptimizerServiceClient.OptimizeProblemParameters(cmd.Context(), &einride_optimizer_v1_OptimizerService_OptimizeProblemParameters_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

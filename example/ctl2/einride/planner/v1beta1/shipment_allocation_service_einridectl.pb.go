@@ -1,13 +1,14 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.planner.v1beta1.ShipmentAllocationService.
@@ -36,7 +37,11 @@ var (
 	einride_planner_v1beta1_ShipmentAllocationService_GetShipmentAllocationSettings         = &cobra.Command{
 		Use: "GetShipmentAllocationSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ShipmentAllocationService.GetShipmentAllocationSettings")
+			response, err := einride_planner_v1beta1_ShipmentAllocationServiceClient.GetShipmentAllocationSettings(cmd.Context(), &einride_planner_v1beta1_ShipmentAllocationService_GetShipmentAllocationSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -48,7 +53,11 @@ var (
 	einride_planner_v1beta1_ShipmentAllocationService_UpdateShipmentAllocationSettings         = &cobra.Command{
 		Use: "UpdateShipmentAllocationSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ShipmentAllocationService.UpdateShipmentAllocationSettings")
+			response, err := einride_planner_v1beta1_ShipmentAllocationServiceClient.UpdateShipmentAllocationSettings(cmd.Context(), &einride_planner_v1beta1_ShipmentAllocationService_UpdateShipmentAllocationSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -60,7 +69,11 @@ var (
 	einride_planner_v1beta1_ShipmentAllocationService_AllocateShipments         = &cobra.Command{
 		Use: "AllocateShipments",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ShipmentAllocationService.AllocateShipments")
+			response, err := einride_planner_v1beta1_ShipmentAllocationServiceClient.AllocateShipments(cmd.Context(), &einride_planner_v1beta1_ShipmentAllocationService_AllocateShipments_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -72,7 +85,11 @@ var (
 	einride_planner_v1beta1_ShipmentAllocationService_PublishShipmentAllocationStatuses         = &cobra.Command{
 		Use: "PublishShipmentAllocationStatuses",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ShipmentAllocationService.PublishShipmentAllocationStatuses")
+			response, err := einride_planner_v1beta1_ShipmentAllocationServiceClient.PublishShipmentAllocationStatuses(cmd.Context(), &einride_planner_v1beta1_ShipmentAllocationService_PublishShipmentAllocationStatuses_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -84,7 +101,11 @@ var (
 	einride_planner_v1beta1_ShipmentAllocationService_AllocateShipmentsAutomatic         = &cobra.Command{
 		Use: "AllocateShipmentsAutomatic",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.ShipmentAllocationService.AllocateShipmentsAutomatic")
+			response, err := einride_planner_v1beta1_ShipmentAllocationServiceClient.AllocateShipmentsAutomatic(cmd.Context(), &einride_planner_v1beta1_ShipmentAllocationService_AllocateShipmentsAutomatic_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

@@ -1,10 +1,11 @@
 package prospectiveshipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/prospect/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.prospect.shipper.v1beta1.ElectrificationPlannerService.
@@ -33,7 +34,11 @@ var (
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_GetDatasetNetwork         = &cobra.Command{
 		Use: "GetDatasetNetwork",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ElectrificationPlannerService.GetDatasetNetwork")
+			response, err := einride_prospect_shipper_v1beta1_ElectrificationPlannerServiceClient.GetDatasetNetwork(cmd.Context(), &einride_prospect_shipper_v1beta1_ElectrificationPlannerService_GetDatasetNetwork_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights         = &cobra.Command{
 		Use: "ComputeNetworkInsights",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.prospect.shipper.v1beta1.ElectrificationPlannerService.ComputeNetworkInsights")
+			response, err := einride_prospect_shipper_v1beta1_ElectrificationPlannerServiceClient.ComputeNetworkInsights(cmd.Context(), &einride_prospect_shipper_v1beta1_ElectrificationPlannerService_ComputeNetworkInsights_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

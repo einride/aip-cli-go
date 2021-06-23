@@ -1,11 +1,12 @@
 package accountv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/account/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.account.v1beta1.UserService.
@@ -34,7 +35,11 @@ var (
 	einride_account_v1beta1_UserService_CreateUser         = &cobra.Command{
 		Use: "CreateUser",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.UserService.CreateUser")
+			response, err := einride_account_v1beta1_UserServiceClient.CreateUser(cmd.Context(), &einride_account_v1beta1_UserService_CreateUser_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_account_v1beta1_UserService_GetUser         = &cobra.Command{
 		Use: "GetUser",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.UserService.GetUser")
+			response, err := einride_account_v1beta1_UserServiceClient.GetUser(cmd.Context(), &einride_account_v1beta1_UserService_GetUser_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_account_v1beta1_UserService_BatchGetUsers         = &cobra.Command{
 		Use: "BatchGetUsers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.UserService.BatchGetUsers")
+			response, err := einride_account_v1beta1_UserServiceClient.BatchGetUsers(cmd.Context(), &einride_account_v1beta1_UserService_BatchGetUsers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_account_v1beta1_UserService_UpdateUser         = &cobra.Command{
 		Use: "UpdateUser",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.UserService.UpdateUser")
+			response, err := einride_account_v1beta1_UserServiceClient.UpdateUser(cmd.Context(), &einride_account_v1beta1_UserService_UpdateUser_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_account_v1beta1_UserService_ListUsers         = &cobra.Command{
 		Use: "ListUsers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.account.v1beta1.UserService.ListUsers")
+			response, err := einride_account_v1beta1_UserServiceClient.ListUsers(cmd.Context(), &einride_account_v1beta1_UserService_ListUsers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

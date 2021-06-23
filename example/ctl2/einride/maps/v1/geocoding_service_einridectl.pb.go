@@ -1,11 +1,12 @@
 package mapsv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/maps/v1"
 	cobra "github.com/spf13/cobra"
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.maps.v1.GeocodingService.
@@ -34,7 +35,11 @@ var (
 	einride_maps_v1_GeocodingService_ReverseGeocode         = &cobra.Command{
 		Use: "ReverseGeocode",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.maps.v1.GeocodingService.ReverseGeocode")
+			response, err := einride_maps_v1_GeocodingServiceClient.ReverseGeocode(cmd.Context(), &einride_maps_v1_GeocodingService_ReverseGeocode_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

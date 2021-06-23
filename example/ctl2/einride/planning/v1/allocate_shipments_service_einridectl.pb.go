@@ -1,11 +1,12 @@
 package planningv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/planning/v1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planning.v1.AllocateShipmentsService.
@@ -34,7 +35,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_CreateAllocateShipmentsJob         = &cobra.Command{
 		Use: "CreateAllocateShipmentsJob",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.CreateAllocateShipmentsJob")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.CreateAllocateShipmentsJob(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_CreateAllocateShipmentsJob_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_GetAllocateShipmentsJob         = &cobra.Command{
 		Use: "GetAllocateShipmentsJob",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.GetAllocateShipmentsJob")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.GetAllocateShipmentsJob(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_GetAllocateShipmentsJob_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_UpdateAllocateShipmentsJob         = &cobra.Command{
 		Use: "UpdateAllocateShipmentsJob",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.UpdateAllocateShipmentsJob")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.UpdateAllocateShipmentsJob(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_UpdateAllocateShipmentsJob_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_ListAllocateShipmentsJobs         = &cobra.Command{
 		Use: "ListAllocateShipmentsJobs",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.ListAllocateShipmentsJobs")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.ListAllocateShipmentsJobs(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_ListAllocateShipmentsJobs_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_DeleteAllocateShipmentsJob         = &cobra.Command{
 		Use: "DeleteAllocateShipmentsJob",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.DeleteAllocateShipmentsJob")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.DeleteAllocateShipmentsJob(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_DeleteAllocateShipmentsJob_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_RunAllocateShipmentsJob         = &cobra.Command{
 		Use: "RunAllocateShipmentsJob",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.RunAllocateShipmentsJob")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.RunAllocateShipmentsJob(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_RunAllocateShipmentsJob_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_BatchRunAllocateShipmentsJobs         = &cobra.Command{
 		Use: "BatchRunAllocateShipmentsJobs",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.BatchRunAllocateShipmentsJobs")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.BatchRunAllocateShipmentsJobs(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_BatchRunAllocateShipmentsJobs_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_planning_v1_AllocateShipmentsService_ListAllocateShipmentsJobExecutions         = &cobra.Command{
 		Use: "ListAllocateShipmentsJobExecutions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.AllocateShipmentsService.ListAllocateShipmentsJobExecutions")
+			response, err := einride_planning_v1_AllocateShipmentsServiceClient.ListAllocateShipmentsJobExecutions(cmd.Context(), &einride_planning_v1_AllocateShipmentsService_ListAllocateShipmentsJobExecutions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

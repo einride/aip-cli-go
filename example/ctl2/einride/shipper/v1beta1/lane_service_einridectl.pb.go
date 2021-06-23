@@ -1,11 +1,12 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.LaneService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_v1beta1_LaneService_CreateLane         = &cobra.Command{
 		Use: "CreateLane",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.CreateLane")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.CreateLane(cmd.Context(), &einride_shipper_v1beta1_LaneService_CreateLane_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_v1beta1_LaneService_GetLane         = &cobra.Command{
 		Use: "GetLane",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.GetLane")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.GetLane(cmd.Context(), &einride_shipper_v1beta1_LaneService_GetLane_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_v1beta1_LaneService_BatchGetLanes         = &cobra.Command{
 		Use: "BatchGetLanes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.BatchGetLanes")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.BatchGetLanes(cmd.Context(), &einride_shipper_v1beta1_LaneService_BatchGetLanes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_v1beta1_LaneService_SearchLanes         = &cobra.Command{
 		Use: "SearchLanes",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.SearchLanes")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.SearchLanes(cmd.Context(), &einride_shipper_v1beta1_LaneService_SearchLanes_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_v1beta1_LaneService_UpdateLane         = &cobra.Command{
 		Use: "UpdateLane",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.UpdateLane")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.UpdateLane(cmd.Context(), &einride_shipper_v1beta1_LaneService_UpdateLane_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_v1beta1_LaneService_ReferenceLane         = &cobra.Command{
 		Use: "ReferenceLane",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.LaneService.ReferenceLane")
+			response, err := einride_shipper_v1beta1_LaneServiceClient.ReferenceLane(cmd.Context(), &einride_shipper_v1beta1_LaneService_ReferenceLane_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

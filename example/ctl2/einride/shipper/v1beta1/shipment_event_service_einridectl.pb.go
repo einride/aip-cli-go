@@ -1,10 +1,11 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.shipper.v1beta1.ShipmentEventService.
@@ -33,7 +34,11 @@ var (
 	einride_shipper_v1beta1_ShipmentEventService_CreateShipmentEvent         = &cobra.Command{
 		Use: "CreateShipmentEvent",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentEventService.CreateShipmentEvent")
+			response, err := einride_shipper_v1beta1_ShipmentEventServiceClient.CreateShipmentEvent(cmd.Context(), &einride_shipper_v1beta1_ShipmentEventService_CreateShipmentEvent_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_shipper_v1beta1_ShipmentEventService_GetShipmentEvent         = &cobra.Command{
 		Use: "GetShipmentEvent",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentEventService.GetShipmentEvent")
+			response, err := einride_shipper_v1beta1_ShipmentEventServiceClient.GetShipmentEvent(cmd.Context(), &einride_shipper_v1beta1_ShipmentEventService_GetShipmentEvent_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_shipper_v1beta1_ShipmentEventService_ListShipmentEvents         = &cobra.Command{
 		Use: "ListShipmentEvents",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentEventService.ListShipmentEvents")
+			response, err := einride_shipper_v1beta1_ShipmentEventServiceClient.ListShipmentEvents(cmd.Context(), &einride_shipper_v1beta1_ShipmentEventService_ListShipmentEvents_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

@@ -1,11 +1,12 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planner.v1beta1.PlannerSiteSettingsService.
@@ -34,7 +35,11 @@ var (
 	einride_planner_v1beta1_PlannerSiteSettingsService_GetPlannerSiteSettings         = &cobra.Command{
 		Use: "GetPlannerSiteSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.PlannerSiteSettingsService.GetPlannerSiteSettings")
+			response, err := einride_planner_v1beta1_PlannerSiteSettingsServiceClient.GetPlannerSiteSettings(cmd.Context(), &einride_planner_v1beta1_PlannerSiteSettingsService_GetPlannerSiteSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings         = &cobra.Command{
 		Use: "BatchGetPlannerSiteSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.PlannerSiteSettingsService.BatchGetPlannerSiteSettings")
+			response, err := einride_planner_v1beta1_PlannerSiteSettingsServiceClient.BatchGetPlannerSiteSettings(cmd.Context(), &einride_planner_v1beta1_PlannerSiteSettingsService_BatchGetPlannerSiteSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings         = &cobra.Command{
 		Use: "UpdatePlannerSiteSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.PlannerSiteSettingsService.UpdatePlannerSiteSettings")
+			response, err := einride_planner_v1beta1_PlannerSiteSettingsServiceClient.UpdatePlannerSiteSettings(cmd.Context(), &einride_planner_v1beta1_PlannerSiteSettingsService_UpdatePlannerSiteSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

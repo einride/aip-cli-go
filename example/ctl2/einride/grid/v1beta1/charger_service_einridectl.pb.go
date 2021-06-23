@@ -1,12 +1,13 @@
 package gridv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/grid/v1beta1"
 	cobra "github.com/spf13/cobra"
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.grid.v1beta1.ChargerService.
@@ -35,7 +36,11 @@ var (
 	einride_grid_v1beta1_ChargerService_CreateChargingPool         = &cobra.Command{
 		Use: "CreateChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.CreateChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.CreateChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_CreateChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_grid_v1beta1_ChargerService_ListChargingPools         = &cobra.Command{
 		Use: "ListChargingPools",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.ListChargingPools")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.ListChargingPools(cmd.Context(), &einride_grid_v1beta1_ChargerService_ListChargingPools_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_grid_v1beta1_ChargerService_GetChargingPool         = &cobra.Command{
 		Use: "GetChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.GetChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.GetChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_GetChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_grid_v1beta1_ChargerService_ReferenceChargingPool         = &cobra.Command{
 		Use: "ReferenceChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.ReferenceChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.ReferenceChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_ReferenceChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -83,7 +100,11 @@ var (
 	einride_grid_v1beta1_ChargerService_BatchGetChargingPools         = &cobra.Command{
 		Use: "BatchGetChargingPools",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.BatchGetChargingPools")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.BatchGetChargingPools(cmd.Context(), &einride_grid_v1beta1_ChargerService_BatchGetChargingPools_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -95,7 +116,11 @@ var (
 	einride_grid_v1beta1_ChargerService_UpdateChargingPool         = &cobra.Command{
 		Use: "UpdateChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.UpdateChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.UpdateChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_UpdateChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -107,7 +132,11 @@ var (
 	einride_grid_v1beta1_ChargerService_DeleteChargingPool         = &cobra.Command{
 		Use: "DeleteChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.DeleteChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.DeleteChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_DeleteChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -119,7 +148,11 @@ var (
 	einride_grid_v1beta1_ChargerService_UndeleteChargingPool         = &cobra.Command{
 		Use: "UndeleteChargingPool",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.UndeleteChargingPool")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.UndeleteChargingPool(cmd.Context(), &einride_grid_v1beta1_ChargerService_UndeleteChargingPool_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -131,7 +164,11 @@ var (
 	einride_grid_v1beta1_ChargerService_GetCharger         = &cobra.Command{
 		Use: "GetCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.GetCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.GetCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_GetCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -143,7 +180,11 @@ var (
 	einride_grid_v1beta1_ChargerService_ReferenceCharger         = &cobra.Command{
 		Use: "ReferenceCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.ReferenceCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.ReferenceCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_ReferenceCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -155,7 +196,11 @@ var (
 	einride_grid_v1beta1_ChargerService_CreateCharger         = &cobra.Command{
 		Use: "CreateCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.CreateCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.CreateCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_CreateCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -167,7 +212,11 @@ var (
 	einride_grid_v1beta1_ChargerService_UpdateCharger         = &cobra.Command{
 		Use: "UpdateCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.UpdateCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.UpdateCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_UpdateCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -179,7 +228,11 @@ var (
 	einride_grid_v1beta1_ChargerService_DeleteCharger         = &cobra.Command{
 		Use: "DeleteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.DeleteCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.DeleteCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_DeleteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -191,7 +244,11 @@ var (
 	einride_grid_v1beta1_ChargerService_UndeleteCharger         = &cobra.Command{
 		Use: "UndeleteCharger",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.UndeleteCharger")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.UndeleteCharger(cmd.Context(), &einride_grid_v1beta1_ChargerService_UndeleteCharger_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -203,7 +260,11 @@ var (
 	einride_grid_v1beta1_ChargerService_ListChargers         = &cobra.Command{
 		Use: "ListChargers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.ListChargers")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.ListChargers(cmd.Context(), &einride_grid_v1beta1_ChargerService_ListChargers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -215,7 +276,11 @@ var (
 	einride_grid_v1beta1_ChargerService_BatchGetChargers         = &cobra.Command{
 		Use: "BatchGetChargers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.grid.v1beta1.ChargerService.BatchGetChargers")
+			response, err := einride_grid_v1beta1_ChargerServiceClient.BatchGetChargers(cmd.Context(), &einride_grid_v1beta1_ChargerService_BatchGetChargers_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

@@ -1,10 +1,11 @@
 package messengerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/messenger/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.messenger.v1beta1.SMSMessageService.
@@ -33,7 +34,11 @@ var (
 	einride_messenger_v1beta1_SMSMessageService_GetSMSMessage         = &cobra.Command{
 		Use: "GetSMSMessage",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.SMSMessageService.GetSMSMessage")
+			response, err := einride_messenger_v1beta1_SMSMessageServiceClient.GetSMSMessage(cmd.Context(), &einride_messenger_v1beta1_SMSMessageService_GetSMSMessage_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage         = &cobra.Command{
 		Use: "CreateSMSMessage",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.SMSMessageService.CreateSMSMessage")
+			response, err := einride_messenger_v1beta1_SMSMessageServiceClient.CreateSMSMessage(cmd.Context(), &einride_messenger_v1beta1_SMSMessageService_CreateSMSMessage_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_messenger_v1beta1_SMSMessageService_ListSMSMessages         = &cobra.Command{
 		Use: "ListSMSMessages",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.SMSMessageService.ListSMSMessages")
+			response, err := einride_messenger_v1beta1_SMSMessageServiceClient.ListSMSMessages(cmd.Context(), &einride_messenger_v1beta1_SMSMessageService_ListSMSMessages_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -69,7 +82,11 @@ var (
 	einride_messenger_v1beta1_SMSMessageService_SendSMSMessage         = &cobra.Command{
 		Use: "SendSMSMessage",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.SMSMessageService.SendSMSMessage")
+			response, err := einride_messenger_v1beta1_SMSMessageServiceClient.SendSMSMessage(cmd.Context(), &einride_messenger_v1beta1_SMSMessageService_SendSMSMessage_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -81,7 +98,11 @@ var (
 	einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage         = &cobra.Command{
 		Use: "SendNewSMSMessage",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.messenger.v1beta1.SMSMessageService.SendNewSMSMessage")
+			response, err := einride_messenger_v1beta1_SMSMessageServiceClient.SendNewSMSMessage(cmd.Context(), &einride_messenger_v1beta1_SMSMessageService_SendNewSMSMessage_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

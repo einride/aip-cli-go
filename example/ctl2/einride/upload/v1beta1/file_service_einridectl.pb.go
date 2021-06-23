@@ -1,11 +1,12 @@
 package uploadv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/upload/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
-	log "log"
 )
 
 // einride.upload.v1beta1.FileService.
@@ -34,7 +35,11 @@ var (
 	einride_upload_v1beta1_FileService_CreateFile         = &cobra.Command{
 		Use: "CreateFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.CreateFile")
+			response, err := einride_upload_v1beta1_FileServiceClient.CreateFile(cmd.Context(), &einride_upload_v1beta1_FileService_CreateFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_upload_v1beta1_FileService_GetFile         = &cobra.Command{
 		Use: "GetFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.GetFile")
+			response, err := einride_upload_v1beta1_FileServiceClient.GetFile(cmd.Context(), &einride_upload_v1beta1_FileService_GetFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_upload_v1beta1_FileService_BatchGetFiles         = &cobra.Command{
 		Use: "BatchGetFiles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.BatchGetFiles")
+			response, err := einride_upload_v1beta1_FileServiceClient.BatchGetFiles(cmd.Context(), &einride_upload_v1beta1_FileService_BatchGetFiles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_upload_v1beta1_FileService_ListFiles         = &cobra.Command{
 		Use: "ListFiles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.ListFiles")
+			response, err := einride_upload_v1beta1_FileServiceClient.ListFiles(cmd.Context(), &einride_upload_v1beta1_FileService_ListFiles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_upload_v1beta1_FileService_UploadFile         = &cobra.Command{
 		Use: "UploadFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.UploadFile")
+			response, err := einride_upload_v1beta1_FileServiceClient.UploadFile(cmd.Context(), &einride_upload_v1beta1_FileService_UploadFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_upload_v1beta1_FileService_DownloadFile         = &cobra.Command{
 		Use: "DownloadFile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.DownloadFile")
+			response, err := einride_upload_v1beta1_FileServiceClient.DownloadFile(cmd.Context(), &einride_upload_v1beta1_FileService_DownloadFile_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_upload_v1beta1_FileService_BatchDownloadFiles         = &cobra.Command{
 		Use: "BatchDownloadFiles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.upload.v1beta1.FileService.BatchDownloadFiles")
+			response, err := einride_upload_v1beta1_FileServiceClient.BatchDownloadFiles(cmd.Context(), &einride_upload_v1beta1_FileService_BatchDownloadFiles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

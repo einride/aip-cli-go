@@ -1,12 +1,13 @@
 package authzv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/authz/v1beta1"
 	cobra "github.com/spf13/cobra"
 	v11 "google.golang.org/genproto/googleapis/iam/admin/v1"
 	v1 "google.golang.org/genproto/googleapis/iam/v1"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.authz.v1beta1.AuthorizationService.
@@ -35,7 +36,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_GetAuthorizationPolicy         = &cobra.Command{
 		Use: "GetAuthorizationPolicy",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.GetAuthorizationPolicy")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.GetAuthorizationPolicy(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_GetAuthorizationPolicy_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_SearchRoleBindings         = &cobra.Command{
 		Use: "SearchRoleBindings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.SearchRoleBindings")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.SearchRoleBindings(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_SearchRoleBindings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_AddRoleBinding         = &cobra.Command{
 		Use: "AddRoleBinding",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.AddRoleBinding")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.AddRoleBinding(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_AddRoleBinding_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding         = &cobra.Command{
 		Use: "RemoveRoleBinding",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.RemoveRoleBinding")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.RemoveRoleBinding(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_RemoveRoleBinding_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -83,7 +100,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions         = &cobra.Command{
 		Use: "LookupEffectivePermissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.LookupEffectivePermissions")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.LookupEffectivePermissions(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_LookupEffectivePermissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -95,7 +116,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions         = &cobra.Command{
 		Use: "BatchLookupEffectivePermissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.BatchLookupEffectivePermissions")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.BatchLookupEffectivePermissions(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_BatchLookupEffectivePermissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -107,7 +132,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_LookupPermissionBindings         = &cobra.Command{
 		Use: "LookupPermissionBindings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.LookupPermissionBindings")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.LookupPermissionBindings(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_LookupPermissionBindings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -119,7 +148,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources         = &cobra.Command{
 		Use: "SearchAuthorizedResources",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.SearchAuthorizedResources")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.SearchAuthorizedResources(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_SearchAuthorizedResources_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -131,7 +164,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_TestPermissions         = &cobra.Command{
 		Use: "TestPermissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.TestPermissions")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.TestPermissions(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_TestPermissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -143,7 +180,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_SetIamPolicy         = &cobra.Command{
 		Use: "SetIamPolicy",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.SetIamPolicy")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.SetIamPolicy(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_SetIamPolicy_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -155,7 +196,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_GetIamPolicy         = &cobra.Command{
 		Use: "GetIamPolicy",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.GetIamPolicy")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.GetIamPolicy(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_GetIamPolicy_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -167,7 +212,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_TestIamPermissions         = &cobra.Command{
 		Use: "TestIamPermissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.TestIamPermissions")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.TestIamPermissions(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_TestIamPermissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -179,7 +228,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_ListRoles         = &cobra.Command{
 		Use: "ListRoles",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.ListRoles")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.ListRoles(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_ListRoles_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -191,7 +244,11 @@ var (
 	einride_authz_v1beta1_AuthorizationService_GetRole         = &cobra.Command{
 		Use: "GetRole",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.authz.v1beta1.AuthorizationService.GetRole")
+			response, err := einride_authz_v1beta1_AuthorizationServiceClient.GetRole(cmd.Context(), &einride_authz_v1beta1_AuthorizationService_GetRole_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

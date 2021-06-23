@@ -1,10 +1,11 @@
 package integrationv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/integration/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.shipper.integration.v1beta1.IntegrationFileLogService.
@@ -33,7 +34,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileLogService_GetIntegrationFileLogEntry         = &cobra.Command{
 		Use: "GetIntegrationFileLogEntry",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileLogService.GetIntegrationFileLogEntry")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileLogServiceClient.GetIntegrationFileLogEntry(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileLogService_GetIntegrationFileLogEntry_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileLogService_ListIntegrationFileLogEntries         = &cobra.Command{
 		Use: "ListIntegrationFileLogEntries",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileLogService.ListIntegrationFileLogEntries")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileLogServiceClient.ListIntegrationFileLogEntries(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileLogService_ListIntegrationFileLogEntries_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileLogService_CreateIntegrationFileLogEntry         = &cobra.Command{
 		Use: "CreateIntegrationFileLogEntry",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileLogService.CreateIntegrationFileLogEntry")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileLogServiceClient.CreateIntegrationFileLogEntry(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileLogService_CreateIntegrationFileLogEntry_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -69,7 +82,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationFileLogService_BatchCreateIntegrationFileLogEntries         = &cobra.Command{
 		Use: "BatchCreateIntegrationFileLogEntries",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationFileLogService.BatchCreateIntegrationFileLogEntries")
+			response, err := einride_shipper_integration_v1beta1_IntegrationFileLogServiceClient.BatchCreateIntegrationFileLogEntries(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationFileLogService_BatchCreateIntegrationFileLogEntries_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

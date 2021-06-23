@@ -1,11 +1,12 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planner.v1beta1.TransportInstallationService.
@@ -34,7 +35,11 @@ var (
 	einride_planner_v1beta1_TransportInstallationService_CreateTransportInstallation         = &cobra.Command{
 		Use: "CreateTransportInstallation",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportInstallationService.CreateTransportInstallation")
+			response, err := einride_planner_v1beta1_TransportInstallationServiceClient.CreateTransportInstallation(cmd.Context(), &einride_planner_v1beta1_TransportInstallationService_CreateTransportInstallation_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planner_v1beta1_TransportInstallationService_GetTransportInstallation         = &cobra.Command{
 		Use: "GetTransportInstallation",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportInstallationService.GetTransportInstallation")
+			response, err := einride_planner_v1beta1_TransportInstallationServiceClient.GetTransportInstallation(cmd.Context(), &einride_planner_v1beta1_TransportInstallationService_GetTransportInstallation_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planner_v1beta1_TransportInstallationService_UpdateTransportInstallation         = &cobra.Command{
 		Use: "UpdateTransportInstallation",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportInstallationService.UpdateTransportInstallation")
+			response, err := einride_planner_v1beta1_TransportInstallationServiceClient.UpdateTransportInstallation(cmd.Context(), &einride_planner_v1beta1_TransportInstallationService_UpdateTransportInstallation_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planner_v1beta1_TransportInstallationService_SearchTransportInstallations         = &cobra.Command{
 		Use: "SearchTransportInstallations",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportInstallationService.SearchTransportInstallations")
+			response, err := einride_planner_v1beta1_TransportInstallationServiceClient.SearchTransportInstallations(cmd.Context(), &einride_planner_v1beta1_TransportInstallationService_SearchTransportInstallations_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

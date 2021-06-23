@@ -1,11 +1,12 @@
 package integrationv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/integration/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.shipper.integration.v1beta1.IntegrationBucketService.
@@ -34,7 +35,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_CreateIntegrationBucket         = &cobra.Command{
 		Use: "CreateIntegrationBucket",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.CreateIntegrationBucket")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.CreateIntegrationBucket(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_CreateIntegrationBucket_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_GetIntegrationBucket         = &cobra.Command{
 		Use: "GetIntegrationBucket",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.GetIntegrationBucket")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.GetIntegrationBucket(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_GetIntegrationBucket_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_BatchGetIntegrationBuckets         = &cobra.Command{
 		Use: "BatchGetIntegrationBuckets",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.BatchGetIntegrationBuckets")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.BatchGetIntegrationBuckets(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_BatchGetIntegrationBuckets_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_UpdateIntegrationBucket         = &cobra.Command{
 		Use: "UpdateIntegrationBucket",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.UpdateIntegrationBucket")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.UpdateIntegrationBucket(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_UpdateIntegrationBucket_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_ListIntegrationBuckets         = &cobra.Command{
 		Use: "ListIntegrationBuckets",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.ListIntegrationBuckets")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.ListIntegrationBuckets(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_ListIntegrationBuckets_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_DeleteIntegrationBucket         = &cobra.Command{
 		Use: "DeleteIntegrationBucket",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.DeleteIntegrationBucket")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.DeleteIntegrationBucket(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_DeleteIntegrationBucket_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_shipper_integration_v1beta1_IntegrationBucketService_UndeleteIntegrationBucket         = &cobra.Command{
 		Use: "UndeleteIntegrationBucket",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.integration.v1beta1.IntegrationBucketService.UndeleteIntegrationBucket")
+			response, err := einride_shipper_integration_v1beta1_IntegrationBucketServiceClient.UndeleteIntegrationBucket(cmd.Context(), &einride_shipper_integration_v1beta1_IntegrationBucketService_UndeleteIntegrationBucket_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

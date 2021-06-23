@@ -1,11 +1,12 @@
 package planningv1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1 "github.com/einride/proto/gen/go/einride/planning/v1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planning.v1.ScheduleService.
@@ -34,7 +35,11 @@ var (
 	einride_planning_v1_ScheduleService_CreateSchedule         = &cobra.Command{
 		Use: "CreateSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.CreateSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.CreateSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_CreateSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planning_v1_ScheduleService_GetSchedule         = &cobra.Command{
 		Use: "GetSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.GetSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.GetSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_GetSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planning_v1_ScheduleService_BatchGetSchedules         = &cobra.Command{
 		Use: "BatchGetSchedules",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.BatchGetSchedules")
+			response, err := einride_planning_v1_ScheduleServiceClient.BatchGetSchedules(cmd.Context(), &einride_planning_v1_ScheduleService_BatchGetSchedules_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planning_v1_ScheduleService_ListSchedules         = &cobra.Command{
 		Use: "ListSchedules",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.ListSchedules")
+			response, err := einride_planning_v1_ScheduleServiceClient.ListSchedules(cmd.Context(), &einride_planning_v1_ScheduleService_ListSchedules_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_planning_v1_ScheduleService_UpdateSchedule         = &cobra.Command{
 		Use: "UpdateSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.UpdateSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.UpdateSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_UpdateSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_planning_v1_ScheduleService_PublishSchedule         = &cobra.Command{
 		Use: "PublishSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.PublishSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.PublishSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_PublishSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_planning_v1_ScheduleService_DeleteSchedule         = &cobra.Command{
 		Use: "DeleteSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.DeleteSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.DeleteSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_DeleteSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -118,7 +147,11 @@ var (
 	einride_planning_v1_ScheduleService_UndeleteSchedule         = &cobra.Command{
 		Use: "UndeleteSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planning.v1.ScheduleService.UndeleteSchedule")
+			response, err := einride_planning_v1_ScheduleServiceClient.UndeleteSchedule(cmd.Context(), &einride_planning_v1_ScheduleService_UndeleteSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

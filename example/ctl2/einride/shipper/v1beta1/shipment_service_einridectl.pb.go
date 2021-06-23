@@ -1,12 +1,13 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.ShipmentService.
@@ -35,7 +36,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_CreateShipment         = &cobra.Command{
 		Use: "CreateShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.CreateShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.CreateShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_CreateShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_GetShipment         = &cobra.Command{
 		Use: "GetShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.GetShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.GetShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_GetShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_BatchGetShipments         = &cobra.Command{
 		Use: "BatchGetShipments",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.BatchGetShipments")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.BatchGetShipments(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_BatchGetShipments_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_SearchShipments         = &cobra.Command{
 		Use: "SearchShipments",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.SearchShipments")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.SearchShipments(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_SearchShipments_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -83,7 +100,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_UpdateShipment         = &cobra.Command{
 		Use: "UpdateShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.UpdateShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.UpdateShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_UpdateShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -95,7 +116,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_DeleteShipment         = &cobra.Command{
 		Use: "DeleteShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.DeleteShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.DeleteShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_DeleteShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -107,7 +132,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_UndeleteShipment         = &cobra.Command{
 		Use: "UndeleteShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.UndeleteShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.UndeleteShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_UndeleteShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -119,7 +148,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_ReferenceShipment         = &cobra.Command{
 		Use: "ReferenceShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.ReferenceShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.ReferenceShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_ReferenceShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -131,7 +164,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_PlanShipment         = &cobra.Command{
 		Use: "PlanShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.PlanShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.PlanShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_PlanShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -143,7 +180,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_UnplanShipment         = &cobra.Command{
 		Use: "UnplanShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.UnplanShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.UnplanShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_UnplanShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -155,7 +196,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_LoadShipment         = &cobra.Command{
 		Use: "LoadShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.LoadShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.LoadShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_LoadShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -167,7 +212,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_LoadShipmentUnknownVehicle         = &cobra.Command{
 		Use: "LoadShipmentUnknownVehicle",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.LoadShipmentUnknownVehicle")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.LoadShipmentUnknownVehicle(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_LoadShipmentUnknownVehicle_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -179,7 +228,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_TransitShipment         = &cobra.Command{
 		Use: "TransitShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.TransitShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.TransitShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_TransitShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -191,7 +244,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_ArriveShipment         = &cobra.Command{
 		Use: "ArriveShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.ArriveShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.ArriveShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_ArriveShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -203,7 +260,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_UnloadShipment         = &cobra.Command{
 		Use: "UnloadShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.UnloadShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.UnloadShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_UnloadShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -215,7 +276,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_DeliverShipment         = &cobra.Command{
 		Use: "DeliverShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.DeliverShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.DeliverShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_DeliverShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -227,7 +292,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_HandleShipmentExternally         = &cobra.Command{
 		Use: "HandleShipmentExternally",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.HandleShipmentExternally")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.HandleShipmentExternally(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_HandleShipmentExternally_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -239,7 +308,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_RejectShipment         = &cobra.Command{
 		Use: "RejectShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.RejectShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.RejectShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_RejectShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -251,7 +324,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_UnrejectShipment         = &cobra.Command{
 		Use: "UnrejectShipment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.UnrejectShipment")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.UnrejectShipment(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_UnrejectShipment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -263,7 +340,11 @@ var (
 	einride_shipper_v1beta1_ShipmentService_ConsumeShipmentChangedEvent         = &cobra.Command{
 		Use: "ConsumeShipmentChangedEvent",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentService.ConsumeShipmentChangedEvent")
+			response, err := einride_shipper_v1beta1_ShipmentServiceClient.ConsumeShipmentChangedEvent(cmd.Context(), &einride_shipper_v1beta1_ShipmentService_ConsumeShipmentChangedEvent_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

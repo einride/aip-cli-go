@@ -1,12 +1,13 @@
 package telematicsv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/telematics/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
-	log "log"
 )
 
 // einride.telematics.v1beta1.TelematicsSampleService.
@@ -35,7 +36,11 @@ var (
 	einride_telematics_v1beta1_TelematicsSampleService_GetTelematicsSample         = &cobra.Command{
 		Use: "GetTelematicsSample",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsSampleService.GetTelematicsSample")
+			response, err := einride_telematics_v1beta1_TelematicsSampleServiceClient.GetTelematicsSample(cmd.Context(), &einride_telematics_v1beta1_TelematicsSampleService_GetTelematicsSample_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_telematics_v1beta1_TelematicsSampleService_ListTelematicsSamples         = &cobra.Command{
 		Use: "ListTelematicsSamples",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsSampleService.ListTelematicsSamples")
+			response, err := einride_telematics_v1beta1_TelematicsSampleServiceClient.ListTelematicsSamples(cmd.Context(), &einride_telematics_v1beta1_TelematicsSampleService_ListTelematicsSamples_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -59,7 +68,11 @@ var (
 	einride_telematics_v1beta1_TelematicsSampleService_SearchTelematicsSamples         = &cobra.Command{
 		Use: "SearchTelematicsSamples",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsSampleService.SearchTelematicsSamples")
+			response, err := einride_telematics_v1beta1_TelematicsSampleServiceClient.SearchTelematicsSamples(cmd.Context(), &einride_telematics_v1beta1_TelematicsSampleService_SearchTelematicsSamples_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -71,7 +84,11 @@ var (
 	einride_telematics_v1beta1_TelematicsSampleService_CreateTelematicsSample         = &cobra.Command{
 		Use: "CreateTelematicsSample",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.telematics.v1beta1.TelematicsSampleService.CreateTelematicsSample")
+			response, err := einride_telematics_v1beta1_TelematicsSampleServiceClient.CreateTelematicsSample(cmd.Context(), &einride_telematics_v1beta1_TelematicsSampleService_CreateTelematicsSample_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

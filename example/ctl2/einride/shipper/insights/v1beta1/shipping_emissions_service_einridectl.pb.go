@@ -1,10 +1,11 @@
 package shipperinsightsv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/insights/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.shipper.insights.v1beta1.ShippingEmissionsService.
@@ -33,7 +34,11 @@ var (
 	einride_shipper_insights_v1beta1_ShippingEmissionsService_GetShipmentShippingEmission         = &cobra.Command{
 		Use: "GetShipmentShippingEmission",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.insights.v1beta1.ShippingEmissionsService.GetShipmentShippingEmission")
+			response, err := einride_shipper_insights_v1beta1_ShippingEmissionsServiceClient.GetShipmentShippingEmission(cmd.Context(), &einride_shipper_insights_v1beta1_ShippingEmissionsService_GetShipmentShippingEmission_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions         = &cobra.Command{
 		Use: "BatchGetShipmentShippingEmissions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.insights.v1beta1.ShippingEmissionsService.BatchGetShipmentShippingEmissions")
+			response, err := einride_shipper_insights_v1beta1_ShippingEmissionsServiceClient.BatchGetShipmentShippingEmissions(cmd.Context(), &einride_shipper_insights_v1beta1_ShippingEmissionsService_BatchGetShipmentShippingEmissions_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

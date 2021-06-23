@@ -66,9 +66,13 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 		g.P(")")
 		for _, method := range service.Methods {
 			g.P()
-			logPrintln := g.QualifiedGoIdent(protogen.GoIdent{
-				GoImportPath: "log",
+			fmtPrintln := g.QualifiedGoIdent(protogen.GoIdent{
+				GoImportPath: "fmt",
 				GoName:       "Println",
+			})
+			protojsonFormat := g.QualifiedGoIdent(protogen.GoIdent{
+				GoName:       "Format",
+				GoImportPath: "google.golang.org/protobuf/encoding/protojson",
 			})
 			g.P("// ", method.Desc.FullName(), ".")
 			g.P("var (")
@@ -76,7 +80,11 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File) error {
 			g.P(methodCommandVariableGoName(method), " = &", cobraCommand, "{")
 			g.P("Use: ", strconv.Quote(string(method.Desc.Name())), ",")
 			g.P("RunE: func(cmd *", cobraCommand, ", args []string) error {")
-			g.P(logPrintln, "(", strconv.Quote(string(method.Desc.FullName())), ")")
+			g.P("response, err := ", serviceClientVariableGoName(service), ".", method.GoName, "(cmd.Context(), &", requestVariableGoName(method), ")")
+			g.P("if err != nil {")
+			g.P("return err")
+			g.P("}")
+			g.P(fmtPrintln, "(", protojsonFormat, "(response))")
 			g.P("return nil")
 			g.P("},")
 			g.P("}")

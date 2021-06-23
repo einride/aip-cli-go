@@ -1,10 +1,11 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
-	log "log"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 )
 
 // einride.shipper.v1beta1.ShipmentAttachmentService.
@@ -33,7 +34,11 @@ var (
 	einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment         = &cobra.Command{
 		Use: "CreateShipmentAttachment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentAttachmentService.CreateShipmentAttachment")
+			response, err := einride_shipper_v1beta1_ShipmentAttachmentServiceClient.CreateShipmentAttachment(cmd.Context(), &einride_shipper_v1beta1_ShipmentAttachmentService_CreateShipmentAttachment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -45,7 +50,11 @@ var (
 	einride_shipper_v1beta1_ShipmentAttachmentService_GetShipmentAttachment         = &cobra.Command{
 		Use: "GetShipmentAttachment",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentAttachmentService.GetShipmentAttachment")
+			response, err := einride_shipper_v1beta1_ShipmentAttachmentServiceClient.GetShipmentAttachment(cmd.Context(), &einride_shipper_v1beta1_ShipmentAttachmentService_GetShipmentAttachment_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -57,7 +66,11 @@ var (
 	einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments         = &cobra.Command{
 		Use: "ListShipmentAttachments",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipmentAttachmentService.ListShipmentAttachments")
+			response, err := einride_shipper_v1beta1_ShipmentAttachmentServiceClient.ListShipmentAttachments(cmd.Context(), &einride_shipper_v1beta1_ShipmentAttachmentService_ListShipmentAttachments_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

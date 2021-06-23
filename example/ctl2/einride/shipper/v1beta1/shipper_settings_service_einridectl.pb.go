@@ -1,12 +1,13 @@
 package shipperv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/shipper/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.shipper.v1beta1.ShipperSettingsService.
@@ -35,7 +36,11 @@ var (
 	einride_shipper_v1beta1_ShipperSettingsService_GetShipperSettings         = &cobra.Command{
 		Use: "GetShipperSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperSettingsService.GetShipperSettings")
+			response, err := einride_shipper_v1beta1_ShipperSettingsServiceClient.GetShipperSettings(cmd.Context(), &einride_shipper_v1beta1_ShipperSettingsService_GetShipperSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -47,7 +52,11 @@ var (
 	einride_shipper_v1beta1_ShipperSettingsService_UpdateShipperSettings         = &cobra.Command{
 		Use: "UpdateShipperSettings",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.shipper.v1beta1.ShipperSettingsService.UpdateShipperSettings")
+			response, err := einride_shipper_v1beta1_ShipperSettingsServiceClient.UpdateShipperSettings(cmd.Context(), &einride_shipper_v1beta1_ShipperSettingsService_UpdateShipperSettings_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

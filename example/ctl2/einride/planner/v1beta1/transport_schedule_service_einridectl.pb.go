@@ -1,11 +1,12 @@
 package plannerv1beta1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1beta1 "github.com/einride/proto/gen/go/einride/planner/v1beta1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
-	log "log"
 )
 
 // einride.planner.v1beta1.TransportScheduleService.
@@ -34,7 +35,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_CreateTransportSchedule         = &cobra.Command{
 		Use: "CreateTransportSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.CreateTransportSchedule")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.CreateTransportSchedule(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_CreateTransportSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -46,7 +51,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_GetTransportSchedule         = &cobra.Command{
 		Use: "GetTransportSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.GetTransportSchedule")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.GetTransportSchedule(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_GetTransportSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -58,7 +67,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_UpdateTransportSchedule         = &cobra.Command{
 		Use: "UpdateTransportSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.UpdateTransportSchedule")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.UpdateTransportSchedule(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_UpdateTransportSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -70,7 +83,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_ListTransportSchedules         = &cobra.Command{
 		Use: "ListTransportSchedules",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.ListTransportSchedules")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.ListTransportSchedules(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_ListTransportSchedules_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -82,7 +99,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_BatchGetTransportSchedules         = &cobra.Command{
 		Use: "BatchGetTransportSchedules",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.BatchGetTransportSchedules")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.BatchGetTransportSchedules(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_BatchGetTransportSchedules_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -94,7 +115,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_DeleteTransportSchedule         = &cobra.Command{
 		Use: "DeleteTransportSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.DeleteTransportSchedule")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.DeleteTransportSchedule(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_DeleteTransportSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
@@ -106,7 +131,11 @@ var (
 	einride_planner_v1beta1_TransportScheduleService_UndeleteTransportSchedule         = &cobra.Command{
 		Use: "UndeleteTransportSchedule",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.planner.v1beta1.TransportScheduleService.UndeleteTransportSchedule")
+			response, err := einride_planner_v1beta1_TransportScheduleServiceClient.UndeleteTransportSchedule(cmd.Context(), &einride_planner_v1beta1_TransportScheduleService_UndeleteTransportSchedule_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}

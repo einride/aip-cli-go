@@ -1,9 +1,8 @@
 package ctl2
 
 import (
-	os "os"
-
 	cobra "github.com/spf13/cobra"
+	os "os"
 )
 
 var completionCmd = &cobra.Command{
@@ -47,7 +46,7 @@ Zsh:
 
   # You will need to start a new shell for this setup to take effect.
 
-Fish:
+fish:
 
   $ einridectl2 completion fish | source
 

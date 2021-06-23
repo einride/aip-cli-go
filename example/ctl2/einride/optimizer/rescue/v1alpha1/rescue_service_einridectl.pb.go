@@ -1,12 +1,13 @@
 package rescuev1alpha1
 
 import (
+	fmt "fmt"
 	ctl "github.com/einride/ctl"
 	v1alpha1 "github.com/einride/proto/gen/go/einride/optimizer/rescue/v1alpha1"
 	cobra "github.com/spf13/cobra"
+	protojson "google.golang.org/protobuf/encoding/protojson"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	log "log"
 )
 
 // einride.optimizer.rescue.v1alpha1.RescueService.
@@ -35,7 +36,11 @@ var (
 	einride_optimizer_rescue_v1alpha1_RescueService_ComputeVehiclePlans         = &cobra.Command{
 		Use: "ComputeVehiclePlans",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("einride.optimizer.rescue.v1alpha1.RescueService.ComputeVehiclePlans")
+			response, err := einride_optimizer_rescue_v1alpha1_RescueServiceClient.ComputeVehiclePlans(cmd.Context(), &einride_optimizer_rescue_v1alpha1_RescueService_ComputeVehiclePlans_Request)
+			if err != nil {
+				return err
+			}
+			fmt.Println(protojson.Format(response))
 			return nil
 		},
 	}
