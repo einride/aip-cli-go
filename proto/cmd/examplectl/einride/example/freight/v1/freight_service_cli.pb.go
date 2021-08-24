@@ -49,11 +49,18 @@ func newFreightServiceGetShipperCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the shipper to retrieve",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request GetShipperRequest
@@ -94,6 +101,7 @@ func newFreightServiceListShippersCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_PageSize protoflag.Int32
 	cmd.Flags().Var(
 		&flag_PageSize,
@@ -149,6 +157,7 @@ func newFreightServiceCreateShipperCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Shipper_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipper_Name,
@@ -206,6 +215,7 @@ func newFreightServiceUpdateShipperCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Shipper_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipper_Name,
@@ -274,11 +284,18 @@ func newFreightServiceDeleteShipperCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the shipper to delete",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request DeleteShipperRequest
@@ -319,11 +336,18 @@ func newFreightServiceGetSiteCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the site to retrieve",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request GetSiteRequest
@@ -364,11 +388,18 @@ func newFreightServiceListSitesCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Parent protoflag.String
 	cmd.Flags().Var(
 		&flag_Parent,
 		"parent",
 		"the resource name of the parent, which owns this collection of sites",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"parent",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
 	)
 	var flag_PageSize protoflag.Int32
 	cmd.Flags().Var(
@@ -429,6 +460,7 @@ func newFreightServiceCreateSiteCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Parent protoflag.String
 	cmd.Flags().Var(
 		&flag_Parent,
@@ -520,6 +552,7 @@ func newFreightServiceUpdateSiteCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Site_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Site_Name,
@@ -612,11 +645,18 @@ func newFreightServiceDeleteSiteCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the site to delete",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request DeleteSiteRequest
@@ -657,17 +697,30 @@ func newFreightServiceBatchGetSitesCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Parent protoflag.String
 	cmd.Flags().Var(
 		&flag_Parent,
 		"parent",
 		"the parent resource shared by all sites being retrieved",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"parent",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
+	)
 	var flag_Names protoflag.StringList
 	cmd.Flags().Var(
 		&flag_Names,
 		"names",
 		"the names of the sites to retrieve",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"names",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request BatchGetSitesRequest
@@ -712,11 +765,18 @@ func newFreightServiceGetShipmentCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the shipment to retrieve",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/shipments/{shipment}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request GetShipmentRequest
@@ -757,11 +817,18 @@ func newFreightServiceListShipmentsCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Parent protoflag.String
 	cmd.Flags().Var(
 		&flag_Parent,
 		"parent",
 		"the resource name of the parent, which owns this collection of shipments",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"parent",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
 	)
 	var flag_PageSize protoflag.Int32
 	cmd.Flags().Var(
@@ -822,6 +889,7 @@ func newFreightServiceCreateShipmentCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Parent protoflag.String
 	cmd.Flags().Var(
 		&flag_Parent,
@@ -840,11 +908,23 @@ func newFreightServiceCreateShipmentCommand() *cobra.Command {
 		"shipment.origin-site",
 		"the resource name of the origin site of the shipment",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.origin-site",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
+	)
 	var flag_Shipment_DestinationSite protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipment_DestinationSite,
 		"shipment.destination-site",
 		"the resource name of the destination site of the shipment",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.destination-site",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	var flag_Shipment_PickupEarliestTime protoflag.Timestamp
 	cmd.Flags().Var(
@@ -955,6 +1035,7 @@ func newFreightServiceUpdateShipmentCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Shipment_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipment_Name,
@@ -967,11 +1048,23 @@ func newFreightServiceUpdateShipmentCommand() *cobra.Command {
 		"shipment.origin-site",
 		"the resource name of the origin site of the shipment",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.origin-site",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
+	)
 	var flag_Shipment_DestinationSite protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipment_DestinationSite,
 		"shipment.destination-site",
 		"the resource name of the destination site of the shipment",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.destination-site",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	var flag_Shipment_PickupEarliestTime protoflag.Timestamp
 	cmd.Flags().Var(
@@ -1089,11 +1182,18 @@ func newFreightServiceDeleteShipmentCommand() *cobra.Command {
 	}
 	var fromFile string
 	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
+	_ = cmd.MarkFlagFilename("from-file", "json")
 	var flag_Name protoflag.String
 	cmd.Flags().Var(
 		&flag_Name,
 		"name",
 		"the resource name of the shipment to delete",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/shipments/{shipment}",
+		),
 	)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var request DeleteShipmentRequest

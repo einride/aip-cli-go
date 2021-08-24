@@ -5,14 +5,18 @@ import (
 	"strconv"
 
 	"go.einride.tech/aip/fieldbehavior"
+	"go.einride.tech/aip/reflect/aipreflect"
 	"go.einride.tech/protoc-gen-go-cli/protoflag"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 type newMethodCommandCodeGenerator struct {
 	gen     *protogen.Plugin
+	files   *protoregistry.Files
 	file    *protogen.File
 	service *protogen.Service
 	method  *protogen.Method
@@ -51,6 +55,7 @@ func (c newMethodCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) e
 	g.P("}")
 	g.P("var fromFile string")
 	g.P(`cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")`)
+	g.P(`_ = cmd.MarkFlagFilename("from-file", "json")`)
 	for _, field := range c.method.Input.Fields {
 		if err := c.generateFieldFlag(g, field, nil); err != nil {
 			return err
@@ -255,6 +260,32 @@ func (c newMethodCommandCodeGenerator) generateFlag(
 	g.P(strconv.Quote(getFlagName(field, parents)), ",")
 	g.P(strconv.Quote(getFlagDescription(field)), ",")
 	g.P(")")
+	if resourceReference := proto.GetExtension(
+		field.Desc.Options(), annotations.E_ResourceReference,
+	).(*annotations.ResourceReference); resourceReference != nil {
+		aipreflect.RangeResourceDescriptorsInPackage(
+			c.files,
+			c.file.Desc.Package(),
+			func(resource *annotations.ResourceDescriptor) bool {
+				if resource.GetType() == resourceReference.GetType() && len(resource.GetPattern()) > 0 {
+					resourceNameCompletionFunc := g.QualifiedGoIdent(protogen.GoIdent{
+						GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+						GoName:       "ResourceNameCompletionFunc",
+					})
+					g.P(`_ = cmd.RegisterFlagCompletionFunc(`)
+					g.P(strconv.Quote(getFlagName(field, parents)), ",")
+					g.P(resourceNameCompletionFunc, "(")
+					for _, pattern := range resource.GetPattern() {
+						g.P(strconv.Quote(pattern), ",")
+					}
+					g.P("),")
+					g.P(")")
+					return false
+				}
+				return true
+			},
+		)
+	}
 	return nil
 }
 
