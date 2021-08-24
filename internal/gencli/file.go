@@ -5,11 +5,17 @@ import (
 
 	"go.einride.tech/protoc-gen-go-cli/cli"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 const generateFilenameSuffix = "_cli.pb.go"
 
-func GenerateFile(gen *protogen.Plugin, file *protogen.File, config cli.CompilerConfig) error {
+func GenerateFile(
+	gen *protogen.Plugin,
+	files *protoregistry.Files,
+	file *protogen.File,
+	config cli.CompilerConfig,
+) error {
 	g := gen.NewGeneratedFile(file.GeneratedFilenamePrefix+generateFilenameSuffix, file.GoImportPath)
 	g.Skip()
 	g.P("package ", file.GoPackageName)
@@ -18,6 +24,7 @@ func GenerateFile(gen *protogen.Plugin, file *protogen.File, config cli.Compiler
 		g.Unskip()
 		if err := (newServiceCommandCodeGenerator{
 			gen:     gen,
+			files:   files,
 			file:    file,
 			service: service,
 		}.generateCode(g)); err != nil {

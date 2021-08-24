@@ -3,6 +3,7 @@ package gencli
 import (
 	"go.einride.tech/protoc-gen-go-cli/cli"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 type Config struct {
@@ -12,12 +13,18 @@ type Config struct {
 }
 
 func Run(gen *protogen.Plugin, config cli.CompilerConfig) error {
+	var files protoregistry.Files
+	for _, file := range gen.Files {
+		if err := files.RegisterFile(file.Desc); err != nil {
+			return err
+		}
+	}
 	if err := config.Validate(); err != nil {
 		return err
 	}
 	for _, f := range gen.Files {
 		if f.Generate {
-			if err := GenerateFile(gen, f, config); err != nil {
+			if err := GenerateFile(gen, &files, f, config); err != nil {
 				return err
 			}
 		}

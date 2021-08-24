@@ -6,10 +6,12 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 type newServiceCommandCodeGenerator struct {
 	gen     *protogen.Plugin
+	files   *protoregistry.Files
 	file    *protogen.File
 	service *protogen.Service
 }
@@ -60,6 +62,7 @@ func (c newServiceCommandCodeGenerator) newMethodCommand(method *protogen.Method
 	return newMethodCommandCodeGenerator{
 		gen:     c.gen,
 		file:    c.file,
+		files:   c.files,
 		service: c.service,
 		method:  method,
 	}
