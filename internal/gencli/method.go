@@ -285,6 +285,25 @@ func (c newMethodCommandCodeGenerator) generateFlag(
 				return true
 			},
 		)
+	} else if field.Desc.Kind() == protoreflect.StringKind &&
+		field.Desc.Name() == "name" &&
+		field.Desc.Cardinality() != protoreflect.Repeated {
+		if resource := proto.GetExtension(
+			field.Parent.Desc.Options(), annotations.E_Resource,
+		).(*annotations.ResourceDescriptor); resource != nil && len(resource.GetPattern()) > 0 {
+			resourceNameCompletionFunc := g.QualifiedGoIdent(protogen.GoIdent{
+				GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+				GoName:       "ResourceNameCompletionFunc",
+			})
+			g.P(`_ = cmd.RegisterFlagCompletionFunc(`)
+			g.P(strconv.Quote(getFlagName(field, parents)), ",")
+			g.P(resourceNameCompletionFunc, "(")
+			for _, pattern := range resource.GetPattern() {
+				g.P(strconv.Quote(pattern), ",")
+			}
+			g.P("),")
+			g.P(")")
+		}
 	}
 	return nil
 }

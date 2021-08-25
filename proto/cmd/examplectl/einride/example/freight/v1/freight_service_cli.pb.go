@@ -164,6 +164,12 @@ func newFreightServiceCreateShipperCommand() *cobra.Command {
 		"shipper.name",
 		"the resource name of the shipper",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipper.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
+	)
 	var flag_Shipper_DisplayName protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipper_DisplayName,
@@ -221,6 +227,12 @@ func newFreightServiceUpdateShipperCommand() *cobra.Command {
 		&flag_Shipper_Name,
 		"shipper.name",
 		"the resource name of the shipper",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipper.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}",
+		),
 	)
 	var flag_Shipper_DisplayName protoflag.String
 	cmd.Flags().Var(
@@ -473,6 +485,12 @@ func newFreightServiceCreateSiteCommand() *cobra.Command {
 		"site.name",
 		"the resource name of the site",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"site.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
+	)
 	var flag_Site_DisplayName protoflag.String
 	cmd.Flags().Var(
 		&flag_Site_DisplayName,
@@ -558,6 +576,12 @@ func newFreightServiceUpdateSiteCommand() *cobra.Command {
 		&flag_Site_Name,
 		"site.name",
 		"the resource name of the site",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"site.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/sites/{site}",
+		),
 	)
 	var flag_Site_DisplayName protoflag.String
 	cmd.Flags().Var(
@@ -902,6 +926,12 @@ func newFreightServiceCreateShipmentCommand() *cobra.Command {
 		"shipment.name",
 		"the resource name of the shipment",
 	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/shipments/{shipment}",
+		),
+	)
 	var flag_Shipment_OriginSite protoflag.String
 	cmd.Flags().Var(
 		&flag_Shipment_OriginSite,
@@ -1041,6 +1071,12 @@ func newFreightServiceUpdateShipmentCommand() *cobra.Command {
 		&flag_Shipment_Name,
 		"shipment.name",
 		"the resource name of the shipment",
+	)
+	_ = cmd.RegisterFlagCompletionFunc(
+		"shipment.name",
+		cli.ResourceNameCompletionFunc(
+			"shippers/{shipper}/shipments/{shipment}",
+		),
 	)
 	var flag_Shipment_OriginSite protoflag.String
 	cmd.Flags().Var(
