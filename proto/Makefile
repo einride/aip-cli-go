@@ -16,7 +16,7 @@ build/protoc-gen-go: ../go.mod
 
 build/protoc-gen-go-grpc: $(abspath $(lastword $(MAKEFILE_LIST)))
 	$(info [$@] building binary...)
-	@GOBIN=$(abspath $(dir $@)) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
+	@GOBIN=$(abspath $(dir $@)) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0
 
 .PHONY: build/protoc-gen-go-cli
 build/protoc-gen-go-cli:
