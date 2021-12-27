@@ -10,6 +10,7 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/credentials/oauth"
 )
 
@@ -54,7 +55,7 @@ func dialInsecure(ctx context.Context, config *Config) (*grpc.ClientConn, error)
 		return nil, fmt.Errorf("must connect to localhost with --insecure and --token")
 	}
 	Log(ctx, "insecure address: %s", config.Runtime.Address)
-	opts := []grpc.DialOption{grpc.WithInsecure()}
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(insecureTokenCredentials(token)))
 	}
