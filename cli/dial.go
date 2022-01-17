@@ -16,15 +16,15 @@ import (
 
 func Dial(ctx context.Context) (*grpc.ClientConn, error) {
 	config := ConfigFromContext(ctx)
+	opts := []grpc.DialOption{grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(config.Runtime.MaxRecvSize))}
 	if config.Runtime.Insecure {
-		return dialInsecure(ctx, config)
+		return dialInsecure(ctx, config, opts)
 	}
 	address, ok := config.GetAddress()
 	if !ok {
 		return nil, fmt.Errorf("dial: no address")
 	}
 	Log(ctx, "address: %s", address)
-	var opts []grpc.DialOption
 	if token, ok := config.GetToken(); ok {
 		opts = append(
 			opts,
@@ -46,7 +46,7 @@ func Dial(ctx context.Context) (*grpc.ClientConn, error) {
 	return grpc.DialContext(ctx, withDefaultPort(address, 443), opts...)
 }
 
-func dialInsecure(ctx context.Context, config *Config) (*grpc.ClientConn, error) {
+func dialInsecure(ctx context.Context, config *Config, opts []grpc.DialOption) (*grpc.ClientConn, error) {
 	token, hasToken := config.GetToken()
 	switch {
 	case config.Runtime.Address == "":
@@ -55,10 +55,11 @@ func dialInsecure(ctx context.Context, config *Config) (*grpc.ClientConn, error)
 		return nil, fmt.Errorf("must connect to localhost with --insecure and --token")
 	}
 	Log(ctx, "insecure address: %s", config.Runtime.Address)
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(insecureTokenCredentials(token)))
 	}
+	opts = append(opts, grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(config.Runtime.MaxRecvSize)))
 	return grpc.DialContext(ctx, withDefaultPort(config.Runtime.Address, 443), opts...)
 }
 
