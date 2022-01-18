@@ -45,7 +45,7 @@ func ResourceNameListCompletionFunc(patterns ...string) CompletionFunc {
 	}
 }
 
-func CompleteResourceName(toComplete string, pattern string) (string, bool) {
+func CompleteResourceName(toComplete, pattern string) (string, bool) {
 	toCompleteSegments := strings.Split(toComplete, "/")
 	patternSegments := strings.Split(pattern, "/")
 	if len(toCompleteSegments) > len(patternSegments) {

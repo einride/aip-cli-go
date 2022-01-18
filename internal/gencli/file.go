@@ -18,8 +18,8 @@ func GenerateFile(
 ) error {
 	g := gen.NewGeneratedFile(file.GeneratedFilenamePrefix+generateFilenameSuffix, file.GoImportPath)
 	g.Skip()
-	g.P("package ", file.GoPackageName)
 	generateGeneratedFileHeader(g, gen)
+	g.P("package ", file.GoPackageName)
 	for _, service := range file.Services {
 		g.Unskip()
 		if err := (newServiceCommandCodeGenerator{

@@ -23,7 +23,7 @@ func Dial(ctx context.Context) (*grpc.ClientConn, error) {
 	if !ok {
 		return nil, fmt.Errorf("dial: no address")
 	}
-	Log(ctx, "address: %s", address)
+	Logf(ctx, "address: %s", address)
 	var opts []grpc.DialOption
 	if token, ok := config.GetToken(); ok {
 		opts = append(
@@ -54,7 +54,7 @@ func dialInsecure(ctx context.Context, config *Config) (*grpc.ClientConn, error)
 	case hasToken && !strings.HasPrefix(config.Runtime.Address, "localhost:"):
 		return nil, fmt.Errorf("must connect to localhost with --insecure and --token")
 	}
-	Log(ctx, "insecure address: %s", config.Runtime.Address)
+	Logf(ctx, "insecure address: %s", config.Runtime.Address)
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(insecureTokenCredentials(token)))
