@@ -15,8 +15,8 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config cli.CompilerConfig) er
 		return fmt.Errorf("param root requires param module to be provided")
 	}
 	g := gen.NewGeneratedFile(path.Join(module, "root.go"), "")
-	g.P("package main")
 	generateGeneratedFileHeader(g, gen)
+	g.P("package main")
 	cobraCommand := g.QualifiedGoIdent(protogen.GoIdent{
 		GoImportPath: "github.com/spf13/cobra",
 		GoName:       "Command",

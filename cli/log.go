@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func Log(ctx context.Context, format string, args ...interface{}) {
+func Logf(ctx context.Context, format string, args ...interface{}) {
 	if !ConfigFromContext(ctx).Runtime.Verbose {
 		return
 	}

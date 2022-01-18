@@ -1,8 +1,10 @@
-# protoc-gen-go-cli
+protoc-gen-go-cli
+=================
 
 Generate command line interfaces to your gRPC services.
 
-## How to
+How to
+------
 
 ### Step 1: Install the plugin
 
@@ -12,10 +14,7 @@ $ GOBIN=$PWD/build go install go.einride.tech/protoc-gen-go-cli
 
 ### Step 2: Configure the code generator
 
-The following example uses a [buf generate][buf-generate] template to
-configure the CLI generator.
-
-[buf-generate]: https://docs.buf.build/generate/usage
+The following example uses a [buf generate](https://docs.buf.build/generate/usage) template to configure the CLI generator.
 
 [buf.gen.example.yaml](./proto/buf.gen.example.yaml):
 

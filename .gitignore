@@ -1,5 +1,3 @@
-build
-bin
-tools/*/*/
-example/ctl
 .idea/
+example/ctl/
+.mage/tools/

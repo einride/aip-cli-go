@@ -15,6 +15,7 @@ func GenerateMainFile(gen *protogen.Plugin, config cli.CompilerConfig) error {
 		return fmt.Errorf("param main requires param module to be provided")
 	}
 	g := gen.NewGeneratedFile(path.Join(module, "main.go"), "")
+	generateGeneratedFileHeader(g, gen)
 	cliWithConfig := g.QualifiedGoIdent(protogen.GoIdent{
 		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
 		GoName:       "WithConfig",
