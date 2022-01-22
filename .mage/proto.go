@@ -5,8 +5,10 @@ package main
 
 import (
 	"context"
+
+	"github.com/go-logr/logr"
 	"github.com/magefile/mage/mg"
-	"go.einride.tech/mage-tools/mglog"
+	"go.einride.tech/mage-tools/mglogr"
 	"go.einride.tech/mage-tools/mgpath"
 	"go.einride.tech/mage-tools/mgtool"
 	"go.einride.tech/mage-tools/tools/mgbuf"
@@ -27,19 +29,24 @@ func (Proto) All() {
 }
 
 func (Proto) BufLint(ctx context.Context) error {
-	mglog.Logger("buf-lint").Info("linting protos...")
+	ctx = logr.NewContext(ctx, mglogr.New("buf-lint"))
+	logr.FromContextOrDiscard(ctx).Info("linting proto files...")
 	cmd := mgbuf.Command(ctx, "lint")
 	cmd.Dir = mgpath.FromGitRoot("proto")
 	return cmd.Run()
 }
 
-func (Proto) ClangFormatProto() error {
-	mglog.Logger("clang-format-proto").Info("formatting protos...")
-	cmd := mgclangformat.FormatProtoCommand(mgpath.FromGitRoot("proto"))
+func (Proto) ClangFormatProto(ctx context.Context) error {
+	ctx = logr.NewContext(ctx, mglogr.New("clang-format-proto"))
+	logr.FromContextOrDiscard(ctx).Info("formatting proto files...")
+	protoFiles := mgpath.FindFilesWithExtension(mgpath.FromGitRoot("proto"), ".proto")
+	cmd := mgclangformat.FormatProtoCommand(ctx, protoFiles...)
 	return cmd.Run()
 }
 
 func (Proto) ProtocGenGo(ctx context.Context) error {
+	ctx = logr.NewContext(ctx, mglogr.New("protoc-gen-go"))
+	logr.FromContextOrDiscard(ctx).Info("installing...")
 	_, err := mgtool.GoInstallWithModfile(
 		ctx,
 		"google.golang.org/protobuf/cmd/protoc-gen-go",
@@ -49,13 +56,17 @@ func (Proto) ProtocGenGo(ctx context.Context) error {
 }
 
 func (Proto) ProtocGenGoGRPC(ctx context.Context) error {
+	ctx = logr.NewContext(ctx, mglogr.New("protoc-gen-go-grpc"))
+	logr.FromContextOrDiscard(ctx).Info("installing...")
 	_, err := mgtool.GoInstall(ctx, "google.golang.org/grpc/cmd/protoc-gen-go-grpc", "v1.2.0")
 	return err
 }
 
-func (Proto) ProtocGenGoCLI() error {
-	mglog.Logger("protoc-gen-go-aip").Info("building binary...")
+func (Proto) ProtocGenGoCLI(ctx context.Context) error {
+	ctx = logr.NewContext(ctx, mglogr.New("protoc-gen-go-cli"))
+	logr.FromContextOrDiscard(ctx).Info("building binary...")
 	return mgtool.Command(
+		ctx,
 		"go",
 		"build",
 		"-o",
@@ -68,7 +79,8 @@ func (Proto) BufGenerate(ctx context.Context) error {
 	mg.Deps(
 		Proto.ProtocGenGo,
 	)
-	mglog.Logger("buf-generate").Info("generating protobuf stubs...")
+	ctx = logr.NewContext(ctx, mglogr.New("buf-generate"))
+	logr.FromContextOrDiscard(ctx).Info("generating proto stubs...")
 	cmd := mgbuf.Command(ctx, "generate", "--template", "buf.gen.yaml", "--path", "einride")
 	cmd.Dir = mgpath.FromGitRoot("proto")
 	return cmd.Run()
@@ -80,7 +92,8 @@ func (Proto) BufGenerateExample(ctx context.Context) error {
 		Proto.ProtocGenGoGRPC,
 		Proto.ProtocGenGoCLI,
 	)
-	mglog.Logger("buf-generate-example").Info("generating example protobuf stubs...")
+	ctx = logr.NewContext(ctx, mglogr.New("buf-generate-example"))
+	logr.FromContextOrDiscard(ctx).Info("generating example proto stubs...")
 	cmd := mgbuf.Command(
 		ctx,
 		"generate",
