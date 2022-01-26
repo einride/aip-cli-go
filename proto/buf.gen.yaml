@@ -11,4 +11,4 @@ plugins:
   - name: go
     out: gen/go
     opt: module=go.einride.tech/protoc-gen-go-cli/proto/gen
-    path: ../.mage/tools/bin/protoc-gen-go
+    path: ../.sage/bin/protoc-gen-go
