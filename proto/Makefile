@@ -3,10 +3,10 @@
 
 .DEFAULT_GOAL := all
 
-sagefile := ../.sage/tools/bin/sagefile
+sagefile := ../.sage/bin/sagefile
 
 $(sagefile): ../.sage/go.mod ../.sage/*.go
-	@cd ../.sage && go run go.einride.tech/sage/cmd/build
+	@cd ../.sage && go mod tidy && go run .
 
 .PHONY: clean-sage
 clean-sage:

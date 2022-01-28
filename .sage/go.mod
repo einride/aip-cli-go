@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/go-logr/logr v1.2.2
-	go.einride.tech/sage v0.50.0
+	go.einride.tech/sage v0.55.0
 )
 
 require (
