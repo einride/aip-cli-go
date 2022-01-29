@@ -341,6 +341,12 @@ func (c newMethodCommandCodeGenerator) setRequestFieldIfChanged(
 			g.P("r = r.Mutable(r.Descriptor().Fields().ByName(", strconv.Quote(string(parent.Desc.Name())), ")).Message()")
 		}
 	}
-	g.P("r.Set(r.Descriptor().Fields().ByName(", strconv.Quote(string(field.Desc.Name())), "), ", getFlagVariableName(field, parents), ".ProtoReflectValue())")
+	g.P(
+		"r.Set(r.Descriptor().Fields().ByName(",
+		strconv.Quote(string(field.Desc.Name())),
+		"), ",
+		getFlagVariableName(field, parents),
+		".ProtoReflectValue())",
+	)
 	g.P("}")
 }

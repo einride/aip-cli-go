@@ -111,7 +111,7 @@ ResultLoop:
 			}
 		}
 		result = protoreflect.FullName(candidate)
-		i += 1
+		i++
 	}
 	return result
 }

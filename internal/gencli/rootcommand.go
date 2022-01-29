@@ -38,7 +38,7 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config cli.CompilerConfig) er
 		for _, service := range file.Services {
 			newCommandFunction := g.QualifiedGoIdent(protogen.GoIdent{
 				GoImportPath: file.GoImportPath,
-				GoName:       "New" + string(service.GoName) + "Command",
+				GoName:       "New" + service.GoName + "Command",
 			})
 			serviceCommand := getServiceCommandUse(servicesByName, service)
 			g.P("cmd.AddCommand(", newCommandFunction, "(", strconv.Quote(serviceCommand), "))")
