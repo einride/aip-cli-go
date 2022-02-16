@@ -128,6 +128,11 @@ func (c newMethodCommandCodeGenerator) generateFieldFlag(
 			return c.generateFlag(g, field, parents, &protoflag.StringList{})
 		}
 		return c.generateFlag(g, field, parents, &protoflag.String{})
+	case protoreflect.FloatKind:
+		if field.Desc.IsList() {
+			return c.generateFlag(g, field, parents, &protoflag.FloatList{})
+		}
+		return c.generateFlag(g, field, parents, &protoflag.Float{})
 	case protoreflect.DoubleKind:
 		if field.Desc.IsList() {
 			return c.generateFlag(g, field, parents, &protoflag.DoubleList{})
