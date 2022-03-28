@@ -5,12 +5,13 @@
 
 sagefile := ../.sage/bin/sagefile
 
-.PHONY: $(sagefile)
-$(sagefile):
+$(sagefile): ../.sage/go.mod ../.sage/*.go
 	@cd ../.sage && go mod tidy && go run .
 
 .PHONY: sage
-sage: $(sagefile)
+sage:
+	@git clean -fxq $(sagefile)
+	@$(MAKE) $(sagefile)
 
 .PHONY: update-sage
 update-sage:
@@ -24,6 +25,10 @@ clean-sage:
 all: $(sagefile)
 	@$(sagefile) Proto:All
 
+.PHONY: buf-format
+buf-format: $(sagefile)
+	@$(sagefile) Proto:BufFormat
+
 .PHONY: buf-generate
 buf-generate: $(sagefile)
 	@$(sagefile) Proto:BufGenerate
@@ -35,10 +40,6 @@ buf-generate-example: $(sagefile)
 .PHONY: buf-lint
 buf-lint: $(sagefile)
 	@$(sagefile) Proto:BufLint
-
-.PHONY: clang-format-proto
-clang-format-proto: $(sagefile)
-	@$(sagefile) Proto:ClangFormatProto
 
 .PHONY: protoc-gen-go
 protoc-gen-go: $(sagefile)
