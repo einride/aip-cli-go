@@ -3,7 +3,7 @@ module go.einride.tech/protoc-gen-go-cli
 go 1.17
 
 require (
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.2.0
 	go.einride.tech/aip v0.54.1
