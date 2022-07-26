@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	protoflagv1 "go.einride.tech/protoc-gen-go-cli/proto/gen/go/einride/protoflag/v1"
+	aipcliv1 "go.buf.build/protocolbuffers/go/einride/aip-cli/einride/aipcli/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -43,6 +43,6 @@ func (v *BoolList) Type() string {
 }
 
 func (v *BoolList) ProtoReflectValue() protoreflect.Value {
-	tmp := protoflagv1.Syntax{RepeatedBool: v.Value}
+	tmp := aipcliv1.Values{RepeatedBool: v.Value}
 	return tmp.ProtoReflect().Get(tmp.ProtoReflect().Descriptor().Fields().ByName("repeated_bool"))
 }

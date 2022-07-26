@@ -49,10 +49,6 @@ all: $(sagefile)
 buf-format: $(sagefile)
 	@$(sagefile) Proto:BufFormat
 
-.PHONY: buf-generate
-buf-generate: $(sagefile)
-	@$(sagefile) Proto:BufGenerate
-
 .PHONY: buf-generate-example
 buf-generate-example: $(sagefile)
 	@$(sagefile) Proto:BufGenerateExample
@@ -61,14 +57,14 @@ buf-generate-example: $(sagefile)
 buf-lint: $(sagefile)
 	@$(sagefile) Proto:BufLint
 
+.PHONY: buf-push
+buf-push: $(sagefile)
+	@$(sagefile) Proto:BufPush
+
 .PHONY: protoc-gen-go
 protoc-gen-go: $(sagefile)
 	@$(sagefile) Proto:ProtocGenGo
 
-.PHONY: protoc-gen-go-cli
-protoc-gen-go-cli: $(sagefile)
-	@$(sagefile) Proto:ProtocGenGoCLI
-
-.PHONY: protoc-gen-go-grpc
-protoc-gen-go-grpc: $(sagefile)
-	@$(sagefile) Proto:ProtocGenGoGRPC
+.PHONY: protoc-gen-go-aipcli
+protoc-gen-go-aipcli: $(sagefile)
+	@$(sagefile) Proto:ProtocGenGoAIPCLI

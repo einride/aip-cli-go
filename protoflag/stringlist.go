@@ -3,7 +3,7 @@ package protoflag
 import (
 	"strings"
 
-	protoflagv1 "go.einride.tech/protoc-gen-go-cli/proto/gen/go/einride/protoflag/v1"
+	aipcliv1 "go.buf.build/protocolbuffers/go/einride/aip-cli/einride/aipcli/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -27,6 +27,6 @@ func (v *StringList) Type() string {
 }
 
 func (v *StringList) ProtoReflectValue() protoreflect.Value {
-	tmp := protoflagv1.Syntax{RepeatedString: v.Value}
+	tmp := aipcliv1.Values{RepeatedString: v.Value}
 	return tmp.ProtoReflect().Get(tmp.ProtoReflect().Descriptor().Fields().ByName("repeated_string"))
 }

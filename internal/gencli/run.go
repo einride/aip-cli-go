@@ -1,7 +1,7 @@
 package gencli
 
 import (
-	"go.einride.tech/protoc-gen-go-cli/cli"
+	"go.einride.tech/aip-cli/aipcli"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoregistry"
 )
@@ -12,7 +12,7 @@ type Config struct {
 	DefaultHost string
 }
 
-func Run(gen *protogen.Plugin, config cli.CompilerConfig) error {
+func Run(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
 	var files protoregistry.Files
 	for _, file := range gen.Files {
 		if err := files.RegisterFile(file.Desc); err != nil {
