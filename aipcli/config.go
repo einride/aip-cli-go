@@ -1,4 +1,4 @@
-package cli
+package aipcli
 
 import (
 	"context"
@@ -56,7 +56,7 @@ func getGoogleCloudIdentityToken() (string, bool) {
 func ConfigFromContext(ctx context.Context) *Config {
 	config, ok := ctx.Value(configContextKey{}).(*Config)
 	if !ok {
-		panic("cli.ConfigFromContext was called with a context without a Config")
+		panic("aipcli.ConfigFromContext was called with a context without a Config")
 	}
 	return config
 }

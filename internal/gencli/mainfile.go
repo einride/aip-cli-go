@@ -5,11 +5,11 @@ import (
 	"path"
 	"strings"
 
-	"go.einride.tech/protoc-gen-go-cli/cli"
+	"go.einride.tech/aip-cli/aipcli"
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-func GenerateMainFile(gen *protogen.Plugin, config cli.CompilerConfig) error {
+func GenerateMainFile(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
 	module, ok := getModuleParam(gen)
 	if !ok {
 		return fmt.Errorf("param main requires param module to be provided")
@@ -17,7 +17,7 @@ func GenerateMainFile(gen *protogen.Plugin, config cli.CompilerConfig) error {
 	g := gen.NewGeneratedFile(path.Join(module, "main.go"), "")
 	generateGeneratedFileHeader(g, gen)
 	cliWithConfig := g.QualifiedGoIdent(protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "WithConfig",
 	})
 	contextBackground := g.QualifiedGoIdent(protogen.GoIdent{

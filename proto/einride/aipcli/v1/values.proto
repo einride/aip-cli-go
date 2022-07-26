@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package einride.protoflag.v1;
+package einride.aipcli.v1;
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-// Syntax for proto flag conversion.
-message Syntax {
+// Values for proto flag conversion.
+message Values {
   // Repeated string.
   repeated string repeated_string = 1;
   // Repeated string.

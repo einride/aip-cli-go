@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"strconv"
 
+	"go.einride.tech/aip-cli/protoflag"
 	"go.einride.tech/aip/fieldbehavior"
 	"go.einride.tech/aip/reflect/aipreflect"
-	"go.einride.tech/protoc-gen-go-cli/protoflag"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
@@ -32,7 +32,7 @@ func (c newMethodCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) e
 		GoName:       "Command",
 	})
 	cliDial := g.QualifiedGoIdent(protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "Dial",
 	})
 	newClient := g.QualifiedGoIdent(protogen.GoIdent{
@@ -83,14 +83,14 @@ func (c newMethodCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) e
 	g.P("}")
 	g.P("client := ", newClient, "(conn)")
 	logRequest := protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "LogRequest",
 	}
 	g.P(logRequest, "(cmd.Context(), &request)")
 	g.P("response, err := client.", c.method.GoName, "(cmd.Context(), &request)")
 	g.P("if err != nil {")
 	logError := protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "LogError",
 	}
 	osExit := protogen.GoIdent{
@@ -101,7 +101,7 @@ func (c newMethodCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) e
 	g.P(osExit, "(1)")
 	g.P("}")
 	logResponse := protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "LogResponse",
 	}
 	g.P(logResponse, "(cmd.Context(), response)")
@@ -274,7 +274,7 @@ func (c newMethodCommandCodeGenerator) generateFlag(
 			func(resource *annotations.ResourceDescriptor) bool {
 				if resource.GetType() == resourceReference.GetType() && len(resource.GetPattern()) > 0 {
 					resourceNameCompletionFunc := g.QualifiedGoIdent(protogen.GoIdent{
-						GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+						GoImportPath: "go.einride.tech/aip-cli/aipcli",
 						GoName:       "ResourceNameCompletionFunc",
 					})
 					g.P(`_ = cmd.RegisterFlagCompletionFunc(`)
@@ -297,7 +297,7 @@ func (c newMethodCommandCodeGenerator) generateFlag(
 			field.Parent.Desc.Options(), annotations.E_Resource,
 		).(*annotations.ResourceDescriptor); resource != nil && len(resource.GetPattern()) > 0 {
 			resourceNameCompletionFunc := g.QualifiedGoIdent(protogen.GoIdent{
-				GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+				GoImportPath: "go.einride.tech/aip-cli/aipcli",
 				GoName:       "ResourceNameCompletionFunc",
 			})
 			g.P(`_ = cmd.RegisterFlagCompletionFunc(`)
@@ -319,7 +319,7 @@ func (c newMethodCommandCodeGenerator) generateEnumFlag(
 	parents []*protogen.Field,
 ) error {
 	enum := g.QualifiedGoIdent(protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/protoflag",
+		GoImportPath: "go.einride.tech/aip-cli/protoflag",
 		GoName:       "Enum",
 	})
 	g.P(getFlagVariableName(field, parents), " := ", enum, "{")

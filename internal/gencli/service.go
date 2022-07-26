@@ -26,7 +26,7 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		GoName:       "Command",
 	})
 	cliSetDefaultHost := g.QualifiedGoIdent(protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "SetDefaultHost",
 	})
 	g.P()

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	protoflagv1 "go.einride.tech/protoc-gen-go-cli/proto/gen/go/einride/protoflag/v1"
+	aipcliv1 "go.buf.build/protocolbuffers/go/einride/aip-cli/einride/aipcli/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -43,6 +43,6 @@ func (d *Int32List) Type() string {
 }
 
 func (d *Int32List) ProtoReflectValue() protoreflect.Value {
-	tmp := protoflagv1.Syntax{RepeatedInt32: d.Value}
+	tmp := aipcliv1.Values{RepeatedInt32: d.Value}
 	return tmp.ProtoReflect().Get(tmp.ProtoReflect().Descriptor().Fields().ByName("repeated_int32"))
 }

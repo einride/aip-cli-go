@@ -5,11 +5,11 @@ import (
 	"path"
 	"strconv"
 
-	"go.einride.tech/protoc-gen-go-cli/cli"
+	"go.einride.tech/aip-cli/aipcli"
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-func GenerateRootCommandFile(gen *protogen.Plugin, config cli.CompilerConfig) error {
+func GenerateRootCommandFile(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
 	module, ok := getModuleParam(gen)
 	if !ok {
 		return fmt.Errorf("param root requires param module to be provided")
@@ -22,7 +22,7 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config cli.CompilerConfig) er
 		GoName:       "Command",
 	})
 	cliConfig := g.QualifiedGoIdent(protogen.GoIdent{
-		GoImportPath: "go.einride.tech/protoc-gen-go-cli/cli",
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "Config",
 	})
 	g.P()
