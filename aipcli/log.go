@@ -18,7 +18,7 @@ func Logf(ctx context.Context, format string, args ...interface{}) {
 	_, _ = fmt.Fprintf(os.Stderr, ">> %s\n", fmt.Sprintf(format, args...))
 }
 
-func LogRequest(ctx context.Context, request proto.Message) {
+func logRequest(ctx context.Context, request proto.Message) {
 	if !ConfigFromContext(ctx).Runtime.Verbose {
 		return
 	}
@@ -30,11 +30,11 @@ func LogRequest(ctx context.Context, request proto.Message) {
 	}
 }
 
-func LogResponse(ctx context.Context, request proto.Message) {
+func logResponse(ctx context.Context, request proto.Message) {
 	fmt.Println(protojson.MarshalOptions{Multiline: true}.Format(request))
 }
 
-func LogError(ctx context.Context, err error) {
+func logError(ctx context.Context, err error) {
 	_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
 	for _, detail := range status.Convert(err).Details() {
 		_, _ = fmt.Fprintf(os.Stderr, "%v\n", detail)

@@ -25,6 +25,10 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config aipcli.CompilerConfig)
 		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "Config",
 	})
+	newIAMCommand := g.QualifiedGoIdent(protogen.GoIdent{
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
+		GoName:       "NewIAMCommand",
+	})
 	g.P()
 	g.P("func NewRootCommand() *", cobraCommand, " {")
 	g.P("cmd := &", cobraCommand, "{")
@@ -48,6 +52,7 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config aipcli.CompilerConfig)
 			g.P("}())")
 		}
 	}
+	g.P("cmd.AddCommand(", newIAMCommand, "())")
 	g.P("return cmd")
 	g.P("}")
 	g.P()

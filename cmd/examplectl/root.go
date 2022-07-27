@@ -18,6 +18,7 @@ func NewRootCommand() *cobra.Command {
 		cmd.Use = "freight"
 		return cmd
 	}())
+	cmd.AddCommand(aipcli.NewIAMCommand())
 	return cmd
 }
 
