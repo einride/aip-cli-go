@@ -10,11 +10,12 @@ import (
 
 type CompletionFunc func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective)
 
-func ResourceNameCompletionFunc(patterns ...string) CompletionFunc {
+func resourceNameCompletionFunc(patterns ...string) CompletionFunc {
 	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		result := make([]string, 0, len(patterns))
 		for _, pattern := range patterns {
-			if completion, ok := CompleteResourceName(toComplete, pattern); ok {
+			result = cobra.AppendActiveHelp(result, fmt.Sprintf("pattern: %s", pattern))
+			if completion, ok := completeResourceName(toComplete, pattern); ok {
 				result = append(result, fmt.Sprintf("%s\t%s", completion, pattern))
 			}
 		}
@@ -22,13 +23,14 @@ func ResourceNameCompletionFunc(patterns ...string) CompletionFunc {
 	}
 }
 
-func ResourceNameListCompletionFunc(patterns ...string) CompletionFunc {
+func resourceNameListCompletionFunc(patterns ...string) CompletionFunc {
 	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		toCompleteElements := strings.Split(toComplete, ",")
 		lastToCompleteElement := toCompleteElements[len(toCompleteElements)-1]
 		result := make([]string, 0, len(patterns))
 		for _, pattern := range patterns {
-			if elementCompletion, ok := CompleteResourceName(lastToCompleteElement, pattern); ok {
+			result = cobra.AppendActiveHelp(result, fmt.Sprintf("pattern: %s", pattern))
+			if elementCompletion, ok := completeResourceName(lastToCompleteElement, pattern); ok {
 				var completion string
 				if len(toCompleteElements) > 1 {
 					completion = strings.Join(
@@ -45,7 +47,7 @@ func ResourceNameListCompletionFunc(patterns ...string) CompletionFunc {
 	}
 }
 
-func CompleteResourceName(toComplete, pattern string) (string, bool) {
+func completeResourceName(toComplete, pattern string) (string, bool) {
 	toCompleteSegments := strings.Split(toComplete, "/")
 	patternSegments := strings.Split(pattern, "/")
 	if len(toCompleteSegments) > len(patternSegments) {
