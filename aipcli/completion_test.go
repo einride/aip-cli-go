@@ -127,7 +127,7 @@ func TestCompleteResourceName(t *testing.T) {
 		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			actual, ok := CompleteResourceName(tt.toComplete, tt.pattern)
+			actual, ok := completeResourceName(tt.toComplete, tt.pattern)
 			assert.Equal(t, tt.ok, ok)
 			assert.Equal(t, tt.completion, actual)
 		})

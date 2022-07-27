@@ -25,10 +25,6 @@ func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.Fi
 	return strings.ReplaceAll(result.String(), "_", "-")
 }
 
-func flagUsage(comment string) string {
-	return trimComment(comment)
-}
-
 func newPrimitiveValue[T any](
 	mutable func() protoreflect.Message,
 	field protoreflect.FieldDescriptor,
@@ -226,5 +222,57 @@ func (v fieldMaskValue) Set(s string) error {
 		fieldMask.Paths = append(fieldMask.Paths, strings.TrimSpace(value))
 	}
 	v.mutable().Set(v.field, protoreflect.ValueOf(fieldMask.ProtoReflect()))
+	return nil
+}
+
+type enumValue struct {
+	mutable func() protoreflect.Message
+	field   protoreflect.FieldDescriptor
+}
+
+func (v enumValue) String() string {
+	return ""
+}
+
+func (v enumValue) Type() string {
+	return "enum[" + string(v.field.Enum().Name()) + "]"
+}
+
+func (v enumValue) Set(s string) error {
+	value := v.field.Enum().Values().ByName(protoreflect.Name(s))
+	if value == nil {
+		return fmt.Errorf("no such value for %v: %v", v.field.Enum().Name(), s)
+	}
+	v.mutable().Set(v.field, protoreflect.ValueOfEnum(value.Number()))
+	return nil
+}
+
+type mapStringStringValue struct {
+	mutable func() protoreflect.Message
+	field   protoreflect.FieldDescriptor
+}
+
+func (v mapStringStringValue) String() string {
+	return ""
+}
+
+func (v mapStringStringValue) Type() string {
+	return "map<string, string>"
+}
+
+func (v mapStringStringValue) Set(s string) error {
+	pairs := strings.Split(s, ",")
+	if len(pairs) == 0 {
+		return nil
+	}
+	value := v.mutable().NewField(v.field)
+	for _, pair := range pairs {
+		keyValue := strings.SplitN(pair, "=", 2)
+		if len(keyValue) != 2 {
+			return fmt.Errorf("invalid map pair: %s", pair)
+		}
+		value.Map().Set(protoreflect.ValueOfString(keyValue[0]).MapKey(), protoreflect.ValueOfString(keyValue[1]))
+	}
+	v.mutable().Set(v.field, value)
 	return nil
 }
