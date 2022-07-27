@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/credentials/oauth"
 )
 
-func Dial(ctx context.Context) (*grpc.ClientConn, error) {
+func dial(ctx context.Context) (*grpc.ClientConn, error) {
 	config := ConfigFromContext(ctx)
 	if config.Runtime.Insecure {
 		return dialInsecure(ctx, config)

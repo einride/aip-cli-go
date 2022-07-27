@@ -12,9 +12,12 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/stoewer/go-strcase"
+	"go.einride.tech/aip/reflect/aipreflect"
+	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 // NewServiceCommand initializes a new *cobra.Command for the provided gRPC service.
@@ -44,7 +47,7 @@ func NewMethodCommand(
 	}
 	fromFile := cmd.Flags().StringP("from-file", "f", "", "path to a JSON file containing the request payload")
 	_ = cmd.MarkFlagFilename("from-file", "json")
-	setFlags(comments, cmd.Flags(), nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
+	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		if cmd.Flags().Changed("from-file") {
 			data, err := os.ReadFile(*fromFile)
@@ -55,7 +58,7 @@ func NewMethodCommand(
 				return err
 			}
 		}
-		conn, err := Dial(cmd.Context())
+		conn, err := dial(cmd.Context())
 		if err != nil {
 			return err
 		}
@@ -91,7 +94,7 @@ func methodURI(method protoreflect.MethodDescriptor) string {
 
 func setFlags(
 	comments map[protoreflect.FullName]string,
-	flags *pflag.FlagSet,
+	cmd *cobra.Command,
 	parentFields []protoreflect.FieldDescriptor,
 	msg protoreflect.MessageDescriptor,
 	mutable func() protoreflect.Message,
@@ -105,37 +108,34 @@ func setFlags(
 				if field.IsList() {
 					// TODO: Implement support for repeated durations.
 				} else {
-					flags.AddFlag(&pflag.Flag{
-						Name:  flagName(field, parentFields),
-						Usage: flagUsage(comments[field.FullName()]),
-						Value: durationValue{mutable: mutable, field: field},
+					addFlag(cmd, field, parentFields, comments[field.FullName()], durationValue{
+						mutable: mutable,
+						field:   field,
 					})
 				}
 			case "google.protobuf.Timestamp":
 				if field.IsList() {
 					// TODO: Implement support for repeated timestamps.
 				} else {
-					flags.AddFlag(&pflag.Flag{
-						Name:  flagName(field, parentFields),
-						Usage: flagUsage(comments[field.FullName()]),
-						Value: timestampValue{mutable: mutable, field: field},
+					addFlag(cmd, field, parentFields, comments[field.FullName()], timestampValue{
+						mutable: mutable,
+						field:   field,
 					})
 				}
 			case "google.protobuf.FieldMask":
 				if field.IsList() {
 					// Repeated field masks is intentionally not supported.
 				} else {
-					flags.AddFlag(&pflag.Flag{
-						Name:  flagName(field, parentFields),
-						Usage: flagUsage(comments[field.FullName()]),
-						Value: fieldMaskValue{mutable: mutable, field: field},
+					addFlag(cmd, field, parentFields, comments[field.FullName()], fieldMaskValue{
+						mutable: mutable,
+						field:   field,
 					})
 				}
 			default:
 				if field.Cardinality() != protoreflect.Repeated {
 					setFlags(
 						comments,
-						flags,
+						cmd,
 						append(parentFields, field),
 						field.Message(),
 						func() protoreflect.Message {
@@ -146,14 +146,14 @@ func setFlags(
 			}
 		case protoreflect.StringKind, protoreflect.BoolKind, protoreflect.BytesKind, protoreflect.DoubleKind,
 			protoreflect.FloatKind, protoreflect.Int64Kind, protoreflect.Int32Kind:
-			setPrimitiveFlag(comments, flags, parentFields, mutable, field)
+			setPrimitiveFlag(comments, cmd, parentFields, mutable, field)
 		}
 	}
 }
 
 func setPrimitiveFlag(
 	comments map[protoreflect.FullName]string,
-	flags *pflag.FlagSet,
+	cmd *cobra.Command,
 	parentFields []protoreflect.FieldDescriptor,
 	mutable func() protoreflect.Message,
 	field protoreflect.FieldDescriptor,
@@ -224,11 +224,92 @@ func setPrimitiveFlag(
 	default:
 		panic(fmt.Errorf("unhandled primitive kind: %v", field.Kind())) // shouldn't happen
 	}
-	flags.AddFlag(&pflag.Flag{
+	addFlag(cmd, field, parentFields, comments[field.FullName()], value)
+}
+
+func addFlag(
+	cmd *cobra.Command,
+	field protoreflect.FieldDescriptor,
+	parentFields []protoreflect.FieldDescriptor,
+	comment string,
+	value pflag.Value,
+) {
+	flag := &pflag.Flag{
 		Name:  flagName(field, parentFields),
-		Usage: flagUsage(comments[field.FullName()]),
+		Usage: trimComment(comment),
 		Value: value,
-	})
+	}
+	// Hide output only field flags.
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_OUTPUT_ONLY {
+				flag.Hidden = true
+			}
+		}
+	}
+	cmd.Flags().AddFlag(flag)
+	// Mark flags as required.
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_REQUIRED {
+				_ = cmd.MarkFlagRequired(flag.Name)
+			}
+		}
+	}
+	// Register resource reference completion functions.
+	if field.Kind() == protoreflect.StringKind {
+		if resourceReference, ok := proto.GetExtension(
+			field.Options(),
+			annotations.E_ResourceReference,
+		).(*annotations.ResourceReference); ok && resourceReference.GetType() != "" {
+			completionFunc := resourceNameCompletionFunc
+			if field.IsList() {
+				completionFunc = resourceNameListCompletionFunc
+			}
+			aipreflect.RangeResourceDescriptorsInPackage(
+				protoregistry.GlobalFiles,
+				field.ParentFile().Package(),
+				func(resource *annotations.ResourceDescriptor) bool {
+					if resource.GetType() == resourceReference.GetType() && len(resource.GetPattern()) > 0 {
+						_ = cmd.RegisterFlagCompletionFunc(
+							flag.Name,
+							completionFunc(resource.GetPattern()...),
+						)
+						return false
+					}
+					return true
+				},
+			)
+		}
+		// Register resource name completion functions.
+		if !field.IsList() && field.Name() == "name" {
+			if resourceDescriptor, ok := proto.GetExtension(
+				field.Parent().Options(),
+				annotations.E_Resource,
+			).(*annotations.ResourceDescriptor); ok && resourceDescriptor.GetType() != "" {
+				aipreflect.RangeResourceDescriptorsInPackage(
+					protoregistry.GlobalFiles,
+					field.ParentFile().Package(),
+					func(resource *annotations.ResourceDescriptor) bool {
+						if resource.GetType() == resourceDescriptor.GetType() && len(resource.GetPattern()) > 0 {
+							_ = cmd.RegisterFlagCompletionFunc(
+								flag.Name,
+								resourceNameCompletionFunc(resource.GetPattern()...),
+							)
+							return false
+						}
+						return true
+					},
+				)
+			}
+		}
+	}
 }
 
 func trimComment(comment string) string {

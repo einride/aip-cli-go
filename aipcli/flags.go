@@ -25,10 +25,6 @@ func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.Fi
 	return strings.ReplaceAll(result.String(), "_", "-")
 }
 
-func flagUsage(comment string) string {
-	return trimComment(comment)
-}
-
 func newPrimitiveValue[T any](
 	mutable func() protoreflect.Message,
 	field protoreflect.FieldDescriptor,
