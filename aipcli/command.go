@@ -1,6 +1,7 @@
 package aipcli
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"os"
@@ -45,7 +46,7 @@ func NewMethodCommand(
 		Short: initialUpperCase(trimComment(comments[method.FullName()])),
 		Long:  comments[method.FullName()],
 	}
-	fromFile := cmd.Flags().StringP("from-file", "f", "", "path to a JSON file containing the request payload")
+	fromFile := cmd.Flags().String("from-file", "", "path to a JSON file containing the request payload")
 	_ = cmd.MarkFlagFilename("from-file", "json")
 	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
@@ -58,19 +59,23 @@ func NewMethodCommand(
 				return err
 			}
 		}
-		conn, err := dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		LogRequest(cmd.Context(), in)
-		if err := conn.Invoke(cmd.Context(), methodURI(method), in, out); err != nil {
-			LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		LogResponse(cmd.Context(), out)
-		return nil
+		return invoke(cmd.Context(), methodURI(method), in, out)
 	}
 	return cmd
+}
+
+func invoke(ctx context.Context, uri string, request, response proto.Message) error {
+	conn, err := dial(ctx)
+	if err != nil {
+		return err
+	}
+	logRequest(ctx, request)
+	if err := conn.Invoke(ctx, uri, request, response); err != nil {
+		logError(ctx, err)
+		return err
+	}
+	logResponse(ctx, response)
+	return nil
 }
 
 func serviceUse(service protoreflect.ServiceDescriptor) string {
