@@ -6,7 +6,6 @@ import (
 	"go.einride.tech/sage/sg"
 	"go.einride.tech/sage/sgtool"
 	"go.einride.tech/sage/tools/sgbuf"
-	"go.einride.tech/sage/tools/sgprotocgengogrpc"
 )
 
 type Proto sg.Namespace
@@ -57,7 +56,7 @@ func (Proto) ProtocGenGoAIPCLI(ctx context.Context) error {
 }
 
 func (Proto) BufGenerateExample(ctx context.Context) error {
-	sg.Deps(ctx, Proto.ProtocGenGo, sgprotocgengogrpc.PrepareCommand, Proto.ProtocGenGoAIPCLI)
+	sg.Deps(ctx, Proto.ProtocGenGo, Proto.ProtocGenGoAIPCLI)
 	sg.Logger(ctx).Println("generating example proto stubs...")
 	cmd := sgbuf.Command(
 		ctx,
