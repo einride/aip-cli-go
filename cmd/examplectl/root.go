@@ -13,7 +13,11 @@ func NewRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "examplectl",
 	}
-	cmd.AddCommand(v1.NewFreightServiceCommand("freight"))
+	cmd.AddCommand(func() *cobra.Command {
+		cmd := v1.NewFreightServiceCommand()
+		cmd.Use = "freight"
+		return cmd
+	}())
 	return cmd
 }
 

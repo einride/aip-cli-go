@@ -41,7 +41,11 @@ func GenerateRootCommandFile(gen *protogen.Plugin, config aipcli.CompilerConfig)
 				GoName:       "New" + service.GoName + "Command",
 			})
 			serviceCommand := getServiceCommandUse(servicesByName, service)
-			g.P("cmd.AddCommand(", newCommandFunction, "(", strconv.Quote(serviceCommand), "))")
+			g.P("cmd.AddCommand(func() *", cobraCommand, "{")
+			g.P("cmd := ", newCommandFunction, "()")
+			g.P("cmd.Use = \"", serviceCommand, "\"")
+			g.P("return cmd")
+			g.P("}())")
 		}
 	}
 	g.P("return cmd")

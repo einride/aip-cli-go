@@ -6,1258 +6,158 @@ package freightv1
 import (
 	cobra "github.com/spf13/cobra"
 	aipcli "go.einride.tech/aip-cli/aipcli"
-	protoflag "go.einride.tech/aip-cli/protoflag"
-	protojson "google.golang.org/protobuf/encoding/protojson"
-	os "os"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func NewFreightServiceCommand(use string) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   use,
-		Short: "this api represents a simple freight service",
-		Annotations: map[string]string{
-			"type": "service",
-		},
-		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
-			aipcli.SetDefaultHost(cmd.Context(), "freight-example.einride.tech")
-		},
-	}
-	cmd.AddCommand(newFreightServiceGetShipperCommand())
-	cmd.AddCommand(newFreightServiceListShippersCommand())
-	cmd.AddCommand(newFreightServiceCreateShipperCommand())
-	cmd.AddCommand(newFreightServiceUpdateShipperCommand())
-	cmd.AddCommand(newFreightServiceDeleteShipperCommand())
-	cmd.AddCommand(newFreightServiceGetSiteCommand())
-	cmd.AddCommand(newFreightServiceListSitesCommand())
-	cmd.AddCommand(newFreightServiceCreateSiteCommand())
-	cmd.AddCommand(newFreightServiceUpdateSiteCommand())
-	cmd.AddCommand(newFreightServiceDeleteSiteCommand())
-	cmd.AddCommand(newFreightServiceBatchGetSitesCommand())
-	cmd.AddCommand(newFreightServiceGetShipmentCommand())
-	cmd.AddCommand(newFreightServiceListShipmentsCommand())
-	cmd.AddCommand(newFreightServiceCreateShipmentCommand())
-	cmd.AddCommand(newFreightServiceUpdateShipmentCommand())
-	cmd.AddCommand(newFreightServiceDeleteShipmentCommand())
-	return cmd
-}
-
-func newFreightServiceGetShipperCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "get-shipper",
-		Short: "get a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the shipper to retrieve",
+func NewFreightServiceCommand() *cobra.Command {
+	cmd := aipcli.NewServiceCommand(
+		File_einride_example_freight_v1_freight_service_proto.
+			Services().ByName("FreightService"),
+		map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService": " This API represents a simple freight service.\n\n It defines the following resource model:\n\n - The API has a collection of [Shipper][einride.example.freight.v1.Shipper]\n   resources, named `shippers/*`\n\n - Each Shipper has a collection of [Site][einride.example.freight.v1.Site]\n   resources, named `shippers/*/sites/*`\n\n - Each Shipper has a collection of [Shipment][einride.example.freight.v1.Shipment]\n   resources, named `shippers/*/shipments/*`\n"},
 	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("GetShipper"),
+			&GetShipperRequest{},
+			&Shipper{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.GetShipper": " Get a shipper.\n See: https://google.aip.dev/131 (Standard methods: Get).\n", "einride.example.freight.v1.GetShipperRequest.name": " The resource name of the shipper to retrieve.\n Format: shippers/{shipper}\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request GetShipperRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.GetShipper(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceListShippersCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "list-shippers",
-		Short: "list shippers",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_PageSize protoflag.Int32
-	cmd.Flags().Var(
-		&flag_PageSize,
-		"page-size",
-		"requested page size",
-	)
-	var flag_PageToken protoflag.String
-	cmd.Flags().Var(
-		&flag_PageToken,
-		"page-token",
-		"a token identifying a page of results the server should return",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request ListShippersRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("page-size") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_size"), flag_PageSize.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("page-token") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_token"), flag_PageToken.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.ListShippers(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceCreateShipperCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "create-shipper",
-		Short: "create a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Shipper_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipper_Name,
-		"shipper.name",
-		"the resource name of the shipper",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipper.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("ListShippers"),
+			&ListShippersRequest{},
+			&ListShippersResponse{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.ListShippers": " List shippers.\n See: https://google.aip.dev/132 (Standard methods: List).\n", "einride.example.freight.v1.ListShippersRequest.page_size": " Requested page size. Server may return fewer shippers than requested.\n If unspecified, server will pick an appropriate default.\n", "einride.example.freight.v1.ListShippersRequest.page_token": " A token identifying a page of results the server should return.\n Typically, this is the value of\n [ListShippersResponse.next_page_token][einride.example.freight.v1.ListShippersResponse.next_page_token]\n returned from the previous call to `ListShippers` method.\n"},
 		),
 	)
-	var flag_Shipper_DisplayName protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipper_DisplayName,
-		"shipper.display-name",
-		"the display name of the shipper",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request CreateShipperRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("shipper.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipper")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Shipper_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipper.display-name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipper")).Message()
-			r.Set(r.Descriptor().Fields().ByName("display_name"), flag_Shipper_DisplayName.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.CreateShipper(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceUpdateShipperCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "update-shipper",
-		Short: "update a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Shipper_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipper_Name,
-		"shipper.name",
-		"the resource name of the shipper",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipper.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("CreateShipper"),
+			&CreateShipperRequest{},
+			&Shipper{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.CreateShipperRequest.shipper": " The shipper to create.\n", "einride.example.freight.v1.FreightService.CreateShipper": " Create a shipper.\n See: https://google.aip.dev/133 (Standard methods: Create).\n", "einride.example.freight.v1.Shipper.create_time": " The creation timestamp of the shipper.\n", "einride.example.freight.v1.Shipper.delete_time": " The deletion timestamp of the shipper.\n", "einride.example.freight.v1.Shipper.display_name": " The display name of the shipper.\n", "einride.example.freight.v1.Shipper.name": " The resource name of the shipper.\n", "einride.example.freight.v1.Shipper.update_time": " The last update timestamp of the shipper.\n\n Updated when create/update/delete operation is performed.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n"},
 		),
 	)
-	var flag_Shipper_DisplayName protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipper_DisplayName,
-		"shipper.display-name",
-		"the display name of the shipper",
-	)
-	var flag_UpdateMask_Paths protoflag.StringList
-	cmd.Flags().Var(
-		&flag_UpdateMask_Paths,
-		"update-mask.paths",
-		"the set of field mask paths",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request UpdateShipperRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("shipper.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipper")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Shipper_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipper.display-name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipper")).Message()
-			r.Set(r.Descriptor().Fields().ByName("display_name"), flag_Shipper_DisplayName.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("update-mask.paths") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("update_mask")).Message()
-			r.Set(r.Descriptor().Fields().ByName("paths"), flag_UpdateMask_Paths.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.UpdateShipper(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceDeleteShipperCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "delete-shipper",
-		Short: "delete a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the shipper to delete",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("UpdateShipper"),
+			&UpdateShipperRequest{},
+			&Shipper{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.UpdateShipper": " Update a shipper.\n See: https://google.aip.dev/134 (Standard methods: Update).\n", "einride.example.freight.v1.Shipper.create_time": " The creation timestamp of the shipper.\n", "einride.example.freight.v1.Shipper.delete_time": " The deletion timestamp of the shipper.\n", "einride.example.freight.v1.Shipper.display_name": " The display name of the shipper.\n", "einride.example.freight.v1.Shipper.name": " The resource name of the shipper.\n", "einride.example.freight.v1.Shipper.update_time": " The last update timestamp of the shipper.\n\n Updated when create/update/delete operation is performed.\n", "einride.example.freight.v1.UpdateShipperRequest.shipper": " The shipper to update with. The name must match or be empty.\n The shipper's `name` field is used to identify the shipper to be updated.\n Format: shippers/{shipper}\n", "einride.example.freight.v1.UpdateShipperRequest.update_mask": " The list of fields to be updated.\n", "google.protobuf.FieldMask.paths": " The set of field mask paths.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request DeleteShipperRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.DeleteShipper(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceGetSiteCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "get-site",
-		Short: "get a site",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the site to retrieve",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("DeleteShipper"),
+			&DeleteShipperRequest{},
+			&Shipper{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.DeleteShipperRequest.name": " The resource name of the shipper to delete.\n Format: shippers/{shipper}\n", "einride.example.freight.v1.FreightService.DeleteShipper": " Delete a shipper.\n See: https://google.aip.dev/135 (Standard methods: Delete).\n See: https://google.aip.dev/164 (Soft delete).\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request GetSiteRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.GetSite(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceListSitesCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "list-sites",
-		Short: "list sites for a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Parent protoflag.String
-	cmd.Flags().Var(
-		&flag_Parent,
-		"parent",
-		"the resource name of the parent, which owns this collection of sites",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"parent",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("GetSite"),
+			&GetSiteRequest{},
+			&Site{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.GetSite": " Get a site.\n See: https://google.aip.dev/131 (Standard methods: Get).\n", "einride.example.freight.v1.GetSiteRequest.name": " The resource name of the site to retrieve.\n Format: shippers/{shipper}/sites/{site}\n"},
 		),
 	)
-	var flag_PageSize protoflag.Int32
-	cmd.Flags().Var(
-		&flag_PageSize,
-		"page-size",
-		"requested page size",
-	)
-	var flag_PageToken protoflag.String
-	cmd.Flags().Var(
-		&flag_PageToken,
-		"page-token",
-		"a token identifying a page of results the server should return",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request ListSitesRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("parent") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("parent"), flag_Parent.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("page-size") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_size"), flag_PageSize.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("page-token") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_token"), flag_PageToken.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.ListSites(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceCreateSiteCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "create-site",
-		Short: "create a site",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Parent protoflag.String
-	cmd.Flags().Var(
-		&flag_Parent,
-		"parent",
-		"the resource name of the parent shipper for which this site will be created",
-	)
-	var flag_Site_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Site_Name,
-		"site.name",
-		"the resource name of the site",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"site.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("ListSites"),
+			&ListSitesRequest{},
+			&ListSitesResponse{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.ListSites": " List sites for a shipper.\n See: https://google.aip.dev/132 (Standard methods: List).\n", "einride.example.freight.v1.ListSitesRequest.page_size": " Requested page size. Server may return fewer sites than requested.\n If unspecified, server will pick an appropriate default.\n", "einride.example.freight.v1.ListSitesRequest.page_token": " A token identifying a page of results the server should return.\n Typically, this is the value of\n [ListSitesResponse.next_page_token][einride.example.freight.v1.ListSitesResponse.next_page_token]\n returned from the previous call to `ListSites` method.\n", "einride.example.freight.v1.ListSitesRequest.parent": " The resource name of the parent, which owns this collection of sites.\n Format: shippers/{shipper}\n"},
 		),
 	)
-	var flag_Site_DisplayName protoflag.String
-	cmd.Flags().Var(
-		&flag_Site_DisplayName,
-		"site.display-name",
-		"the display name of the site",
-	)
-	var flag_Site_LatLng_Latitude protoflag.Double
-	cmd.Flags().Var(
-		&flag_Site_LatLng_Latitude,
-		"site.lat-lng.latitude",
-		"the latitude in degrees",
-	)
-	var flag_Site_LatLng_Longitude protoflag.Double
-	cmd.Flags().Var(
-		&flag_Site_LatLng_Longitude,
-		"site.lat-lng.longitude",
-		"the longitude in degrees",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request CreateSiteRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("parent") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("parent"), flag_Parent.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Site_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.display-name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r.Set(r.Descriptor().Fields().ByName("display_name"), flag_Site_DisplayName.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.lat-lng.latitude") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r = r.Mutable(r.Descriptor().Fields().ByName("lat_lng")).Message()
-			r.Set(r.Descriptor().Fields().ByName("latitude"), flag_Site_LatLng_Latitude.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.lat-lng.longitude") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r = r.Mutable(r.Descriptor().Fields().ByName("lat_lng")).Message()
-			r.Set(r.Descriptor().Fields().ByName("longitude"), flag_Site_LatLng_Longitude.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.CreateSite(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceUpdateSiteCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "update-site",
-		Short: "update a site",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Site_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Site_Name,
-		"site.name",
-		"the resource name of the site",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"site.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("CreateSite"),
+			&CreateSiteRequest{},
+			&Site{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.CreateSiteRequest.parent": " The resource name of the parent shipper for which this site will be created.\n Format: shippers/{shipper}\n", "einride.example.freight.v1.CreateSiteRequest.site": " The site to create.\n", "einride.example.freight.v1.FreightService.CreateSite": " Create a site.\n See: https://google.aip.dev/133 (Standard methods: Create).\n", "einride.example.freight.v1.Site.create_time": " The creation timestamp of the site.\n", "einride.example.freight.v1.Site.delete_time": " The deletion timestamp of the site.\n", "einride.example.freight.v1.Site.display_name": " The display name of the site.\n", "einride.example.freight.v1.Site.lat_lng": " The geographic location of the site.\n", "einride.example.freight.v1.Site.name": " The resource name of the site.\n", "einride.example.freight.v1.Site.update_time": " The last update timestamp of the site.\n\n Updated when create/update/delete operation is performed.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n", "google.type.LatLng.latitude": " The latitude in degrees. It must be in the range [-90.0, +90.0].\n", "google.type.LatLng.longitude": " The longitude in degrees. It must be in the range [-180.0, +180.0].\n"},
 		),
 	)
-	var flag_Site_DisplayName protoflag.String
-	cmd.Flags().Var(
-		&flag_Site_DisplayName,
-		"site.display-name",
-		"the display name of the site",
-	)
-	var flag_Site_LatLng_Latitude protoflag.Double
-	cmd.Flags().Var(
-		&flag_Site_LatLng_Latitude,
-		"site.lat-lng.latitude",
-		"the latitude in degrees",
-	)
-	var flag_Site_LatLng_Longitude protoflag.Double
-	cmd.Flags().Var(
-		&flag_Site_LatLng_Longitude,
-		"site.lat-lng.longitude",
-		"the longitude in degrees",
-	)
-	var flag_UpdateMask_Paths protoflag.StringList
-	cmd.Flags().Var(
-		&flag_UpdateMask_Paths,
-		"update-mask.paths",
-		"the set of field mask paths",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request UpdateSiteRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("site.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Site_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.display-name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r.Set(r.Descriptor().Fields().ByName("display_name"), flag_Site_DisplayName.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.lat-lng.latitude") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r = r.Mutable(r.Descriptor().Fields().ByName("lat_lng")).Message()
-			r.Set(r.Descriptor().Fields().ByName("latitude"), flag_Site_LatLng_Latitude.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("site.lat-lng.longitude") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("site")).Message()
-			r = r.Mutable(r.Descriptor().Fields().ByName("lat_lng")).Message()
-			r.Set(r.Descriptor().Fields().ByName("longitude"), flag_Site_LatLng_Longitude.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("update-mask.paths") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("update_mask")).Message()
-			r.Set(r.Descriptor().Fields().ByName("paths"), flag_UpdateMask_Paths.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.UpdateSite(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceDeleteSiteCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "delete-site",
-		Short: "delete a site",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the site to delete",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("UpdateSite"),
+			&UpdateSiteRequest{},
+			&Site{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.UpdateSite": " Update a site.\n See: https://google.aip.dev/134 (Standard methods: Update).\n", "einride.example.freight.v1.Site.create_time": " The creation timestamp of the site.\n", "einride.example.freight.v1.Site.delete_time": " The deletion timestamp of the site.\n", "einride.example.freight.v1.Site.display_name": " The display name of the site.\n", "einride.example.freight.v1.Site.lat_lng": " The geographic location of the site.\n", "einride.example.freight.v1.Site.name": " The resource name of the site.\n", "einride.example.freight.v1.Site.update_time": " The last update timestamp of the site.\n\n Updated when create/update/delete operation is performed.\n", "einride.example.freight.v1.UpdateSiteRequest.site": " The site to update with. The name must match or be empty.\n The site's `name` field is used to identify the site to be updated.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.UpdateSiteRequest.update_mask": " The list of fields to be updated.\n", "google.protobuf.FieldMask.paths": " The set of field mask paths.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n", "google.type.LatLng.latitude": " The latitude in degrees. It must be in the range [-90.0, +90.0].\n", "google.type.LatLng.longitude": " The longitude in degrees. It must be in the range [-180.0, +180.0].\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request DeleteSiteRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.DeleteSite(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceBatchGetSitesCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "batch-get-sites",
-		Short: "batch get sites",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Parent protoflag.String
-	cmd.Flags().Var(
-		&flag_Parent,
-		"parent",
-		"the parent resource shared by all sites being retrieved",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"parent",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("DeleteSite"),
+			&DeleteSiteRequest{},
+			&Site{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.DeleteSiteRequest.name": " The resource name of the site to delete.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.FreightService.DeleteSite": " Delete a site.\n See: https://google.aip.dev/135 (Standard methods: Delete).\n See: https://google.aip.dev/164 (Soft delete).\n"},
 		),
 	)
-	var flag_Names protoflag.StringList
-	cmd.Flags().Var(
-		&flag_Names,
-		"names",
-		"the names of the sites to retrieve",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"names",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("BatchGetSites"),
+			&BatchGetSitesRequest{},
+			&BatchGetSitesResponse{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.BatchGetSitesRequest.names": " The names of the sites to retrieve.\n A maximum of 1000 sites can be retrieved in a batch.\n Format: `shippers/{shipper}/sites/{site}`\n", "einride.example.freight.v1.BatchGetSitesRequest.parent": " The parent resource shared by all sites being retrieved.\n If this is set, the parent of all of the sites specified in `names`\n must match this field.\n Format: `shippers/{shipper}`\n", "einride.example.freight.v1.FreightService.BatchGetSites": " Batch get sites.\n See: https://google.aip.dev/231 (Batch methods: Get).\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request BatchGetSitesRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("parent") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("parent"), flag_Parent.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("names") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("names"), flag_Names.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.BatchGetSites(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceGetShipmentCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "get-shipment",
-		Short: "get a shipment",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the shipment to retrieve",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/shipments/{shipment}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("GetShipment"),
+			&GetShipmentRequest{},
+			&Shipment{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.GetShipment": " Get a shipment.\n See: https://google.aip.dev/131 (Standard methods: Get).\n", "einride.example.freight.v1.GetShipmentRequest.name": " The resource name of the shipment to retrieve.\n Format: shippers/{shipper}/shipments/{shipment}\n"},
 		),
 	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request GetShipmentRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.GetShipment(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceListShipmentsCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "list-shipments",
-		Short: "list shipments for a shipper",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Parent protoflag.String
-	cmd.Flags().Var(
-		&flag_Parent,
-		"parent",
-		"the resource name of the parent, which owns this collection of shipments",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"parent",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("ListShipments"),
+			&ListShipmentsRequest{},
+			&ListShipmentsResponse{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.ListShipments": " List shipments for a shipper.\n See: https://google.aip.dev/132 (Standard methods: List).\n", "einride.example.freight.v1.ListShipmentsRequest.page_size": " Requested page size. Server may return fewer shipments than requested.\n If unspecified, server will pick an appropriate default.\n", "einride.example.freight.v1.ListShipmentsRequest.page_token": " A token identifying a page of results the server should return.\n Typically, this is the value of\n [ListShipmentsResponse.next_page_token][einride.example.freight.v1.ListShipmentsResponse.next_page_token]\n returned from the previous call to `ListShipments` method.\n", "einride.example.freight.v1.ListShipmentsRequest.parent": " The resource name of the parent, which owns this collection of shipments.\n Format: shippers/{shipper}\n"},
 		),
 	)
-	var flag_PageSize protoflag.Int32
-	cmd.Flags().Var(
-		&flag_PageSize,
-		"page-size",
-		"requested page size",
-	)
-	var flag_PageToken protoflag.String
-	cmd.Flags().Var(
-		&flag_PageToken,
-		"page-token",
-		"a token identifying a page of results the server should return",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request ListShipmentsRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("parent") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("parent"), flag_Parent.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("page-size") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_size"), flag_PageSize.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("page-token") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("page_token"), flag_PageToken.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.ListShipments(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceCreateShipmentCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "create-shipment",
-		Short: "create a shipment",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Parent protoflag.String
-	cmd.Flags().Var(
-		&flag_Parent,
-		"parent",
-		"the resource name of the parent shipper for which this shipment will be created",
-	)
-	var flag_Shipment_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_Name,
-		"shipment.name",
-		"the resource name of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/shipments/{shipment}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("CreateShipment"),
+			&CreateShipmentRequest{},
+			&Shipment{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.CreateShipmentRequest.parent": " The resource name of the parent shipper for which this shipment will be created.\n Format: shippers/{shipper}\n", "einride.example.freight.v1.CreateShipmentRequest.shipment": " The shipment to create.\n", "einride.example.freight.v1.FreightService.CreateShipment": " Create a shipment.\n See: https://google.aip.dev/133 (Standard methods: Create).\n", "einride.example.freight.v1.LineItem.quantity": " The quantity of the line item.\n", "einride.example.freight.v1.LineItem.title": " The title of the line item.\n", "einride.example.freight.v1.LineItem.volume_m3": " The volume of the line item in cubic meters.\n", "einride.example.freight.v1.LineItem.weight_kg": " The weight of the line item in kilograms.\n", "einride.example.freight.v1.Shipment.AnnotationsEntry.key": "", "einride.example.freight.v1.Shipment.AnnotationsEntry.value": "", "einride.example.freight.v1.Shipment.annotations": " Annotations of the shipment.\n", "einride.example.freight.v1.Shipment.create_time": " The creation timestamp of the shipment.\n", "einride.example.freight.v1.Shipment.delete_time": " The deletion timestamp of the shipment.\n", "einride.example.freight.v1.Shipment.delivery_earliest_time": " The earliest delivery time of the shipment at the destination site.\n", "einride.example.freight.v1.Shipment.delivery_latest_time": " The latest delivery time of the shipment at the destination site.\n", "einride.example.freight.v1.Shipment.destination_site": " The resource name of the destination site of the shipment.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.Shipment.line_items": " The line items of the shipment.\n", "einride.example.freight.v1.Shipment.name": " The resource name of the shipment.\n", "einride.example.freight.v1.Shipment.origin_site": " The resource name of the origin site of the shipment.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.Shipment.pickup_earliest_time": " The earliest pickup time of the shipment at the origin site.\n", "einride.example.freight.v1.Shipment.pickup_latest_time": " The latest pickup time of the shipment at the origin site.\n", "einride.example.freight.v1.Shipment.update_time": " The last update timestamp of the shipment.\n\n Updated when create/update/delete operation is shipment.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n"},
 		),
 	)
-	var flag_Shipment_OriginSite protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_OriginSite,
-		"shipment.origin-site",
-		"the resource name of the origin site of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.origin-site",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("UpdateShipment"),
+			&UpdateShipmentRequest{},
+			&Shipment{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.FreightService.UpdateShipment": " Update a shipment.\n See: https://google.aip.dev/134 (Standard methods: Update).\n", "einride.example.freight.v1.LineItem.quantity": " The quantity of the line item.\n", "einride.example.freight.v1.LineItem.title": " The title of the line item.\n", "einride.example.freight.v1.LineItem.volume_m3": " The volume of the line item in cubic meters.\n", "einride.example.freight.v1.LineItem.weight_kg": " The weight of the line item in kilograms.\n", "einride.example.freight.v1.Shipment.AnnotationsEntry.key": "", "einride.example.freight.v1.Shipment.AnnotationsEntry.value": "", "einride.example.freight.v1.Shipment.annotations": " Annotations of the shipment.\n", "einride.example.freight.v1.Shipment.create_time": " The creation timestamp of the shipment.\n", "einride.example.freight.v1.Shipment.delete_time": " The deletion timestamp of the shipment.\n", "einride.example.freight.v1.Shipment.delivery_earliest_time": " The earliest delivery time of the shipment at the destination site.\n", "einride.example.freight.v1.Shipment.delivery_latest_time": " The latest delivery time of the shipment at the destination site.\n", "einride.example.freight.v1.Shipment.destination_site": " The resource name of the destination site of the shipment.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.Shipment.line_items": " The line items of the shipment.\n", "einride.example.freight.v1.Shipment.name": " The resource name of the shipment.\n", "einride.example.freight.v1.Shipment.origin_site": " The resource name of the origin site of the shipment.\n Format: shippers/{shipper}/sites/{site}\n", "einride.example.freight.v1.Shipment.pickup_earliest_time": " The earliest pickup time of the shipment at the origin site.\n", "einride.example.freight.v1.Shipment.pickup_latest_time": " The latest pickup time of the shipment at the origin site.\n", "einride.example.freight.v1.Shipment.update_time": " The last update timestamp of the shipment.\n\n Updated when create/update/delete operation is shipment.\n", "einride.example.freight.v1.UpdateShipmentRequest.shipment": " The shipment to update with. The name must match or be empty.\n The shipment's `name` field is used to identify the shipment to be updated.\n Format: shippers/{shipper}/shipments/{shipment}\n", "einride.example.freight.v1.UpdateShipmentRequest.update_mask": " The list of fields to be updated.\n", "google.protobuf.FieldMask.paths": " The set of field mask paths.\n", "google.protobuf.Timestamp.nanos": " Non-negative fractions of a second at nanosecond resolution. Negative\n second values with fractions must still have non-negative nanos values\n that count forward in time. Must be from 0 to 999,999,999\n inclusive.\n", "google.protobuf.Timestamp.seconds": " Represents seconds of UTC time since Unix epoch\n 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to\n 9999-12-31T23:59:59Z inclusive.\n"},
 		),
 	)
-	var flag_Shipment_DestinationSite protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_DestinationSite,
-		"shipment.destination-site",
-		"the resource name of the destination site of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.destination-site",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
+	cmd.AddCommand(
+		aipcli.NewMethodCommand(
+			File_einride_example_freight_v1_freight_service_proto.
+				Services().ByName("FreightService").Methods().ByName("DeleteShipment"),
+			&DeleteShipmentRequest{},
+			&Shipment{},
+			map[protoreflect.FullName]string{"einride.example.freight.v1.DeleteShipmentRequest.name": " The resource name of the shipment to delete.\n Format: shippers/{shipper}/shipments/{shipment}\n", "einride.example.freight.v1.FreightService.DeleteShipment": " Delete a shipment.\n See: https://google.aip.dev/135 (Standard methods: Delete).\n See: https://google.aip.dev/164 (Soft delete).\n"},
 		),
 	)
-	var flag_Shipment_PickupEarliestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_PickupEarliestTime,
-		"shipment.pickup-earliest-time",
-		"the earliest pickup time of the shipment at the origin site",
-	)
-	var flag_Shipment_PickupLatestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_PickupLatestTime,
-		"shipment.pickup-latest-time",
-		"the latest pickup time of the shipment at the origin site",
-	)
-	var flag_Shipment_DeliveryEarliestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_DeliveryEarliestTime,
-		"shipment.delivery-earliest-time",
-		"the earliest delivery time of the shipment at the destination site",
-	)
-	var flag_Shipment_DeliveryLatestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_DeliveryLatestTime,
-		"shipment.delivery-latest-time",
-		"the latest delivery time of the shipment at the destination site",
-	)
-	var flag_Shipment_Annotations protoflag.StringStringMap
-	cmd.Flags().Var(
-		&flag_Shipment_Annotations,
-		"shipment.annotations",
-		"annotations of the shipment",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request CreateShipmentRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("parent") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("parent"), flag_Parent.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Shipment_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.origin-site") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("origin_site"), flag_Shipment_OriginSite.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.destination-site") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("destination_site"), flag_Shipment_DestinationSite.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.pickup-earliest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("pickup_earliest_time"), flag_Shipment_PickupEarliestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.pickup-latest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("pickup_latest_time"), flag_Shipment_PickupLatestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.delivery-earliest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("delivery_earliest_time"), flag_Shipment_DeliveryEarliestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.delivery-latest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("delivery_latest_time"), flag_Shipment_DeliveryLatestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.annotations") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("annotations"), flag_Shipment_Annotations.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.CreateShipment(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceUpdateShipmentCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "update-shipment",
-		Short: "update a shipment",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Shipment_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_Name,
-		"shipment.name",
-		"the resource name of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/shipments/{shipment}",
-		),
-	)
-	var flag_Shipment_OriginSite protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_OriginSite,
-		"shipment.origin-site",
-		"the resource name of the origin site of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.origin-site",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
-		),
-	)
-	var flag_Shipment_DestinationSite protoflag.String
-	cmd.Flags().Var(
-		&flag_Shipment_DestinationSite,
-		"shipment.destination-site",
-		"the resource name of the destination site of the shipment",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"shipment.destination-site",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/sites/{site}",
-		),
-	)
-	var flag_Shipment_PickupEarliestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_PickupEarliestTime,
-		"shipment.pickup-earliest-time",
-		"the earliest pickup time of the shipment at the origin site",
-	)
-	var flag_Shipment_PickupLatestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_PickupLatestTime,
-		"shipment.pickup-latest-time",
-		"the latest pickup time of the shipment at the origin site",
-	)
-	var flag_Shipment_DeliveryEarliestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_DeliveryEarliestTime,
-		"shipment.delivery-earliest-time",
-		"the earliest delivery time of the shipment at the destination site",
-	)
-	var flag_Shipment_DeliveryLatestTime protoflag.Timestamp
-	cmd.Flags().Var(
-		&flag_Shipment_DeliveryLatestTime,
-		"shipment.delivery-latest-time",
-		"the latest delivery time of the shipment at the destination site",
-	)
-	var flag_Shipment_Annotations protoflag.StringStringMap
-	cmd.Flags().Var(
-		&flag_Shipment_Annotations,
-		"shipment.annotations",
-		"annotations of the shipment",
-	)
-	var flag_UpdateMask_Paths protoflag.StringList
-	cmd.Flags().Var(
-		&flag_UpdateMask_Paths,
-		"update-mask.paths",
-		"the set of field mask paths",
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request UpdateShipmentRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("shipment.name") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Shipment_Name.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.origin-site") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("origin_site"), flag_Shipment_OriginSite.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.destination-site") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("destination_site"), flag_Shipment_DestinationSite.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.pickup-earliest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("pickup_earliest_time"), flag_Shipment_PickupEarliestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.pickup-latest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("pickup_latest_time"), flag_Shipment_PickupLatestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.delivery-earliest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("delivery_earliest_time"), flag_Shipment_DeliveryEarliestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.delivery-latest-time") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("delivery_latest_time"), flag_Shipment_DeliveryLatestTime.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("shipment.annotations") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("shipment")).Message()
-			r.Set(r.Descriptor().Fields().ByName("annotations"), flag_Shipment_Annotations.ProtoReflectValue())
-		}
-		if cmd.Flags().Changed("update-mask.paths") {
-			r := request.ProtoReflect()
-			r = r.Mutable(r.Descriptor().Fields().ByName("update_mask")).Message()
-			r.Set(r.Descriptor().Fields().ByName("paths"), flag_UpdateMask_Paths.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.UpdateShipment(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
-	return cmd
-}
-
-func newFreightServiceDeleteShipmentCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "delete-shipment",
-		Short: "delete a shipment",
-	}
-	var fromFile string
-	cmd.Flags().StringVarP(&fromFile, "from-file", "f", "", "path to a JSON file containing request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
-	var flag_Name protoflag.String
-	cmd.Flags().Var(
-		&flag_Name,
-		"name",
-		"the resource name of the shipment to delete",
-	)
-	_ = cmd.RegisterFlagCompletionFunc(
-		"name",
-		aipcli.ResourceNameCompletionFunc(
-			"shippers/{shipper}/shipments/{shipment}",
-		),
-	)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var request DeleteShipmentRequest
-		if cmd.Flags().Changed("from-file") {
-			data, err := os.ReadFile(fromFile)
-			if err != nil {
-				return err
-			}
-			if err := protojson.Unmarshal(data, &request); err != nil {
-				return err
-			}
-		}
-		if cmd.Flags().Changed("name") {
-			r := request.ProtoReflect()
-			r.Set(r.Descriptor().Fields().ByName("name"), flag_Name.ProtoReflectValue())
-		}
-		conn, err := aipcli.Dial(cmd.Context())
-		if err != nil {
-			return err
-		}
-		client := NewFreightServiceClient(conn)
-		aipcli.LogRequest(cmd.Context(), &request)
-		response, err := client.DeleteShipment(cmd.Context(), &request)
-		if err != nil {
-			aipcli.LogError(cmd.Context(), err)
-			os.Exit(1)
-		}
-		aipcli.LogResponse(cmd.Context(), response)
-		return nil
-	}
 	return cmd
 }
