@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := examplectl.NewModuleCommand().Execute(); err != nil {
+	if err := examplectl.NewModuleCommand("examplectl").Execute(); err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
