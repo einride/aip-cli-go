@@ -1,7 +1,8 @@
 package gencli
 
 import (
-	"fmt"
+	"sort"
+	"strconv"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -32,7 +33,7 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		GoImportPath: "github.com/spf13/cobra",
 		GoName:       "Command",
 	})
-	_ = g.QualifiedGoIdent(protogen.GoIdent{
+	protoreflectFullName := g.QualifiedGoIdent(protogen.GoIdent{
 		GoImportPath: "google.golang.org/protobuf/reflect/protoreflect",
 		GoName:       "FullName",
 	})
@@ -42,7 +43,9 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 	g.P("cmd := ", newServiceCommand, "(")
 	g.P(c.file.GoDescriptorIdent, ".")
 	g.P("Services().ByName(\"", c.service.Desc.Name(), "\"),")
-	g.P(fmt.Sprintf("%#v", serviceComments), ",")
+	g.P("map[", protoreflectFullName, "]string{")
+	printCommentMapElements(g, serviceComments)
+	g.P("},")
 	g.P(")")
 	for _, method := range c.service.Methods {
 		methodComments := map[protoreflect.FullName]string{}
@@ -53,11 +56,24 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		g.P("Services().ByName(\"", c.service.Desc.Name(), "\").Methods().ByName(\"", method.Desc.Name(), "\"),")
 		g.P("&", method.Input.GoIdent, "{},")
 		g.P("&", method.Output.GoIdent, "{},")
-		g.P(fmt.Sprintf("%#v", methodComments), ",")
+		g.P("map[", protoreflectFullName, "]string{")
+		printCommentMapElements(g, methodComments)
+		g.P("},")
 		g.P("),")
 		g.P(")")
 	}
 	g.P("return cmd")
 	g.P("}")
 	return nil
+}
+
+func printCommentMapElements(g *protogen.GeneratedFile, comments map[protoreflect.FullName]string) {
+	keys := make([]string, 0, len(comments))
+	for key := range comments {
+		keys = append(keys, string(key))
+	}
+	sort.Stable(sort.StringSlice(keys))
+	for _, key := range keys {
+		g.P(strconv.Quote(key), ": ", strconv.Quote(comments[protoreflect.FullName(key)]), ",")
+	}
 }
