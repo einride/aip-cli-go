@@ -7,25 +7,28 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/credentials/oauth"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func dial(ctx context.Context) (*grpc.ClientConn, error) {
-	config := ConfigFromContext(ctx)
-	if config.Runtime.Insecure {
-		return dialInsecure(ctx, config)
+func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
+	if isInsecure(cmd) {
+		return dialInsecure(cmd)
 	}
-	address, ok := config.GetAddress()
+	address, ok := getAddress(cmd)
 	if !ok {
 		return nil, fmt.Errorf("dial: no address")
 	}
-	Logf(ctx, "address: %s", address)
+	if isVerbose(cmd) {
+		cmd.PrintErrln(">> address:", address)
+	}
 	var opts []grpc.DialOption
-	if token, ok := config.GetToken(); ok {
+	if token, ok := getToken(cmd); ok {
 		opts = append(
 			opts,
 			grpc.WithPerRPCCredentials(
@@ -43,23 +46,32 @@ func dial(ctx context.Context) (*grpc.ClientConn, error) {
 		return nil, err
 	}
 	opts = append(opts, grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(systemCertPool, "")))
-	return grpc.DialContext(ctx, withDefaultPort(address, 443), opts...)
+	return grpc.DialContext(cmd.Context(), withDefaultPort(address, 443), opts...)
 }
 
-func dialInsecure(ctx context.Context, config *Config) (*grpc.ClientConn, error) {
-	token, hasToken := config.GetToken()
+func dialInsecure(cmd *cobra.Command) (*grpc.ClientConn, error) {
+	token, hasToken := getToken(cmd)
+	address, hasAddress := getAddress(cmd)
 	switch {
-	case config.Runtime.Address == "":
+	case !hasAddress:
 		return nil, fmt.Errorf("must provide --address with --insecure")
-	case hasToken && !strings.HasPrefix(config.Runtime.Address, "localhost:"):
+	case hasToken && !strings.HasPrefix(address, "localhost:"):
 		return nil, fmt.Errorf("must connect to localhost with --insecure and --token")
 	}
-	Logf(ctx, "insecure address: %s", config.Runtime.Address)
+	if isVerbose(cmd) {
+		cmd.PrintErrln(">> insecure address:", address)
+	}
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(insecureTokenCredentials(token)))
 	}
-	return grpc.DialContext(ctx, withDefaultPort(config.Runtime.Address, 443), opts...)
+	return grpc.DialContext(cmd.Context(), withDefaultPort(address, 443), opts...)
+}
+
+func methodURI(method protoreflect.MethodDescriptor) string {
+	return "/" +
+		string(method.Parent().(protoreflect.ServiceDescriptor).FullName()) +
+		"/" + string(method.Name())
 }
 
 type insecureTokenCredentials string

@@ -1,4 +1,4 @@
-package gencli
+package gengoaipcli
 
 import "google.golang.org/protobuf/reflect/protoreflect"
 

@@ -7,12 +7,21 @@ import (
 	v1 "go.einride.tech/aip-cli/cmd/examplectl/gen/einride/example/freight/v1"
 )
 
-func NewModuleCommand(use string) *cobra.Command {
+func NewModuleCommand(use string, short string, commands ...*cobra.Command) *cobra.Command {
+	config := NewConfig()
 	return aipcli.NewModuleCommand(
 		use,
-		&aipcli.Config{
-			Compiler: aipcli.CompilerConfig{Hosts: map[string]string{}, DefaultHost: "", Root: "examplectl", GoogleCloudIdentityTokens: true},
-		},
-		v1.NewFreightServiceCommand(),
+		short,
+		config,
+		append(
+			[]*cobra.Command{
+				v1.NewFreightServiceCommand(config),
+			},
+			commands...,
+		)...,
 	)
+}
+
+func NewConfig() aipcli.Config {
+	return aipcli.Config{Hosts: map[string]string{}, DefaultHost: "", Root: "examplectl", GoogleCloudIdentityTokens: true}
 }

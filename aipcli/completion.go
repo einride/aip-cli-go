@@ -10,26 +10,55 @@ import (
 
 type CompletionFunc func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective)
 
-func resourceNameCompletionFunc(patterns ...string) CompletionFunc {
+func getResourceNameActiveHelp(comment string, patterns ...string) string {
+	result := trimFieldComment(comment)
+	filteredPatterns := make([]string, 0, len(patterns))
+	for _, pattern := range patterns {
+		if !strings.Contains(result, pattern) {
+			filteredPatterns = append(filteredPatterns, pattern)
+		}
+	}
+	if len(filteredPatterns) > 0 {
+		result += " (" + strings.Join(patterns, " or ") + ")"
+	}
+	return result
+}
+
+func fieldCompletionFunc(comment string) CompletionFunc {
+	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return cobra.AppendActiveHelp(nil, trimFieldComment(comment)),
+			cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
+	}
+}
+
+func timestampCompletionFunc(comment string) CompletionFunc {
+	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		activeHelp := trimFieldComment(comment)
+		activeHelp += " [tip: prefix with = to evaluate a CEL expression, e.g. ='now()-duration(\"2h\")']"
+		return cobra.AppendActiveHelp(nil, activeHelp),
+			cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
+	}
+}
+
+func resourceNameCompletionFunc(comment string, patterns ...string) CompletionFunc {
 	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		result := make([]string, 0, len(patterns))
 		for _, pattern := range patterns {
-			result = cobra.AppendActiveHelp(result, fmt.Sprintf("pattern: %s", pattern))
 			if completion, ok := completeResourceName(toComplete, pattern); ok {
 				result = append(result, fmt.Sprintf("%s\t%s", completion, pattern))
 			}
 		}
-		return result, cobra.ShellCompDirectiveNoSpace
+		result = cobra.AppendActiveHelp(result, getResourceNameActiveHelp(comment, patterns...))
+		return result, cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
 	}
 }
 
-func resourceNameListCompletionFunc(patterns ...string) CompletionFunc {
+func resourceNameListCompletionFunc(comment string, patterns ...string) CompletionFunc {
 	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		toCompleteElements := strings.Split(toComplete, ",")
 		lastToCompleteElement := toCompleteElements[len(toCompleteElements)-1]
 		result := make([]string, 0, len(patterns))
 		for _, pattern := range patterns {
-			result = cobra.AppendActiveHelp(result, fmt.Sprintf("pattern: %s", pattern))
 			if elementCompletion, ok := completeResourceName(lastToCompleteElement, pattern); ok {
 				var completion string
 				if len(toCompleteElements) > 1 {
@@ -43,7 +72,8 @@ func resourceNameListCompletionFunc(patterns ...string) CompletionFunc {
 				result = append(result, fmt.Sprintf("%s\t%s", completion, pattern))
 			}
 		}
-		return result, cobra.ShellCompDirectiveNoSpace
+		result = cobra.AppendActiveHelp(result, getResourceNameActiveHelp(comment, patterns...))
+		return result, cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
 	}
 }
 
