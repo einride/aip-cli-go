@@ -3,7 +3,6 @@ package gencli
 import (
 	"fmt"
 	"path"
-	"strconv"
 	"strings"
 
 	"go.einride.tech/aip-cli/aipcli"
@@ -43,7 +42,7 @@ func generateRootModuleFile(gen *protogen.Plugin, config aipcli.CompilerConfig) 
 	if !ok {
 		return fmt.Errorf("param root requires param module to be provided")
 	}
-	g := gen.NewGeneratedFile(path.Join(module, "module.go"), "")
+	g := gen.NewGeneratedFile(path.Join(module, "root.go"), "")
 	generateGeneratedFileHeader(g)
 	g.P("package ", config.Root)
 	cobraCommand := g.QualifiedGoIdent(protogen.GoIdent{
@@ -59,9 +58,9 @@ func generateRootModuleFile(gen *protogen.Plugin, config aipcli.CompilerConfig) 
 		GoName:       "NewModuleCommand",
 	})
 	g.P()
-	g.P("func NewModuleCommand() *", cobraCommand, " {")
+	g.P("func NewModuleCommand(use string) *", cobraCommand, " {")
 	g.P("return ", aipCLINewModuleCommand, "(")
-	g.P(strconv.Quote(config.Root), ",")
+	g.P("use,")
 	g.P("&", cliConfig, "{")
 	g.P("Compiler: ", fmt.Sprintf("%#v", config), ",")
 	g.P("},")

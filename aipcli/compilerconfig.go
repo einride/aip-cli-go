@@ -12,7 +12,6 @@ type CompilerConfig struct {
 	DefaultHost               string
 	Root                      string
 	GoogleCloudIdentityTokens bool
-	Main                      bool
 }
 
 func (c *CompilerConfig) DefaultAddress() (string, bool) {
@@ -25,7 +24,6 @@ func (c *CompilerConfig) AddToFlagSet(flags *pflag.FlagSet) {
 	flags.Var(stringStringMap{value: c.Hosts}, "hosts", "mapping from alias to host")
 	flags.StringVar(&c.DefaultHost, "default_host", "", "default host override")
 	flags.StringVar(&c.Root, "root", "", "root command")
-	flags.BoolVar(&c.Main, "main", false, "write default root command main.go")
 	flags.BoolVar(&c.GoogleCloudIdentityTokens, "gcloud_identity_tokens", false, "use gcloud to print identity tokens")
 }
 
@@ -36,9 +34,6 @@ func (c *CompilerConfig) Validate() error {
 			hosts = append(hosts, host)
 		}
 		return fmt.Errorf("default_host (%s) must be one of hosts (%s)", c.DefaultHost, strings.Join(hosts, ","))
-	}
-	if c.Main && c.Root == "" {
-		return fmt.Errorf("main option requires root option")
 	}
 	return nil
 }
