@@ -1,4 +1,4 @@
-package gencli
+package gengoaipcli
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 
 const generateFilenameSuffix = "_cli.pb.go"
 
-func Run(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
+func Run(gen *protogen.Plugin, config Config) error {
 	var files protoregistry.Files
 	for _, file := range gen.Files {
 		if err := files.RegisterFile(file.Desc); err != nil {
@@ -37,7 +37,7 @@ func Run(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
 	return nil
 }
 
-func generateRootModuleFile(gen *protogen.Plugin, config aipcli.CompilerConfig) error {
+func generateRootModuleFile(gen *protogen.Plugin, config Config) error {
 	module, ok := getModuleParam(gen)
 	if !ok {
 		return fmt.Errorf("param root requires param module to be provided")
@@ -58,12 +58,14 @@ func generateRootModuleFile(gen *protogen.Plugin, config aipcli.CompilerConfig) 
 		GoName:       "NewModuleCommand",
 	})
 	g.P()
-	g.P("func NewModuleCommand(use string) *", cobraCommand, " {")
+	g.P("func NewModuleCommand(use string, short string, commands ...*", cobraCommand, ") *", cobraCommand, " {")
+	g.P("config := NewConfig()")
 	g.P("return ", aipCLINewModuleCommand, "(")
 	g.P("use,")
-	g.P("&", cliConfig, "{")
-	g.P("Compiler: ", fmt.Sprintf("%#v", config), ",")
-	g.P("},")
+	g.P("short,")
+	g.P("config,")
+	g.P("append(")
+	g.P("[]*", cobraCommand, "{")
 	for _, file := range gen.Files {
 		if !file.Generate {
 			continue
@@ -73,10 +75,17 @@ func generateRootModuleFile(gen *protogen.Plugin, config aipcli.CompilerConfig) 
 				GoImportPath: file.GoImportPath,
 				GoName:       "New" + service.GoName + "Command",
 			})
-			g.P(newCommandFunction, "(),")
+			g.P(newCommandFunction, "(config),")
 		}
 	}
+	g.P("},")
+	g.P("commands...,")
+	g.P(")...,")
 	g.P(")")
+	g.P("}")
+	g.P()
+	g.P("func NewConfig() ", cliConfig, "{")
+	g.P("return ", fmt.Sprintf("%#v", aipcli.Config(config)))
 	g.P("}")
 	return nil
 }

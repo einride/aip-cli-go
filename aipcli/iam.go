@@ -10,15 +10,12 @@ import (
 )
 
 // NewIAMModuleCommand returns a *cobra.Command for standard IAM operations.
-func NewIAMModuleCommand() *cobra.Command {
+func NewIAMModuleCommand(name string, config Config) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "iam",
-		Short: "IAM policies and access control",
+		Use:   name,
+		Short: "Identity and Access Management (IAM)",
 		Long: strings.TrimSpace(`
-Manages Identity and Access Management (IAM) policies.
-
-Any implementation of an API that offers access control features
-implements the google.iam.v1.IAMPolicy interface.
+Manage Identity and Access Management (IAM) policies.
 
 Access control is applied when a principal (user or service account), takes
 some action on a resource exposed by a service. Resources, identified by
@@ -35,20 +32,22 @@ are created and deleted implicitly with the resources to which they are
 attached.
 		`),
 		Annotations: map[string]string{
-			moduleNameAnnotation: "iam",
+			moduleAnnotation: name,
 		},
 	}
-	cmd.AddCommand(newSetIAMPolicyCommand())
-	cmd.AddCommand(newGetIAMPolicyCommand())
-	cmd.AddCommand(newAddIAMPolicyBindingCommand())
-	cmd.AddCommand(newRemoveIAMPolicyBindingCommand())
+	initPersistentFlags(cmd)
+	setConfig(cmd, config)
+	cmd.AddCommand(newSetIAMPolicyCommand(config))
+	cmd.AddCommand(newGetIAMPolicyCommand(config))
+	cmd.AddCommand(newAddIAMPolicyBindingCommand(config))
+	cmd.AddCommand(newRemoveIAMPolicyBindingCommand(config))
 	return cmd
 }
 
-func newGetIAMPolicyCommand() *cobra.Command {
+func newGetIAMPolicyCommand(config Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get-iam-policy",
-		Short: "get the IAM policy for a resource",
+		Short: "Get the IAM policy for a resource",
 		Long: strings.TrimSpace(`
 Get the IAM policy associated with a resource. 
 
@@ -63,13 +62,21 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			initContext(cmd, config)
+		},
+		Annotations: map[string]string{
+			methodAnnotation: "google.iam.v1.IAMPolicy.GetIamPolicy",
+		},
 	}
-	resource := cmd.Flags().String("resource", "", "the resource for which the policy is being requested")
+	initPersistentFlags(cmd)
+	setConfig(cmd, config)
+	resource := cmd.Flags().String("resource", "", "Resource for which the policy is being requested")
 	_ = cmd.MarkFlagRequired("resource")
 	_ = cmd.RegisterFlagCompletionFunc("resource", completeResource)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		return invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
 			&iam.GetIamPolicyRequest{Resource: *resource},
 			&iam.Policy{},
@@ -78,26 +85,40 @@ This command can fail for the following reasons:
 	return cmd
 }
 
-func newSetIAMPolicyCommand() *cobra.Command {
+func newSetIAMPolicyCommand(config Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-iam-policy",
-		Short: "set the IAM policy for a resource",
+		Short: "Set the IAM policy for a resource",
 		Long: strings.TrimSpace(`
 Set the IAM policy associated with a resource.
 
 This command can fail for the following reasons:
 
   ▪ The resource specified does not exist.
-  ▪ The active account does not have permission to access the given
-	resource's IAM policies.
+
+  ▪ The specified policy contains invalid or non-existent 
+    roles or members.
+
+  ▪ The active account does not have permission to 
+    access the given resource's IAM policies.
 `),
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			initContext(cmd, config)
+		},
+		Annotations: map[string]string{
+			methodAnnotation: "google.iam.v1.IAMPolicy.SetIAMPolicy",
+		},
 	}
-	resource := cmd.Flags().String("resource", "", "the resource for which the policy is being specified")
+	initPersistentFlags(cmd)
+	setConfig(cmd, config)
+	resource := cmd.Flags().String("resource", "", "Resource name for which the policy is being specified")
 	_ = cmd.MarkFlagRequired("resource")
 	_ = cmd.RegisterFlagCompletionFunc("resource", completeResource)
-	policyFile := cmd.Flags().String("policy-file", "", "path to a local JSON file containing a valid policy")
+	_ = cmd.Flags().SetAnnotation("resource", flagArgumentAnnotation, []string{})
+	policyFile := cmd.Flags().String("policy-file", "", "Path to a local JSON file containing a valid policy")
 	_ = cmd.MarkFlagRequired("policy-file")
 	_ = cmd.MarkFlagFilename("policy-file", "json")
+	_ = cmd.Flags().SetAnnotation("policy-file", flagArgumentAnnotation, []string{})
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		data, err := os.ReadFile(*policyFile)
 		if err != nil {
@@ -108,7 +129,7 @@ This command can fail for the following reasons:
 			return err
 		}
 		return invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
 			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
 			&iam.Policy{},
@@ -117,10 +138,10 @@ This command can fail for the following reasons:
 	return cmd
 }
 
-func newAddIAMPolicyBindingCommand() *cobra.Command {
+func newAddIAMPolicyBindingCommand(config Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-iam-policy-binding",
-		Short: "add an IAM policy binding to the IAM policy of a resource",
+		Short: "Add an IAM policy binding to the IAM policy of a resource",
 		Long: strings.TrimSpace(`
 Adds an IAM policy binding to the IAM policy of a resource. 
 
@@ -132,20 +153,31 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			initContext(cmd, config)
+		},
+		Annotations: map[string]string{
+			methodAnnotation: "add-iam-policy-binding", // custom method
+		},
 	}
-	resource := cmd.Flags().String("resource", "", "the resource for which the policy binding is being added")
+	initPersistentFlags(cmd)
+	setConfig(cmd, config)
+	resource := cmd.Flags().String("resource", "", "Resource name for which the policy binding is being added")
 	_ = cmd.MarkFlagRequired("resource")
 	_ = cmd.RegisterFlagCompletionFunc("resource", completeResource)
-	member := cmd.Flags().String("member", "", "principal to add the binding for")
+	_ = cmd.Flags().SetAnnotation("resource", flagArgumentAnnotation, nil)
+	member := cmd.Flags().String("member", "", "Principal to add the binding for")
 	_ = cmd.MarkFlagRequired("member")
 	_ = cmd.RegisterFlagCompletionFunc("member", completeMember)
-	role := cmd.Flags().String("role", "", "role name to assign to the principal")
+	_ = cmd.Flags().SetAnnotation("member", flagArgumentAnnotation, nil)
+	role := cmd.Flags().String("role", "", "Role name to assign to the principal")
 	_ = cmd.MarkFlagRequired("role")
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
+	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var policy iam.Policy
 		if err := invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
 			&iam.GetIamPolicyRequest{Resource: *resource},
 			&policy,
@@ -154,7 +186,7 @@ This command can fail for the following reasons:
 		}
 		addBinding(&policy, *member, *role)
 		return invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
 			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
 			&iam.Policy{},
@@ -163,10 +195,10 @@ This command can fail for the following reasons:
 	return cmd
 }
 
-func newRemoveIAMPolicyBindingCommand() *cobra.Command {
+func newRemoveIAMPolicyBindingCommand(config Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "remove-iam-policy-binding",
-		Short: "remove an IAM policy binding from the IAM policy of a resource",
+		Short: "Remove an IAM policy binding from the IAM policy of a resource",
 		Long: strings.TrimSpace(`
 Removes an IAM policy binding from the IAM policy of a resource. 
 One binding consists of a member, a role, and an optional condition.
@@ -177,20 +209,31 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			initContext(cmd, config)
+		},
+		Annotations: map[string]string{
+			methodAnnotation: "remove-iam-policy-binding", // custom method
+		},
 	}
-	resource := cmd.Flags().String("resource", "", "the resource for which the policy binding is being removed")
+	initPersistentFlags(cmd)
+	setConfig(cmd, config)
+	resource := cmd.Flags().String("resource", "", "Resource name for which the policy binding is being removed")
 	_ = cmd.MarkFlagRequired("resource")
 	_ = cmd.RegisterFlagCompletionFunc("resource", completeResource)
-	member := cmd.Flags().String("member", "", "principal to remove the binding for")
+	_ = cmd.Flags().SetAnnotation("resource", flagArgumentAnnotation, nil)
+	member := cmd.Flags().String("member", "", "Principal to remove the binding for")
 	_ = cmd.MarkFlagRequired("member")
 	_ = cmd.RegisterFlagCompletionFunc("member", completeMember)
-	role := cmd.Flags().String("role", "", "role name to remove the principal from")
+	_ = cmd.Flags().SetAnnotation("member", flagArgumentAnnotation, nil)
+	role := cmd.Flags().String("role", "", "Role name to remove the principal from")
 	_ = cmd.MarkFlagRequired("role")
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
+	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		var policy iam.Policy
 		if err := invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
 			&iam.GetIamPolicyRequest{Resource: *resource},
 			&policy,
@@ -199,7 +242,7 @@ This command can fail for the following reasons:
 		}
 		removeBinding(&policy, *member, *role)
 		return invoke(
-			cmd.Context(),
+			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
 			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
 			&iam.Policy{},

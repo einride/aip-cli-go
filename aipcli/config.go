@@ -2,71 +2,139 @@ package aipcli
 
 import (
 	"context"
-	"os/exec"
-	"strings"
+
+	"github.com/spf13/cobra"
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
+// Config is the configuration for the protoc-gen-go-aip-cli plugin.
 type Config struct {
-	Compiler CompilerConfig
-	Runtime  RuntimeConfig
+	// Hosts is a map from host ID to host address.
+	Hosts map[string]string
+	// DefaultHost is the host ID of the default host.
+	DefaultHost string
+	// Root is the name of the root module package.
+	Root string
+	// GoogleCloudIdentityTokens indicates if Google Cloud Identity Tokens should be automatically generated.
+	GoogleCloudIdentityTokens bool
 }
 
-func (c *Config) GetAddress() (string, bool) {
-	if c.Runtime.Address != "" {
-		return c.Runtime.Address, true
+const (
+	addressFlag  = "address"
+	tokenFlag    = "token"
+	insecureFlag = "insecure"
+	verboseFlag  = "verbose"
+)
+
+type contextKey struct{}
+
+type contextValue struct {
+	config               Config
+	defaultHostFromProto string
+}
+
+func initContext(cmd *cobra.Command, config Config) {
+	ctx := cmd.Context()
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	for host, ok := range c.Runtime.Host {
-		if !*ok {
-			continue
+	cmd.SetContext(context.WithValue(ctx, contextKey{}, &contextValue{
+		config: config,
+	}))
+}
+
+func initPersistentFlags(cmd *cobra.Command) {
+	if cmd.PersistentFlags().Lookup(addressFlag) == nil {
+		cmd.PersistentFlags().String(addressFlag, "", "Connect to address")
+	}
+	if cmd.PersistentFlags().Lookup(insecureFlag) == nil {
+		cmd.PersistentFlags().Bool(insecureFlag, false, "Make insecure connection (only on localhost)")
+	}
+	if cmd.PersistentFlags().Lookup(tokenFlag) == nil {
+		cmd.PersistentFlags().String(tokenFlag, "", "Authenticate with a bearer token")
+	}
+	if cmd.PersistentFlags().Lookup(verboseFlag) == nil {
+		cmd.PersistentFlags().BoolP(verboseFlag, "v", false, "Enable verbose output")
+	}
+	if cmd.PersistentFlags().Lookup("help") == nil {
+		cmd.PersistentFlags().BoolP("help", "h", false, "Show help for command")
+	}
+}
+
+func setConfig(cmd *cobra.Command, config Config) {
+	initContext(cmd, config)
+	for host, hostAddress := range config.Hosts {
+		if cmd.PersistentFlags().Lookup(host) == nil {
+			help := "Connect to " + host + " host (" + hostAddress + ")"
+			if host == config.DefaultHost {
+				help += " [default]"
+			}
+			cmd.PersistentFlags().Bool(host, false, help)
+			_ = cmd.PersistentFlags().SetAnnotation(host, flagHostAnnotation, []string{hostAddress})
 		}
-		return c.Compiler.Hosts[host], true
 	}
-	if defaultAddress, ok := c.Compiler.DefaultAddress(); ok {
-		return defaultAddress, true
+}
+
+func setDefaultHostFromProto(cmd *cobra.Command, method protoreflect.MethodDescriptor) {
+	if value, ok := cmd.Context().Value(contextKey{}).(*contextValue); ok {
+		if defaultHost, ok := proto.GetExtension(
+			method.Parent().Options(),
+			annotations.E_DefaultHost,
+		).(string); ok {
+			value.defaultHostFromProto = defaultHost
+		}
 	}
-	if c.Runtime.DefaultHost != "" {
-		return c.Runtime.DefaultHost, true
+}
+
+func defaultHostFromProto(cmd *cobra.Command) (string, bool) {
+	result := cmd.Context().Value(contextKey{}).(*contextValue).defaultHostFromProto
+	return result, result != ""
+}
+
+func getConfig(cmd *cobra.Command) Config {
+	if value, ok := cmd.Context().Value(contextKey{}).(*contextValue); ok {
+		return value.config
+	}
+	return Config{}
+}
+
+func getAddress(cmd *cobra.Command) (string, bool) {
+	if flagAddress, err := cmd.Flags().GetString(addressFlag); err == nil && flagAddress != "" {
+		return flagAddress, true
+	}
+	for host, hostAddress := range getConfig(cmd).Hosts {
+		if useHost, err := cmd.Flags().GetBool(host); err == nil && useHost {
+			return hostAddress, true
+		}
+	}
+	if defaultHostFromConfig := getConfig(cmd).DefaultHost; defaultHostFromConfig != "" {
+		for host, hostAddress := range getConfig(cmd).Hosts {
+			if host == defaultHostFromConfig {
+				return hostAddress, true
+			}
+		}
+	}
+	return defaultHostFromProto(cmd)
+}
+
+func getToken(cmd *cobra.Command) (string, bool) {
+	if flagToken, err := cmd.Flags().GetString(tokenFlag); err == nil && flagToken != "" {
+		return flagToken, true
+	}
+	if getConfig(cmd).GoogleCloudIdentityTokens {
+		return gcloudAuthPrintIdentityToken()
 	}
 	return "", false
 }
 
-func (c *Config) GetToken() (string, bool) {
-	if c.Runtime.Token != "" {
-		return c.Runtime.Token, true
-	}
-	if c.Compiler.GoogleCloudIdentityTokens {
-		return getGoogleCloudIdentityToken()
-	}
-	return "", false
+func isInsecure(cmd *cobra.Command) bool {
+	result, err := cmd.Flags().GetBool(insecureFlag)
+	return result && err == nil
 }
 
-func getGoogleCloudIdentityToken() (string, bool) {
-	if _, err := exec.LookPath("gcloud"); err != nil {
-		return "", false
-	}
-	var stdout strings.Builder
-	cmd := exec.Command("gcloud", "auth", "print-identity-token")
-	cmd.Stdout = &stdout
-	if err := cmd.Run(); err != nil {
-		return "", false
-	}
-	return strings.TrimSpace(stdout.String()), true
+func isVerbose(cmd *cobra.Command) bool {
+	result, err := cmd.Flags().GetBool(verboseFlag)
+	return result && err == nil
 }
-
-func ConfigFromContext(ctx context.Context) *Config {
-	config, ok := ctx.Value(configContextKey{}).(*Config)
-	if !ok {
-		panic("aipcli.ConfigFromContext was called with a context without a Config")
-	}
-	return config
-}
-
-func WithConfig(ctx context.Context, config *Config) context.Context {
-	return context.WithValue(ctx, configContextKey{}, config)
-}
-
-func SetDefaultHost(ctx context.Context, host string) {
-	ConfigFromContext(ctx).Runtime.DefaultHost = host
-}
-
-type configContextKey struct{}

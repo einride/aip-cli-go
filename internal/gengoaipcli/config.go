@@ -1,25 +1,18 @@
-package aipcli
+package gengoaipcli
 
 import (
 	"fmt"
 	"strings"
 
 	"github.com/spf13/pflag"
+	"go.einride.tech/aip-cli/aipcli"
 )
 
-type CompilerConfig struct {
-	Hosts                     map[string]string
-	DefaultHost               string
-	Root                      string
-	GoogleCloudIdentityTokens bool
-}
+// Config for the protoc-gen-go-aip-cli plugin.
+type Config aipcli.Config
 
-func (c *CompilerConfig) DefaultAddress() (string, bool) {
-	address, ok := c.Hosts[c.DefaultHost]
-	return address, ok
-}
-
-func (c *CompilerConfig) AddToFlagSet(flags *pflag.FlagSet) {
+// AddToFlagSet adds the config to a pflag.FlagSet.
+func (c *Config) AddToFlagSet(flags *pflag.FlagSet) {
 	c.Hosts = make(map[string]string)
 	flags.Var(stringStringMap{value: c.Hosts}, "hosts", "mapping from alias to host")
 	flags.StringVar(&c.DefaultHost, "default_host", "", "default host override")
@@ -27,7 +20,8 @@ func (c *CompilerConfig) AddToFlagSet(flags *pflag.FlagSet) {
 	flags.BoolVar(&c.GoogleCloudIdentityTokens, "gcloud_identity_tokens", false, "use gcloud to print identity tokens")
 }
 
-func (c *CompilerConfig) Validate() error {
+// Validate the config.
+func (c *Config) Validate() error {
 	if c.DefaultHost != "" && c.Hosts[c.DefaultHost] == "" {
 		hosts := make([]string, 0, len(c.Hosts))
 		for host := range c.Hosts {

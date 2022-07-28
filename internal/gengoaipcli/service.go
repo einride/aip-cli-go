@@ -1,4 +1,4 @@
-package gencli
+package gengoaipcli
 
 import (
 	"sort"
@@ -29,6 +29,10 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "NewMethodCommand",
 	})
+	aipCLIConfig := g.QualifiedGoIdent(protogen.GoIdent{
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
+		GoName:       "Config",
+	})
 	cobraCommand := g.QualifiedGoIdent(protogen.GoIdent{
 		GoImportPath: "github.com/spf13/cobra",
 		GoName:       "Command",
@@ -37,21 +41,21 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		GoImportPath: "google.golang.org/protobuf/reflect/protoreflect",
 		GoName:       "FullName",
 	})
-	g.P("func ", c.goName(), "() *", cobraCommand, " {")
+	g.P("func ", c.goName(), "(config ", aipCLIConfig, ") *", cobraCommand, " {")
 	serviceComments := map[protoreflect.FullName]string{}
 	collectDescriptorComments(serviceComments, c.service.Desc)
-	g.P("cmd := ", newServiceCommand, "(")
+	g.P("return ", newServiceCommand, "(")
+	g.P("config,")
 	g.P(c.file.GoDescriptorIdent, ".")
 	g.P("Services().ByName(\"", c.service.Desc.Name(), "\"),")
 	g.P("map[", protoreflectFullName, "]string{")
 	printCommentMapElements(g, serviceComments)
 	g.P("},")
-	g.P(")")
 	for _, method := range c.service.Methods {
 		methodComments := map[protoreflect.FullName]string{}
 		collectMethodComments(methodComments, method.Desc)
-		g.P("cmd.AddCommand(")
 		g.P(newMethodCommand, "(")
+		g.P("config,")
 		g.P(c.file.GoDescriptorIdent, ".")
 		g.P("Services().ByName(\"", c.service.Desc.Name(), "\").Methods().ByName(\"", method.Desc.Name(), "\"),")
 		g.P("&", method.Input.GoIdent, "{},")
@@ -60,9 +64,8 @@ func (c newServiceCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) 
 		printCommentMapElements(g, methodComments)
 		g.P("},")
 		g.P("),")
-		g.P(")")
 	}
-	g.P("return cmd")
+	g.P(")")
 	g.P("}")
 	return nil
 }

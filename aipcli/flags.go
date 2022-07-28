@@ -1,19 +1,370 @@
 package aipcli
 
 import (
+	"encoding/base64"
 	"fmt"
+	"os"
+	"strconv"
 	"strings"
-	"time"
 
-	"github.com/google/cel-go/cel"
-	"github.com/google/cel-go/common/types"
-	"github.com/google/cel-go/common/types/ref"
+	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	protovalue "go.einride.tech/aip-cli/internal/protoflag"
+	"go.einride.tech/aip/reflect/aipreflect"
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/known/durationpb"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
+
+func setFlags(
+	comments map[protoreflect.FullName]string,
+	cmd *cobra.Command,
+	parentFields []protoreflect.FieldDescriptor,
+	msg protoreflect.MessageDescriptor,
+	mutable func() protoreflect.Message,
+) {
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		switch field.Kind() {
+		case protoreflect.MessageKind:
+			switch field.Message().FullName() {
+			case "google.protobuf.Duration":
+				if field.IsList() {
+					// TODO: Implement support for repeated durations.
+				} else {
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Duration(mutable, field))
+				}
+			case "google.protobuf.Timestamp":
+				if field.IsList() {
+					// TODO: Implement support for repeated timestamps.
+				} else {
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Timestamp(mutable, field))
+				}
+			case "google.protobuf.FieldMask":
+				if field.IsList() {
+					// Repeated field masks is intentionally not supported.
+				} else {
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.FieldMask(mutable, field))
+				}
+			default:
+				switch {
+				case field.IsMap():
+					switch {
+					case field.MapKey().Kind() == protoreflect.StringKind &&
+						field.MapValue().Kind() == protoreflect.StringKind:
+						addFlag(
+							cmd,
+							field,
+							parentFields,
+							comments[field.FullName()],
+							protovalue.MapStringString(mutable, field),
+						)
+					default:
+						// TODO: Implement support for more map types.
+					}
+				case field.IsList():
+					// Repeated nested messages not supported.
+				default:
+					setFlags(
+						comments,
+						cmd,
+						append(parentFields, field),
+						field.Message(),
+						func() protoreflect.Message {
+							return mutable().Mutable(field).Message()
+						},
+					)
+				}
+			}
+		case protoreflect.EnumKind:
+			if field.IsList() {
+				// TODO: Implement support for repeated enums.
+			} else {
+				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Enum(mutable, field))
+			}
+		case protoreflect.StringKind, protoreflect.BoolKind, protoreflect.BytesKind, protoreflect.DoubleKind,
+			protoreflect.FloatKind, protoreflect.Int64Kind, protoreflect.Int32Kind:
+			setPrimitiveFlag(comments, cmd, parentFields, mutable, field)
+		}
+	}
+}
+
+func setPrimitiveFlag(
+	comments map[protoreflect.FullName]string,
+	cmd *cobra.Command,
+	parentFields []protoreflect.FieldDescriptor,
+	mutable func() protoreflect.Message,
+	field protoreflect.FieldDescriptor,
+) {
+	var value pflag.Value
+	switch field.Kind() {
+	case protoreflect.BoolKind:
+		if field.IsList() {
+			value = protovalue.PrimitiveList[bool](mutable, field, protoreflect.ValueOfBool, strconv.ParseBool)
+		} else {
+			value = protovalue.Primitive[bool](mutable, field, protoreflect.ValueOfBool, strconv.ParseBool)
+		}
+	case protoreflect.StringKind:
+		parser := func(s string) (string, error) {
+			return s, nil
+		}
+		if field.IsList() {
+			value = protovalue.PrimitiveList[string](mutable, field, protoreflect.ValueOfString, parser)
+		} else {
+			value = protovalue.Primitive[string](mutable, field, protoreflect.ValueOfString, parser)
+		}
+	case protoreflect.BytesKind:
+		value = protovalue.Primitive[[]byte](mutable, field, protoreflect.ValueOfBytes, base64.URLEncoding.DecodeString)
+	case protoreflect.DoubleKind:
+		parser := func(s string) (float64, error) {
+			return strconv.ParseFloat(s, 64)
+		}
+		if field.IsList() {
+			value = protovalue.PrimitiveList[float64](mutable, field, protoreflect.ValueOfFloat64, parser)
+		} else {
+			value = protovalue.Primitive[float64](mutable, field, protoreflect.ValueOfFloat64, parser)
+		}
+	case protoreflect.FloatKind:
+		parser := func(s string) (float32, error) {
+			d, err := strconv.ParseFloat(s, 32)
+			if err != nil {
+				return 0, err
+			}
+			return float32(d), nil
+		}
+		if field.IsList() {
+			value = protovalue.PrimitiveList[float32](mutable, field, protoreflect.ValueOfFloat32, parser)
+		} else {
+			value = protovalue.Primitive[float32](mutable, field, protoreflect.ValueOfFloat32, parser)
+		}
+	case protoreflect.Int64Kind:
+		parser := func(s string) (int64, error) {
+			return strconv.ParseInt(s, 10, 64)
+		}
+		if field.IsList() {
+			value = protovalue.PrimitiveList[int64](mutable, field, protoreflect.ValueOfInt64, parser)
+		} else {
+			value = protovalue.Primitive[int64](mutable, field, protoreflect.ValueOfInt64, parser)
+		}
+	case protoreflect.Int32Kind:
+		parser := func(s string) (int32, error) {
+			i64, err := strconv.ParseInt(s, 10, 32)
+			if err != nil {
+				return 0, err
+			}
+			return int32(i64), nil
+		}
+		if field.IsList() {
+			value = protovalue.PrimitiveList[int32](mutable, field, protoreflect.ValueOfInt32, parser)
+		} else {
+			value = protovalue.Primitive[int32](mutable, field, protoreflect.ValueOfInt32, parser)
+		}
+	default:
+		panic(fmt.Errorf("unhandled primitive kind: %v", field.Kind())) // shouldn't happen
+	}
+	addFlag(cmd, field, parentFields, comments[field.FullName()], value)
+}
+
+func addFlag(
+	cmd *cobra.Command,
+	field protoreflect.FieldDescriptor,
+	parentFields []protoreflect.FieldDescriptor,
+	comment string,
+	value pflag.Value,
+) {
+	flag := &pflag.Flag{
+		Name:  flagName(field, parentFields),
+		Usage: trimFieldComment(comment),
+		Value: value,
+		Annotations: map[string][]string{
+			fieldNameAnnotation: {string(field.FullName())},
+		},
+	}
+	cmd.Flags().AddFlag(flag)
+	_ = cmd.Flags().SetAnnotation(flag.Name, flagArgumentAnnotation, []string{})
+	annotateFlagWithFieldBehaviors(flag, field)
+	markRequiredFlags(cmd, flag, field)
+	hideOutputOnlyFields(cmd, flag, field)
+	registerCompletion(cmd, flag, field, comment)
+	hideImmutableForUpdateMethods(cmd, flag, field)
+	hideNameForCreateMethods(cmd, flag, field)
+	hideETagForCreateMethods(cmd, flag, field)
+}
+
+func markRequiredFlags(
+	cmd *cobra.Command,
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+) {
+	if strings.HasPrefix(cmd.Annotations[methodAnnotation], "Update") {
+		// Update methods have no required fields due to field masks.
+		return
+	}
+	if os.Getenv("AIP_CLI_DISABLE_FIELD_BEHAVIOR") == "true" {
+		// A secret escape hatch for ignoring required fields.
+		return
+	}
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_REQUIRED {
+				_ = cmd.MarkFlagRequired(flag.Name)
+				return
+			}
+		}
+	}
+}
+
+func hideOutputOnlyFields(
+	cmd *cobra.Command,
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+) {
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_OUTPUT_ONLY {
+				_ = cmd.Flags().MarkHidden(flag.Name)
+				return
+			}
+		}
+	}
+}
+
+func annotateFlagWithFieldBehaviors(
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+) {
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if flag.Annotations == nil {
+				flag.Annotations = map[string][]string{}
+			}
+			flag.Annotations[fieldBehaviorsAnnotation] = append(
+				flag.Annotations[fieldBehaviorsAnnotation],
+				fieldBehavior.String(),
+			)
+		}
+	}
+}
+
+func registerCompletion(
+	cmd *cobra.Command,
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+	comment string,
+) {
+	// resource name fields
+	if !field.IsList() && field.Name() == "name" && field.Kind() == protoreflect.StringKind {
+		if resourceDescriptor, ok := proto.GetExtension(
+			field.Parent().Options(),
+			annotations.E_Resource,
+		).(*annotations.ResourceDescriptor); ok && resourceDescriptor.GetType() != "" {
+			var didRegisterCompletion bool
+			aipreflect.RangeResourceDescriptorsInPackage(
+				protoregistry.GlobalFiles,
+				field.ParentFile().Package(),
+				func(resource *annotations.ResourceDescriptor) bool {
+					if resource.GetType() == resourceDescriptor.GetType() && len(resource.GetPattern()) > 0 {
+						didRegisterCompletion = true
+						_ = cmd.RegisterFlagCompletionFunc(
+							flag.Name,
+							resourceNameCompletionFunc(comment, resource.GetPattern()...),
+						)
+						return false
+					}
+					return true
+				},
+			)
+			if didRegisterCompletion {
+				return
+			}
+		}
+	}
+	// resource reference fields
+	if field.Kind() == protoreflect.StringKind {
+		if resourceReference, ok := proto.GetExtension(
+			field.Options(),
+			annotations.E_ResourceReference,
+		).(*annotations.ResourceReference); ok && resourceReference.GetType() != "" {
+			var didRegisterCompletion bool
+			completionFunc := resourceNameCompletionFunc
+			if field.IsList() {
+				completionFunc = resourceNameListCompletionFunc
+			}
+			aipreflect.RangeResourceDescriptorsInPackage(
+				protoregistry.GlobalFiles,
+				field.ParentFile().Package(),
+				func(resource *annotations.ResourceDescriptor) bool {
+					if resource.GetType() == resourceReference.GetType() && len(resource.GetPattern()) > 0 {
+						_ = cmd.RegisterFlagCompletionFunc(
+							flag.Name,
+							completionFunc(comment, resource.GetPattern()...),
+						)
+						didRegisterCompletion = true
+						return false
+					}
+					return true
+				},
+			)
+			if didRegisterCompletion {
+				return
+			}
+		}
+	}
+	if field.Kind() == protoreflect.MessageKind && field.Message().FullName() == "google.protobuf.Timestamp" {
+		_ = cmd.RegisterFlagCompletionFunc(flag.Name, timestampCompletionFunc(comment))
+		return
+	}
+	// default: register active help with field comment
+	_ = cmd.RegisterFlagCompletionFunc(flag.Name, fieldCompletionFunc(comment))
+}
+
+func hideImmutableForUpdateMethods(
+	cmd *cobra.Command,
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+) {
+	if !strings.HasPrefix(cmd.Annotations[methodAnnotation], "Update") {
+		return
+	}
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_IMMUTABLE {
+				_ = cmd.Flags().MarkHidden(flag.Name)
+			}
+		}
+	}
+}
+
+func hideNameForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
+	if strings.HasPrefix(
+		string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()),
+		"Create",
+	) && field.Name() == "name" {
+		_ = cmd.Flags().MarkHidden(flag.Name)
+	}
+}
+
+func hideETagForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
+	if strings.HasPrefix(
+		string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()),
+		"Create",
+	) && field.Name() == "etag" {
+		_ = cmd.Flags().MarkHidden(flag.Name)
+	}
+}
 
 func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.FieldDescriptor) string {
 	var result strings.Builder
@@ -23,256 +374,4 @@ func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.Fi
 	}
 	_, _ = result.WriteString(string(field.Name()))
 	return strings.ReplaceAll(result.String(), "_", "-")
-}
-
-func newPrimitiveValue[T any](
-	mutable func() protoreflect.Message,
-	field protoreflect.FieldDescriptor,
-	valueOf func(T) protoreflect.Value,
-	parser func(string) (T, error),
-) pflag.Value {
-	return primitiveValue[T]{
-		mutable: mutable,
-		field:   field,
-		valueOf: valueOf,
-		parser:  parser,
-	}
-}
-
-type primitiveValue[T any] struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-	valueOf func(T) protoreflect.Value
-	parser  func(string) (T, error)
-}
-
-func (v primitiveValue[T]) String() string {
-	return ""
-}
-
-func (v primitiveValue[T]) Set(s string) error {
-	parsed, err := v.parser(s)
-	if err != nil {
-		return err
-	}
-	v.mutable().Set(v.field, v.valueOf(parsed))
-	return nil
-}
-
-func (v primitiveValue[T]) Type() string {
-	return v.field.Kind().String()
-}
-
-func newPrimitiveListValue[T any](
-	mutable func() protoreflect.Message,
-	field protoreflect.FieldDescriptor,
-	valueOf func(T) protoreflect.Value,
-	parser func(string) (T, error),
-) pflag.Value {
-	return primitiveListValue[T]{
-		mutable: mutable,
-		field:   field,
-		parser:  parser,
-		valueOf: valueOf,
-	}
-}
-
-type primitiveListValue[T any] struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-	parser  func(string) (T, error)
-	valueOf func(T) protoreflect.Value
-}
-
-func (v primitiveListValue[T]) String() string {
-	return ""
-}
-
-func (v primitiveListValue[T]) Set(s string) error {
-	values := strings.Split(s, ",")
-	if len(values) == 0 {
-		return nil
-	}
-	msg := v.mutable()
-	list := msg.NewField(v.field).List()
-	for _, value := range values {
-		parsed, err := v.parser(value)
-		if err != nil {
-			return err
-		}
-		list.Append(v.valueOf(parsed))
-	}
-	msg.Set(v.field, protoreflect.ValueOfList(list))
-	return nil
-}
-
-func (v primitiveListValue[T]) Type() string {
-	return "[" + v.field.Kind().String() + "]"
-}
-
-type durationValue struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-}
-
-func (v durationValue) String() string {
-	return ""
-}
-
-func (v durationValue) Type() string {
-	return "duration"
-}
-
-func (v durationValue) Set(s string) error {
-	duration, err := time.ParseDuration(s)
-	if err != nil {
-		return err
-	}
-	v.mutable().Set(v.field, protoreflect.ValueOf(durationpb.New(duration).ProtoReflect()))
-	return nil
-}
-
-type timestampValue struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-}
-
-func (v timestampValue) String() string {
-	return ""
-}
-
-func (v timestampValue) Type() string {
-	return "timestamp"
-}
-
-func (v timestampValue) Set(s string) error {
-	if strings.HasPrefix(s, "=") {
-		return v.setExpression(strings.TrimPrefix(s, "="))
-	}
-	timestamp, err := time.Parse(time.RFC3339, s)
-	if err != nil {
-		return err
-	}
-	v.mutable().Set(v.field, protoreflect.ValueOf(timestamppb.New(timestamp).ProtoReflect()))
-	return nil
-}
-
-func (v timestampValue) setExpression(s string) error {
-	env, err := cel.NewEnv(
-		cel.Function(
-			"now",
-			cel.Overload(
-				"now",
-				nil,
-				cel.TimestampType,
-				cel.FunctionBinding(func(...ref.Val) ref.Val {
-					return types.Timestamp{Time: time.Now()}
-				}),
-			),
-		),
-	)
-	if err != nil {
-		return err
-	}
-	ast, issues := env.Compile(s)
-	if issues.Err() != nil {
-		return issues.Err()
-	}
-	if ast.OutputType() != cel.TimestampType {
-		return fmt.Errorf("expected timestamp but got %v", ast.OutputType())
-	}
-	program, err := env.Program(ast)
-	if err != nil {
-		return err
-	}
-	value, _, err := program.Eval(map[string]interface{}{})
-	if err != nil {
-		return err
-	}
-	timestamp, ok := value.Value().(time.Time)
-	if !ok {
-		return fmt.Errorf("invalid timestamp")
-	}
-	v.mutable().Set(v.field, protoreflect.ValueOf(timestamppb.New(timestamp).ProtoReflect()))
-	return nil
-}
-
-type fieldMaskValue struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-}
-
-func (v fieldMaskValue) String() string {
-	return ""
-}
-
-func (v fieldMaskValue) Type() string {
-	return "field-mask"
-}
-
-func (v fieldMaskValue) Set(s string) error {
-	values := strings.Split(s, ",")
-	if len(values) == 0 {
-		return nil
-	}
-	fieldMask := fieldmaskpb.FieldMask{
-		Paths: make([]string, 0, len(values)),
-	}
-	for _, value := range values {
-		fieldMask.Paths = append(fieldMask.Paths, strings.TrimSpace(value))
-	}
-	v.mutable().Set(v.field, protoreflect.ValueOf(fieldMask.ProtoReflect()))
-	return nil
-}
-
-type enumValue struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-}
-
-func (v enumValue) String() string {
-	return ""
-}
-
-func (v enumValue) Type() string {
-	return "enum[" + string(v.field.Enum().Name()) + "]"
-}
-
-func (v enumValue) Set(s string) error {
-	value := v.field.Enum().Values().ByName(protoreflect.Name(s))
-	if value == nil {
-		return fmt.Errorf("no such value for %v: %v", v.field.Enum().Name(), s)
-	}
-	v.mutable().Set(v.field, protoreflect.ValueOfEnum(value.Number()))
-	return nil
-}
-
-type mapStringStringValue struct {
-	mutable func() protoreflect.Message
-	field   protoreflect.FieldDescriptor
-}
-
-func (v mapStringStringValue) String() string {
-	return ""
-}
-
-func (v mapStringStringValue) Type() string {
-	return "map<string, string>"
-}
-
-func (v mapStringStringValue) Set(s string) error {
-	pairs := strings.Split(s, ",")
-	if len(pairs) == 0 {
-		return nil
-	}
-	value := v.mutable().NewField(v.field)
-	for _, pair := range pairs {
-		keyValue := strings.SplitN(pair, "=", 2)
-		if len(keyValue) != 2 {
-			return fmt.Errorf("invalid map pair: %s", pair)
-		}
-		value.Map().Set(protoreflect.ValueOfString(keyValue[0]).MapKey(), protoreflect.ValueOfString(keyValue[1]))
-	}
-	v.mutable().Set(v.field, value)
-	return nil
 }
