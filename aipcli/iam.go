@@ -9,11 +9,11 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// NewIAMCommand returns a *cobra.Command for the google.iam.v1.IAMPolicy service.
-func NewIAMCommand() *cobra.Command {
+// NewIAMModuleCommand returns a *cobra.Command for standard IAM operations.
+func NewIAMModuleCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "iam",
-		Short: "IAM policy service",
+		Short: "IAM policies and access control",
 		Long: strings.TrimSpace(`
 Manages Identity and Access Management (IAM) policies.
 
@@ -34,6 +34,9 @@ This is intentionally not a CRUD style API because access control policies
 are created and deleted implicitly with the resources to which they are
 attached.
 		`),
+		Annotations: map[string]string{
+			moduleNameAnnotation: "iam",
+		},
 	}
 	cmd.AddCommand(newSetIAMPolicyCommand())
 	cmd.AddCommand(newGetIAMPolicyCommand())
