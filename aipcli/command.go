@@ -331,13 +331,16 @@ func addFlag(
 		Value: value,
 	}
 	cmd.Flags().AddFlag(flag)
-	maybeMarkHidden(cmd, flag, field)
-	maybeMarkRequired(cmd, flag, field)
-	maybeRegisterResourceReferenceCompletionFunction(cmd, flag, field)
-	maybeRegisterResourceNameCompletionFunction(cmd, flag, field)
+	hideOutputOnlyFields(cmd, flag, field)
+	markRequiredFieldsAsRequired(cmd, flag, field)
+	registerResourceReferenceCompletion(cmd, flag, field)
+	registerResourceNameCompletion(cmd, flag, field)
+	hideImmutableForUpdateMethods(cmd, flag, field)
+	hideNameForCreateMethods(cmd, flag, field)
+	hideETagForCreateMethods(cmd, flag, field)
 }
 
-func maybeMarkHidden(
+func hideOutputOnlyFields(
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
@@ -354,7 +357,7 @@ func maybeMarkHidden(
 	}
 }
 
-func maybeMarkRequired(
+func markRequiredFieldsAsRequired(
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
@@ -371,7 +374,7 @@ func maybeMarkRequired(
 	}
 }
 
-func maybeRegisterResourceReferenceCompletionFunction(
+func registerResourceReferenceCompletion(
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
@@ -403,7 +406,7 @@ func maybeRegisterResourceReferenceCompletionFunction(
 	}
 }
 
-func maybeRegisterResourceNameCompletionFunction(
+func registerResourceNameCompletion(
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
@@ -428,6 +431,38 @@ func maybeRegisterResourceNameCompletionFunction(
 				},
 			)
 		}
+	}
+}
+
+func hideImmutableForUpdateMethods(
+	cmd *cobra.Command,
+	flag *pflag.Flag,
+	field protoreflect.FieldDescriptor,
+) {
+	if !strings.HasPrefix(cmd.Annotations[methodNameAnnotation], "Update") {
+		return
+	}
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_IMMUTABLE {
+				_ = cmd.Flags().MarkHidden(flag.Name)
+			}
+		}
+	}
+}
+
+func hideNameForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
+	if strings.HasPrefix(cmd.Annotations[methodNameAnnotation], "Create") && field.Name() == "name" {
+		_ = cmd.Flags().MarkHidden(flag.Name)
+	}
+}
+
+func hideETagForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
+	if strings.HasPrefix(cmd.Annotations[methodNameAnnotation], "Create") && field.Name() == "etag" {
+		_ = cmd.Flags().MarkHidden(flag.Name)
 	}
 }
 
