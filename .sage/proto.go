@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"go.einride.tech/sage/sg"
 	"go.einride.tech/sage/sgtool"
@@ -12,6 +13,7 @@ type Proto sg.Namespace
 
 func (Proto) All(ctx context.Context) error {
 	sg.Deps(ctx, Proto.BufFormat, Proto.BufLint)
+	sg.Deps(ctx, Proto.CleanGeneratedProto)
 	sg.Deps(ctx, Proto.BufGenerateExample)
 	return nil
 }
@@ -53,6 +55,11 @@ func (Proto) ProtocGenGoAIPCLI(ctx context.Context) error {
 		sg.FromBinDir("protoc-gen-go-aip-cli"),
 		sg.FromGitRoot("cmd", "protoc-gen-go-aip-cli"),
 	).Run()
+}
+
+func (Proto) CleanGeneratedProto(ctx context.Context) error {
+	sg.Logger(ctx).Println("cleaning generated proto files...")
+	return os.RemoveAll(sg.FromGitRoot("cmd", "examplectl", "gen"))
 }
 
 func (Proto) BufGenerateExample(ctx context.Context) error {

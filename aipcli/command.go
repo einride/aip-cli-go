@@ -21,6 +21,61 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
+const (
+	moduleNameAnnotation  = "aip_cli_annotation_module_name"
+	serviceNameAnnotation = "aip_cli_annotation_service_name"
+	methodNameAnnotation  = "aip_cli_annotation_method_name"
+)
+
+// NewMultiModuleCommand initializes a new *cobra.Command for multiple CLI modules.
+func NewMultiModuleCommand(
+	name string,
+	moduleCmds ...*cobra.Command,
+) *cobra.Command {
+	cmd := &cobra.Command{
+		Use: name,
+	}
+	// TODO: Set custom help function.
+	for _, moduleCmd := range moduleCmds {
+		cmd.AddCommand(moduleCmd)
+	}
+	return cmd
+}
+
+// NewModuleCommand initializes a new *cobra.Command for a CLI module.
+// A module is a collection of services with a common CLI config.
+func NewModuleCommand(
+	name string,
+	config *Config,
+	serviceCmds ...*cobra.Command,
+) *cobra.Command {
+	cmd := &cobra.Command{
+		Use: name,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			cmd.SetContext(WithConfig(cmd.Context(), config))
+		},
+		Annotations: map[string]string{
+			moduleNameAnnotation: name,
+		},
+	}
+	// Deduplicate service commands.
+	serviceNames := make(map[protoreflect.Name][]protoreflect.FullName, len(serviceCmds))
+	for _, serviceCmd := range serviceCmds {
+		if serviceName, ok := serviceCmd.Annotations[serviceNameAnnotation]; ok {
+			fullName := protoreflect.FullName(serviceName)
+			serviceNames[fullName.Name()] = append(serviceNames[fullName.Name()], fullName)
+		}
+	}
+	// TODO: Set custom help function.
+	for _, serviceCmd := range serviceCmds {
+		if serviceName, ok := serviceCmd.Annotations[serviceNameAnnotation]; ok {
+			serviceCmd.Use = getServiceCommandUse(serviceNames, protoreflect.FullName(serviceName))
+			cmd.AddCommand(serviceCmd)
+		}
+	}
+	return cmd
+}
+
 // NewServiceCommand initializes a new *cobra.Command for the provided gRPC service.
 func NewServiceCommand(
 	service protoreflect.ServiceDescriptor,
@@ -30,7 +85,11 @@ func NewServiceCommand(
 		Use:   serviceUse(service),
 		Short: initialUpperCase(trimComment(comments[service.FullName()])),
 		Long:  comments[service.FullName()],
+		Annotations: map[string]string{
+			serviceNameAnnotation: string(service.FullName()),
+		},
 	}
+	// TODO: Set custom help function.
 	return cmd
 }
 
@@ -45,7 +104,11 @@ func NewMethodCommand(
 		Use:   methodUse(method),
 		Short: initialUpperCase(trimComment(comments[method.FullName()])),
 		Long:  comments[method.FullName()],
+		Annotations: map[string]string{
+			methodNameAnnotation: string(method.FullName()),
+		},
 	}
+	// TODO: Set custom help function.
 	fromFile := cmd.Flags().String("from-file", "", "path to a JSON file containing the request payload")
 	_ = cmd.MarkFlagFilename("from-file", "json")
 	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)

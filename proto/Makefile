@@ -61,6 +61,10 @@ buf-lint: $(sagefile)
 buf-push: $(sagefile)
 	@$(sagefile) Proto:BufPush
 
+.PHONY: clean-generated-proto
+clean-generated-proto: $(sagefile)
+	@$(sagefile) Proto:CleanGeneratedProto
+
 .PHONY: protoc-gen-go
 protoc-gen-go: $(sagefile)
 	@$(sagefile) Proto:ProtocGenGo
