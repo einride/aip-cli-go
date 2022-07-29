@@ -324,6 +324,10 @@ func registerCompletion(
 		_ = cmd.RegisterFlagCompletionFunc(flag.Name, timestampCompletionFunc(comment))
 		return
 	}
+	if field.Kind() == protoreflect.EnumKind && !field.IsList() {
+		_ = cmd.RegisterFlagCompletionFunc(flag.Name, enumFieldCompletionFunc(comment, field.Enum().Values()))
+		return
+	}
 	// default: register active help with field comment
 	_ = cmd.RegisterFlagCompletionFunc(flag.Name, fieldCompletionFunc(comment))
 }
