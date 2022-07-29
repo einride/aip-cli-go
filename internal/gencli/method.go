@@ -126,7 +126,8 @@ func (c newMethodCommandCodeGenerator) generateCode(g *protogen.GeneratedFile) e
 			g.P(logError, "(cmd.Context(), err)")
 			g.P(osExit, "(1)")
 			g.P("}")
-			g.P("for response, err := streamingClient.Recv();; {")
+			g.P("for {")
+			g.P("response, err := streamingClient.Recv()")
 			g.P("if err != nil {")
 			eof := protogen.GoIdent{
 				GoImportPath: "io",
