@@ -10,15 +10,48 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/stoewer/go-strcase"
+	"go.einride.tech/aip-cli/internal/protoversion"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
+
+func compareFullNames(lhs, rhs string) int {
+	lhsParts, rhsParts := reverse(strings.Split(lhs, ".")), reverse(strings.Split(rhs, "."))
+	stop := len(lhsParts)
+	if len(rhsParts) < stop {
+		stop = len(rhsParts)
+	}
+	for i := 0; i < stop; i++ {
+		if lhsVersion, err := protoversion.Parse(lhsParts[i]); err == nil {
+			if rhsVersion, err := protoversion.Parse(rhsParts[i]); err == nil {
+				return protoversion.Compare(lhsVersion, rhsVersion)
+			}
+		}
+		switch {
+		case lhsParts[i] < rhsParts[i]:
+			return -1
+		case lhsParts[i] > rhsParts[i]:
+			return 1
+		}
+	}
+	switch {
+	case len(lhsParts) < len(rhsParts):
+		return -1
+	case len(rhsParts) < len(lhsParts):
+		return 1
+	default:
+		return 0
+	}
+}
 
 func deduplicateServiceCommandUses(cmds []*cobra.Command) {
 	sorted := make([]*cobra.Command, 0, len(cmds))
 	sorted = append(sorted, cmds...)
 	sort.Slice(sorted, func(i, j int) bool {
 		// sort descending to get shorter use for higher version
-		return sorted[i].Annotations[serviceAnnotation] > sorted[j].Annotations[serviceAnnotation]
+		return compareFullNames(
+			sorted[i].Annotations[serviceAnnotation],
+			sorted[j].Annotations[serviceAnnotation],
+		) > 0
 	})
 	uses := make(map[string]struct{}, len(cmds))
 	for _, cmd := range sorted {
