@@ -197,7 +197,7 @@ func markRequiredFlags(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
 ) {
-	if strings.HasPrefix(cmd.Annotations[methodAnnotation], "Update") {
+	if strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), "Update") {
 		// Update methods have no required fields due to field masks.
 		return
 	}
@@ -337,7 +337,7 @@ func hideImmutableForUpdateMethods(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
 ) {
-	if !strings.HasPrefix(cmd.Annotations[methodAnnotation], "Update") {
+	if !strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), "Update") {
 		return
 	}
 	if fieldBehaviors, ok := proto.GetExtension(
