@@ -2,6 +2,7 @@ package aipcli
 
 import (
 	"context"
+	"os"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -43,6 +44,7 @@ func initContext(cmd *cobra.Command, config Config) {
 	cmd.SetContext(context.WithValue(ctx, contextKey{}, &contextValue{
 		config: config,
 	}))
+	cmd.SetOut(os.Stdout)
 }
 
 func initPersistentFlags(cmd *cobra.Command) {
