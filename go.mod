@@ -3,7 +3,7 @@ module go.einride.tech/aip-cli
 go 1.18
 
 require (
-	github.com/google/cel-go v0.12.4
+	github.com/google/cel-go v0.12.5
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.2.0
