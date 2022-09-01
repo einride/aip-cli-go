@@ -31,7 +31,8 @@ func invoke(cmd *cobra.Command, uri string, request, response proto.Message) err
 
 func format(msg proto.Message) string {
 	return protojson.MarshalOptions{
-		Multiline: true,
-		Indent:    "  ",
+		Multiline:       true,
+		Indent:          "  ",
+		EmitUnpopulated: true,
 	}.Format(msg)
 }
