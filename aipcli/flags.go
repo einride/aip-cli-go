@@ -79,7 +79,7 @@ func setFlags(
 			}
 		case protoreflect.EnumKind:
 			if field.IsList() {
-				// TODO: Implement support for repeated enums.
+				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.EnumList(mutable, field))
 			} else {
 				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Enum(mutable, field))
 			}

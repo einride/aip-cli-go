@@ -27,4 +27,12 @@ message Values {
   map<string, string> map_string_string = 9;
   // Map from string to int64.
   map<string, int64> map_string_int64 = 10;
+
+  enum Enum {
+    ENUM_UNSPECIFIED = 0;
+    ENUM_ONE = 1;
+    ENUM_TWO = 2;
+  }
+  // Repeated enum.
+  repeated Enum repeated_enum = 11;
 }
