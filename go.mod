@@ -7,11 +7,11 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.2.0
-	go.einride.tech/aip v0.57.0
+	go.einride.tech/aip v0.58.1
 	golang.org/x/oauth2 v0.0.0-20220722155238-128564f6959c
 	google.golang.org/genproto v0.0.0-20220725144611-272f38e5d71b
 	google.golang.org/grpc v1.49.0
-	google.golang.org/protobuf v1.28.0
+	google.golang.org/protobuf v1.28.1
 	gotest.tools/v3 v3.3.0
 )
 
