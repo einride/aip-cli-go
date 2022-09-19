@@ -2,6 +2,9 @@ version: v1
 
 name: buf.build/einride/aip-cli
 
+deps:
+  - buf.build/einride/aip
+
 lint:
   use:
     - DEFAULT
