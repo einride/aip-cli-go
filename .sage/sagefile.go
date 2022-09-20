@@ -9,6 +9,7 @@ import (
 	"go.einride.tech/sage/tools/sggo"
 	"go.einride.tech/sage/tools/sggolangcilint"
 	"go.einride.tech/sage/tools/sggoreview"
+	"go.einride.tech/sage/tools/sggosemanticrelease"
 	"go.einride.tech/sage/tools/sgmarkdownfmt"
 	"go.einride.tech/sage/tools/sgyamlfmt"
 )
@@ -19,6 +20,7 @@ func main() {
 			Path:          sg.FromGitRoot("Makefile"),
 			DefaultTarget: All,
 		},
+
 		sg.Makefile{
 			Path:          sg.FromGitRoot("proto/Makefile"),
 			DefaultTarget: Proto.All,
@@ -41,7 +43,7 @@ func ConvcoCheck(ctx context.Context) error {
 
 func FormatYAML(ctx context.Context) error {
 	sg.Logger(ctx).Println("formatting YAML files...")
-	return sgyamlfmt.Command(ctx, "-d", sg.FromGitRoot(), "-r").Run()
+	return sgyamlfmt.Run(ctx)
 }
 
 func FormatMarkdown(ctx context.Context) error {
@@ -72,4 +74,19 @@ func GoTest(ctx context.Context) error {
 func GitVerifyNoDiff(ctx context.Context) error {
 	sg.Logger(ctx).Println("verifying that git has no diff...")
 	return sggit.VerifyNoDiff(ctx)
+}
+
+func SemanticRelease(ctx context.Context, repo string, dry bool) error {
+	sg.Logger(ctx).Println("creating semantic release...")
+	args := []string{
+		"--allow-initial-development-versions",
+		"--allow-no-changes",
+		"--ci-condition=default",
+		"--provider=github",
+		"--provider-opt=slug=" + repo,
+	}
+	if dry {
+		args = append(args, "--dry")
+	}
+	return sggosemanticrelease.Command(ctx, args...).Run()
 }

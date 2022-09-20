@@ -79,6 +79,16 @@ go-test: $(sagefile)
 golangci-lint: $(sagefile)
 	@$(sagefile) GolangciLint
 
+.PHONY: semantic-release
+semantic-release: $(sagefile)
+ifndef repo
+	 $(error missing argument repo="...")
+endif
+ifndef dry
+	 $(error missing argument dry="...")
+endif
+	@$(sagefile) SemanticRelease "$(repo)" "$(dry)"
+
 .PHONY: proto
 proto:
 	$(MAKE) -C proto -f Makefile
