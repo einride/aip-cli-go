@@ -95,8 +95,28 @@ func defaultHostFromProto(cmd *cobra.Command) (string, bool) {
 	return result, result != ""
 }
 
+func getContext(cmd *cobra.Command) (context.Context, bool) {
+	ctx := cmd.Context()
+	if ctx != nil {
+		return ctx, true
+	}
+	parent := cmd.Parent()
+	for parent != nil {
+		ctx = parent.Context()
+		if ctx != nil {
+			return ctx, true
+		}
+		parent = parent.Parent()
+	}
+	return nil, false
+}
+
 func getConfig(cmd *cobra.Command) Config {
-	if value, ok := cmd.Context().Value(contextKey{}).(*contextValue); ok {
+	ctx, ok := getContext(cmd)
+	if !ok {
+		return Config{}
+	}
+	if value, ok := ctx.Value(contextKey{}).(*contextValue); ok {
 		return value.config
 	}
 	return Config{}
