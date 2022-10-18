@@ -27,6 +27,7 @@ const (
 	tokenFlag    = "token"
 	insecureFlag = "insecure"
 	verboseFlag  = "verbose"
+	formatFlag   = "format"
 )
 
 type contextKey struct{}
@@ -59,6 +60,9 @@ func initPersistentFlags(cmd *cobra.Command) {
 	}
 	if cmd.PersistentFlags().Lookup(verboseFlag) == nil {
 		cmd.PersistentFlags().BoolP(verboseFlag, "v", false, "Enable verbose output")
+	}
+	if cmd.PersistentFlags().Lookup(formatFlag) == nil {
+		cmd.PersistentFlags().String(formatFlag, ".", "Format the output using github.com/itchyny/gojq")
 	}
 	if cmd.PersistentFlags().Lookup("help") == nil {
 		cmd.PersistentFlags().BoolP("help", "h", false, "Show help for command")
@@ -159,4 +163,11 @@ func isInsecure(cmd *cobra.Command) bool {
 func isVerbose(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(verboseFlag)
 	return result && err == nil
+}
+
+func getFormat(cmd *cobra.Command) string {
+	if flagFormat, err := cmd.Flags().GetString(formatFlag); err == nil && formatFlag != "" {
+		return flagFormat
+	}
+	return "."
 }
