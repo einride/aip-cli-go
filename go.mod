@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/google/cel-go v0.12.5
-	github.com/spf13/cobra v1.6.0
+	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.2.0
 	go.einride.tech/aip v0.59.1
