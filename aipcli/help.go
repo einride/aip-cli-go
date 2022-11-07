@@ -141,7 +141,7 @@ func isConnectionFlag(cmd *cobra.Command, flag *pflag.Flag) bool {
 }
 
 func isHostFlag(cmd *cobra.Command, flag *pflag.Flag) bool {
-	for host := range getConfig(cmd).Hosts {
+	for host := range GetConfig(cmd).Hosts {
 		if flag.Name == host {
 			return true
 		}
