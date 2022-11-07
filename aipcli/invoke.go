@@ -14,7 +14,7 @@ func invoke(cmd *cobra.Command, uri string, request, response proto.Message) err
 	if err != nil {
 		return err
 	}
-	if isVerbose(cmd) {
+	if IsVerbose(cmd) {
 		for _, line := range strings.Split(format(request), "\n") {
 			cmd.PrintErrln(">>", line)
 		}

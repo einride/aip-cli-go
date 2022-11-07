@@ -111,7 +111,7 @@ func getContext(cmd *cobra.Command) (context.Context, bool) {
 	return nil, false
 }
 
-func getConfig(cmd *cobra.Command) Config {
+func GetConfig(cmd *cobra.Command) Config {
 	ctx, ok := getContext(cmd)
 	if !ok {
 		return Config{}
@@ -126,13 +126,13 @@ func getAddress(cmd *cobra.Command) (string, bool) {
 	if flagAddress, err := cmd.Flags().GetString(addressFlag); err == nil && flagAddress != "" {
 		return flagAddress, true
 	}
-	for host, hostAddress := range getConfig(cmd).Hosts {
+	for host, hostAddress := range GetConfig(cmd).Hosts {
 		if useHost, err := cmd.Flags().GetBool(host); err == nil && useHost {
 			return hostAddress, true
 		}
 	}
-	if defaultHostFromConfig := getConfig(cmd).DefaultHost; defaultHostFromConfig != "" {
-		for host, hostAddress := range getConfig(cmd).Hosts {
+	if defaultHostFromConfig := GetConfig(cmd).DefaultHost; defaultHostFromConfig != "" {
+		for host, hostAddress := range GetConfig(cmd).Hosts {
 			if host == defaultHostFromConfig {
 				return hostAddress, true
 			}
@@ -145,7 +145,7 @@ func getToken(cmd *cobra.Command) (string, bool) {
 	if flagToken, err := cmd.Flags().GetString(tokenFlag); err == nil && flagToken != "" {
 		return flagToken, true
 	}
-	if getConfig(cmd).GoogleCloudIdentityTokens {
+	if GetConfig(cmd).GoogleCloudIdentityTokens {
 		return gcloudAuthPrintIdentityToken()
 	}
 	return "", false
@@ -156,7 +156,7 @@ func isInsecure(cmd *cobra.Command) bool {
 	return result && err == nil
 }
 
-func isVerbose(cmd *cobra.Command) bool {
+func IsVerbose(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(verboseFlag)
 	return result && err == nil
 }
