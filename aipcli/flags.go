@@ -17,6 +17,10 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
+const (
+	FieldResourceName = "name"
+)
+
 func setFlags(
 	comments map[protoreflect.FullName]string,
 	cmd *cobra.Command,
@@ -197,7 +201,7 @@ func markRequiredFlags(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
 ) {
-	if strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), "Update") {
+	if isMethodType(cmd, "Update") {
 		// Update methods have no required fields due to field masks.
 		return
 	}
@@ -223,6 +227,10 @@ func hideOutputOnlyFields(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
 ) {
+	if isMethodType(cmd, "Update") && field.Name() == FieldResourceName {
+		// Update methods need to be able to specify the resource name to update
+		return
+	}
 	if fieldBehaviors, ok := proto.GetExtension(
 		field.Options(),
 		annotations.E_FieldBehavior,
@@ -263,7 +271,7 @@ func registerCompletion(
 	comment string,
 ) {
 	// resource name fields
-	if !field.IsList() && field.Name() == "name" && field.Kind() == protoreflect.StringKind {
+	if !field.IsList() && field.Name() == FieldResourceName && field.Kind() == protoreflect.StringKind {
 		if resourceDescriptor, ok := proto.GetExtension(
 			field.Parent().Options(),
 			annotations.E_Resource,
@@ -337,7 +345,7 @@ func hideImmutableForUpdateMethods(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
 ) {
-	if !strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), "Update") {
+	if !isMethodType(cmd, "Update") {
 		return
 	}
 	if fieldBehaviors, ok := proto.GetExtension(
@@ -353,19 +361,13 @@ func hideImmutableForUpdateMethods(
 }
 
 func hideNameForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
-	if strings.HasPrefix(
-		string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()),
-		"Create",
-	) && field.Name() == "name" {
+	if isMethodType(cmd, "Create") && field.Name() == FieldResourceName {
 		_ = cmd.Flags().MarkHidden(flag.Name)
 	}
 }
 
 func hideETagForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
-	if strings.HasPrefix(
-		string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()),
-		"Create",
-	) && field.Name() == "etag" {
+	if isMethodType(cmd, "Create") && field.Name() == "etag" {
 		_ = cmd.Flags().MarkHidden(flag.Name)
 	}
 }
@@ -378,4 +380,8 @@ func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.Fi
 	}
 	_, _ = result.WriteString(string(field.Name()))
 	return strings.ReplaceAll(result.String(), "_", "-")
+}
+
+func isMethodType(cmd *cobra.Command, methodType string) bool {
+	return strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), methodType)
 }
