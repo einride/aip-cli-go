@@ -27,7 +27,7 @@ type primitiveValue[T any] struct {
 }
 
 func (v primitiveValue[T]) String() string {
-	return ""
+	return v.mutable().Get(v.field).String()
 }
 
 func (v primitiveValue[T]) Set(s string) error {

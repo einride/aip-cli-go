@@ -194,6 +194,7 @@ func addFlag(
 	hideImmutableForUpdateMethods(cmd, flag, field)
 	hideNameForCreateMethods(cmd, flag, field)
 	hideETagForCreateMethods(cmd, flag, field)
+	addPositionalNameArgumentForGetMethod(cmd, flag, field)
 }
 
 func markRequiredFlags(
@@ -369,6 +370,28 @@ func hideNameForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protor
 func hideETagForCreateMethods(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
 	if isMethodType(cmd, "Create") && field.Name() == "etag" {
 		_ = cmd.Flags().MarkHidden(flag.Name)
+	}
+}
+
+func addPositionalNameArgumentForGetMethod(cmd *cobra.Command, flag *pflag.Flag, field protoreflect.FieldDescriptor) {
+	if isMethodType(cmd, "Get") && field.Name() == "name" {
+		cmd.Args = func(cmd *cobra.Command, args []string) error {
+			switch len(args) {
+			case 0:
+				return nil
+			case 1:
+				if flag.Value.String() != "" {
+					return fmt.Errorf("too many name arguments, only one of --name and positional supported")
+				}
+
+				// Reset required annotation. No cleaner way to do this if it's already set.
+				_ = cmd.Flags().SetAnnotation(flag.Name, cobra.BashCompOneRequiredFlag, []string{"false"})
+
+				return flag.Value.Set(args[0])
+			default:
+				return fmt.Errorf("too many positional arguments, only one supported")
+			}
+		}
 	}
 }
 
