@@ -78,7 +78,7 @@ type insecureTokenCredentials string
 
 func (c insecureTokenCredentials) GetRequestMetadata(_ context.Context, _ ...string) (map[string]string, error) {
 	return map[string]string{
-		"authorization": "bearer " + string(c),
+		"authorization": "Bearer " + string(c),
 	}, nil
 }
 
