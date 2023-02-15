@@ -20,6 +20,8 @@ type Config struct {
 	Root string
 	// GoogleCloudIdentityTokens indicates if Google Cloud Identity Tokens should be automatically generated.
 	GoogleCloudIdentityTokens bool
+	// Uses in a predetermined file relative to local config path for the Identity Token.
+	CachedIdentityTokenPath string
 }
 
 const (
@@ -145,6 +147,16 @@ func getToken(cmd *cobra.Command) (string, bool) {
 	if flagToken, err := cmd.Flags().GetString(tokenFlag); err == nil && flagToken != "" {
 		return flagToken, true
 	}
+
+	if GetConfig(cmd).CachedIdentityTokenPath != "" {
+		tokenFile := GetConfig(cmd).CachedIdentityTokenPath
+		identityToken, err := identityTokenFromConfigFile(tokenFile)
+		if err != nil {
+			return "", false
+		}
+		return identityToken, true
+	}
+
 	if GetConfig(cmd).GoogleCloudIdentityTokens {
 		return gcloudAuthPrintIdentityToken()
 	}
