@@ -18,6 +18,12 @@ func (c *Config) AddToFlagSet(flags *pflag.FlagSet) {
 	flags.StringVar(&c.DefaultHost, "default_host", "", "default host override")
 	flags.StringVar(&c.Root, "root", "", "root command")
 	flags.BoolVar(&c.GoogleCloudIdentityTokens, "gcloud_identity_tokens", false, "use gcloud to print identity tokens")
+	flags.StringVar(
+		&c.CachedIdentityTokenPath,
+		"cached_identity_token_path",
+		"",
+		"a file relative to the local config folder that provides an IdentityToken used by the CLI",
+	)
 }
 
 // Validate the config.
@@ -29,6 +35,11 @@ func (c *Config) Validate() error {
 		}
 		return fmt.Errorf("default_host (%s) must be one of hosts (%s)", c.DefaultHost, strings.Join(hosts, ","))
 	}
+
+	if c.GoogleCloudIdentityTokens && c.CachedIdentityTokenPath != "" {
+		return fmt.Errorf("gcloud_identity_tokens and cached_identity_token_path are mutually exclusive flags")
+	}
+
 	return nil
 }
 
