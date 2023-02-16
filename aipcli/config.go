@@ -3,6 +3,7 @@ package aipcli
 import (
 	"context"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -13,6 +14,7 @@ import (
 // Config is the configuration for the protoc-gen-go-aip-cli plugin.
 type Config struct {
 	// Hosts is a map from host ID to host address.
+	// In order for SagaAuth to switch to dev token, in dev env the host ID should start with 'dev-'
 	Hosts map[string]string
 	// DefaultHost is the host ID of the default host.
 	DefaultHost string
@@ -20,15 +22,14 @@ type Config struct {
 	Root string
 	// GoogleCloudIdentityTokens indicates if Google Cloud Identity Tokens should be automatically generated.
 	GoogleCloudIdentityTokens bool
-	// Uses in a predetermined file relative to local config path for the Identity Token.
-	CachedIdentityTokenPath string
 }
 
 const (
-	addressFlag  = "address"
-	tokenFlag    = "token"
-	insecureFlag = "insecure"
-	verboseFlag  = "verbose"
+	addressFlag     = "address"
+	tokenFlag       = "token"
+	insecureFlag    = "insecure"
+	verboseFlag     = "verbose"
+	hostIDDevPrefix = "dev-"
 )
 
 type contextKey struct{}
@@ -148,19 +149,29 @@ func getToken(cmd *cobra.Command) (string, bool) {
 		return flagToken, true
 	}
 
-	if GetConfig(cmd).CachedIdentityTokenPath != "" {
-		tokenFile := GetConfig(cmd).CachedIdentityTokenPath
-		identityToken, err := identityTokenFromConfigFile(tokenFile)
-		if err != nil {
-			return "", false
-		}
-		return identityToken, true
-	}
-
 	if GetConfig(cmd).GoogleCloudIdentityTokens {
 		return gcloudAuthPrintIdentityToken()
 	}
-	return "", false
+
+	// get token for dev env based on host key setting
+	for hostID := range GetConfig(cmd).Hosts {
+		if useHost, err := cmd.Flags().GetBool(hostID); err == nil && useHost {
+			if strings.HasPrefix(hostID, hostIDDevPrefix) {
+				identityToken, err := identityTokenFromConfigFile("token.dev.json")
+				if err != nil {
+					return "", false
+				}
+				return identityToken, true
+			}
+		}
+	}
+
+	// if hostID has no dev prefix, use prod token
+	identityToken, err := identityTokenFromConfigFile("token.prod.json")
+	if err != nil {
+		return "", false
+	}
+	return identityToken, true
 }
 
 func isInsecure(cmd *cobra.Command) bool {

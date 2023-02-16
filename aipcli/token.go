@@ -27,11 +27,11 @@ type IdentityTokenFile struct {
 }
 
 func identityTokenFromConfigFile(tokenFile string) (string, error) {
-	configDir, err := os.UserConfigDir()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	configFile := path.Join(configDir, tokenFile)
+	configFile := path.Join(homeDir, ".config", "saga", tokenFile)
 	file, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		return "", err

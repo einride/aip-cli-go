@@ -23,5 +23,5 @@ func NewModuleCommand(use string, short string, commands ...*cobra.Command) *cob
 }
 
 func NewConfig() aipcli.Config {
-	return aipcli.Config{Hosts: map[string]string{}, DefaultHost: "", Root: "examplectl", GoogleCloudIdentityTokens: true, CachedIdentityTokenPath: ""}
+	return aipcli.Config{Hosts: map[string]string{}, DefaultHost: "", Root: "examplectl", GoogleCloudIdentityTokens: true}
 }
