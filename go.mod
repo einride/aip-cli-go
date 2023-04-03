@@ -6,7 +6,7 @@ require (
 	github.com/google/cel-go v0.13.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
-	github.com/stoewer/go-strcase v1.2.1
+	github.com/stoewer/go-strcase v1.3.0
 	go.einride.tech/aip v0.60.0
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
 	google.golang.org/genproto v0.0.0-20221118155620-16455021b5e6
