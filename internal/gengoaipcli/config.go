@@ -17,6 +17,7 @@ func (c *Config) AddToFlagSet(flags *pflag.FlagSet) {
 	flags.Var(stringStringMap{value: c.Hosts}, "hosts", "mapping from alias to host")
 	flags.StringVar(&c.DefaultHost, "default_host", "", "default host override")
 	flags.StringVar(&c.Root, "root", "", "root command")
+	flags.StringVar(&c.RootPath, "root_path", "", "where root will be located")
 	flags.BoolVar(&c.GoogleCloudIdentityTokens, "gcloud_identity_tokens", false, "use gcloud to print identity tokens")
 	flags.StringVar(
 		&c.CachedIdentityTokenPath,

@@ -16,6 +16,8 @@ type Config struct {
 	Hosts map[string]string
 	// DefaultHost is the host ID of the default host.
 	DefaultHost string
+	// RootPath is where the root file will be located.
+	RootPath string
 	// Root is the name of the root module package.
 	Root string
 	// GoogleCloudIdentityTokens indicates if Google Cloud Identity Tokens should be automatically generated.

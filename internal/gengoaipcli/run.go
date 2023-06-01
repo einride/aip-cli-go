@@ -42,7 +42,7 @@ func generateRootModuleFile(gen *protogen.Plugin, config Config) error {
 	if !ok {
 		return fmt.Errorf("param root requires param module to be provided")
 	}
-	g := gen.NewGeneratedFile(path.Join(module, "root.go"), "")
+	g := gen.NewGeneratedFile(path.Join(module, config.RootPath, "root.go"), "")
 	generateGeneratedFileHeader(g)
 	g.P("package ", config.Root)
 	cobraCommand := g.QualifiedGoIdent(protogen.GoIdent{
