@@ -32,12 +32,14 @@ func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
 		opts = append(
 			opts,
 			grpc.WithPerRPCCredentials(
-				oauth.NewOauthAccess(
-					&oauth2.Token{
-						AccessToken: token,
-						TokenType:   "Bearer",
-					},
-				),
+				oauth.TokenSource{
+					TokenSource: oauth2.StaticTokenSource(
+						&oauth2.Token{
+							AccessToken: token,
+							TokenType:   "Bearer",
+						},
+					),
+				},
 			),
 		)
 	}

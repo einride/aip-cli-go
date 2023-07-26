@@ -34,23 +34,20 @@ func setFlags(
 		case protoreflect.MessageKind:
 			switch field.Message().FullName() {
 			case "google.protobuf.Duration":
-				if field.IsList() {
-					// TODO: Implement support for repeated durations.
-				} else {
+				if !field.IsList() {
 					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Duration(mutable, field))
 				}
+				// TODO: Implement support for repeated durations.
 			case "google.protobuf.Timestamp":
-				if field.IsList() {
-					// TODO: Implement support for repeated timestamps.
-				} else {
+				if !field.IsList() {
 					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Timestamp(mutable, field))
 				}
+				// TODO: Implement support for repeated timestamps.
 			case "google.protobuf.FieldMask":
-				if field.IsList() {
-					// Repeated field masks is intentionally not supported.
-				} else {
+				if !field.IsList() {
 					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.FieldMask(mutable, field))
 				}
+				// Repeated field masks is intentionally not supported.
 			default:
 				switch {
 				case field.IsMap():
