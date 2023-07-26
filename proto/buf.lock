@@ -5,11 +5,14 @@ deps:
     owner: einride
     repository: aip
     commit: 70af12bcc1644bc7b89c38abbef20e7b
+    digest: shake256:dac4e760ae58058e0f58ddcb151d35657c9af9515dfb7831cfefa2288d397d1f5c798372b54c436ac681cdb07146e21233db75d832675fe9dbd83900e2647abb
   - remote: buf.build
     owner: einride
     repository: googleapis
     commit: 625fcaf6adb343be8ae8ef0ee7be7b77
+    digest: shake256:5ffe3fd4047cb5e910f552f5b2e47f05360052ba6d25bee9179d03c2a47421c98cd642c3d28d0da62a6b2787b4ac035de39916086492b1cb3ce827efc971362c
   - remote: buf.build
     owner: googleapis
     repository: googleapis
     commit: 62f35d8aed1149c291d606d958a7ce32
+    digest: shake256:c5f5c2401cf70b7c9719834954f31000a978397fdfebda861419bb4ab90fa8efae92710fddab0820533908a1e25ed692a8e119432b7b260c895087a4975b32f3

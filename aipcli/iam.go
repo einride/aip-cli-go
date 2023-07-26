@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/spf13/cobra"
-	"google.golang.org/genproto/googleapis/iam/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -78,8 +78,8 @@ This command can fail for the following reasons:
 		return invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
-			&iam.GetIamPolicyRequest{Resource: *resource},
-			&iam.Policy{},
+			&iampb.GetIamPolicyRequest{Resource: *resource},
+			&iampb.Policy{},
 		)
 	}
 	return cmd
@@ -124,15 +124,15 @@ This command can fail for the following reasons:
 		if err != nil {
 			return err
 		}
-		var policy iam.Policy
+		var policy iampb.Policy
 		if err := protojson.Unmarshal(data, &policy); err != nil {
 			return err
 		}
 		return invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
-			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
-			&iam.Policy{},
+			&iampb.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
+			&iampb.Policy{},
 		)
 	}
 	return cmd
@@ -175,11 +175,11 @@ This command can fail for the following reasons:
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
 	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var policy iam.Policy
+		var policy iampb.Policy
 		if err := invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
-			&iam.GetIamPolicyRequest{Resource: *resource},
+			&iampb.GetIamPolicyRequest{Resource: *resource},
 			&policy,
 		); err != nil {
 			return err
@@ -188,8 +188,8 @@ This command can fail for the following reasons:
 		return invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
-			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
-			&iam.Policy{},
+			&iampb.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
+			&iampb.Policy{},
 		)
 	}
 	return cmd
@@ -231,11 +231,11 @@ This command can fail for the following reasons:
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
 	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var policy iam.Policy
+		var policy iampb.Policy
 		if err := invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
-			&iam.GetIamPolicyRequest{Resource: *resource},
+			&iampb.GetIamPolicyRequest{Resource: *resource},
 			&policy,
 		); err != nil {
 			return err
@@ -244,8 +244,8 @@ This command can fail for the following reasons:
 		return invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/SetIamPolicy",
-			&iam.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
-			&iam.Policy{},
+			&iampb.SetIamPolicyRequest{Resource: *resource, Policy: &policy},
+			&iampb.Policy{},
 		)
 	}
 	return cmd
@@ -273,7 +273,7 @@ func completeRole(*cobra.Command, []string, string) ([]string, cobra.ShellCompDi
 	), cobra.ShellCompDirectiveNoFileComp
 }
 
-func addBinding(policy *iam.Policy, member, role string) {
+func addBinding(policy *iampb.Policy, member, role string) {
 	// look for existing binding with this role and member
 	for _, binding := range policy.Bindings {
 		if binding.Role == role {
@@ -289,13 +289,13 @@ func addBinding(policy *iam.Policy, member, role string) {
 		}
 	}
 	// add a new binding with this role and member
-	policy.Bindings = append(policy.Bindings, &iam.Binding{
+	policy.Bindings = append(policy.Bindings, &iampb.Binding{
 		Role:    role,
 		Members: []string{member},
 	})
 }
 
-func removeBinding(policy *iam.Policy, member, role string) {
+func removeBinding(policy *iampb.Policy, member, role string) {
 	for _, binding := range policy.Bindings {
 		if binding.Role == role {
 			binding.Members = removeMember(binding.Members, member)
@@ -316,7 +316,7 @@ func removeMember(members []string, member string) []string {
 	return members
 }
 
-func removeRole(bindings []*iam.Binding, role string) []*iam.Binding {
+func removeRole(bindings []*iampb.Binding, role string) []*iampb.Binding {
 	for i, binding := range bindings {
 		if binding.Role == role {
 			return append(bindings[:i], bindings[i+1:]...)
