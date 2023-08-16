@@ -9,7 +9,7 @@ How to
 ### Step 1: Install the plugin
 
 ```bash
-$ GOBIN=$PWD/build go install go.einride.tech/protoc-gen-go-aip-cli
+$ GOBIN=$PWD/build go install go.einride.tech/aip-cli/cmd/protoc-gen-go-aip-cli
 ```
 
 ### Step 2: Configure the code generator
@@ -42,14 +42,13 @@ plugins:
     opt:
       - module=go.einride.tech/aip-cli/cmd/examplectl
       - root=examplectl
-      - main=true
       - gcloud_identity_tokens=true
 ```
 
 ### Step 3: Generate the code
 
 ```bash
-$ buf generate buf.build/einride/aip \
+$ buf generate \
   --template buf.gen.example.yaml \
   --path einride/example/freight
 ```
