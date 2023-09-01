@@ -3,7 +3,7 @@ module go.einride.tech/aip-cli
 go 1.20
 
 require (
-	cloud.google.com/go/iam v1.1.1
+	cloud.google.com/go/iam v1.1.2
 	github.com/google/cel-go v0.17.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
