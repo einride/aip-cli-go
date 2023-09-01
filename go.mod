@@ -8,7 +8,7 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.3.0
-	go.einride.tech/aip v0.61.0
+	go.einride.tech/aip v0.62.0
 	golang.org/x/oauth2 v0.10.0
 	google.golang.org/genproto v0.0.0-20230725213213-b022f6e96895
 	google.golang.org/genproto/googleapis/api v0.0.0-20230725213213-b022f6e96895
