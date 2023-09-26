@@ -134,7 +134,7 @@ func printFlags(cmd *cobra.Command, flags []*pflag.Flag) {
 
 func isConnectionFlag(_ *cobra.Command, flag *pflag.Flag) bool {
 	switch flag.Name {
-	case addressFlag, insecureFlag, tokenFlag:
+	case addressFlag, insecureFlag, tokenFlag, forceTraceFlag:
 		return true
 	}
 	return false

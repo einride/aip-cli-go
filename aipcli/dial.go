@@ -2,7 +2,10 @@ package aipcli
 
 import (
 	"context"
+	"crypto/rand"
 	"crypto/x509"
+	"encoding/binary"
+	"encoding/hex"
 	"fmt"
 	"strconv"
 	"strings"
@@ -13,6 +16,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/credentials/oauth"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -41,6 +45,39 @@ func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
 					),
 				},
 			),
+		)
+	}
+	if isForceTrace(cmd) {
+		traceID, err := generateTraceID()
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate trace ID: %w", err)
+		}
+		spanID, err := generateSpanID()
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate span ID: %w", err)
+		}
+		opts = append(
+			opts,
+			grpc.WithUnaryInterceptor(func(
+				ctx context.Context,
+				method string,
+				req interface{},
+				reply interface{},
+				cc *grpc.ClientConn,
+				invoker grpc.UnaryInvoker,
+				opts ...grpc.CallOption,
+			) error {
+				// See https://cloud.google.com/trace/docs/setup#force-trace
+				const header = "x-cloud-trace-context"
+				value := fmt.Sprintf("%s/%d;o=1", traceID, spanID)
+				cmd.PrintErrln(">> trace ID:", traceID)
+				if IsVerbose(cmd) {
+					cmd.PrintErrln(">> span ID:", spanID)
+					cmd.PrintErrln(">> trace header:", header, "=", value)
+				}
+				ctx = metadata.AppendToOutgoingContext(ctx, header, value)
+				return invoker(ctx, method, req, reply, cc, opts...)
+			}),
 		)
 	}
 	systemCertPool, err := x509.SystemCertPool()
@@ -94,4 +131,20 @@ func withDefaultPort(target string, port int) string {
 		return target + ":" + strconv.Itoa(port)
 	}
 	return target
+}
+
+func generateTraceID() (string, error) {
+	var id [16]byte
+	if _, err := rand.Read(id[:]); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(id[:]), nil
+}
+
+func generateSpanID() (uint64, error) {
+	var id [8]byte
+	if _, err := rand.Read(id[:]); err != nil {
+		return 0, err
+	}
+	return binary.LittleEndian.Uint64(id[:]), nil
 }

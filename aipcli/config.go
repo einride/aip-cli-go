@@ -27,10 +27,11 @@ type Config struct {
 }
 
 const (
-	addressFlag  = "address"
-	tokenFlag    = "token"
-	insecureFlag = "insecure"
-	verboseFlag  = "verbose"
+	addressFlag    = "address"
+	tokenFlag      = "token"
+	insecureFlag   = "insecure"
+	verboseFlag    = "verbose"
+	forceTraceFlag = "force-trace"
 )
 
 type contextKey struct{}
@@ -63,6 +64,9 @@ func initPersistentFlags(cmd *cobra.Command) {
 	}
 	if cmd.PersistentFlags().Lookup(verboseFlag) == nil {
 		cmd.PersistentFlags().BoolP(verboseFlag, "v", false, "Enable verbose output")
+	}
+	if cmd.PersistentFlags().Lookup(forceTraceFlag) == nil {
+		cmd.PersistentFlags().BoolP(forceTraceFlag, "", false, "Enable forced Google Cloud Trace header")
 	}
 	if cmd.PersistentFlags().Lookup("help") == nil {
 		cmd.PersistentFlags().BoolP("help", "h", false, "Show help for command")
@@ -172,5 +176,10 @@ func isInsecure(cmd *cobra.Command) bool {
 
 func IsVerbose(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(verboseFlag)
+	return result && err == nil
+}
+
+func isForceTrace(cmd *cobra.Command) bool {
+	result, err := cmd.Flags().GetBool(forceTraceFlag)
 	return result && err == nil
 }
