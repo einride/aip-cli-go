@@ -89,13 +89,10 @@ func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
 }
 
 func dialInsecure(cmd *cobra.Command) (*grpc.ClientConn, error) {
-	token, hasToken := getToken(cmd)
+	token, _ := getToken(cmd)
 	address, hasAddress := getAddress(cmd)
-	switch {
-	case !hasAddress:
+	if !hasAddress {
 		return nil, fmt.Errorf("must provide --address with --insecure")
-	case hasToken && !strings.HasPrefix(address, "localhost:"):
-		return nil, fmt.Errorf("must connect to localhost with --insecure and --token")
 	}
 	if IsVerbose(cmd) {
 		cmd.PrintErrln(">> insecure address:", address)
