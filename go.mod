@@ -5,7 +5,7 @@ go 1.20
 require (
 	cloud.google.com/go/iam v1.1.5
 	github.com/google/cel-go v0.18.1
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.3.0
 	go.einride.tech/aip v0.66.0
