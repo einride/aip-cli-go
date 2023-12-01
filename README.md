@@ -1,10 +1,8 @@
-AIP CLI Go
-==========
+# AIP CLI Go
 
 Generate command line interfaces to your [AIP](https://aip.dev) gRPC services.
 
-How to
-------
+## How to
 
 ### Step 1: Install the plugin
 
@@ -14,7 +12,9 @@ $ GOBIN=$PWD/build go install go.einride.tech/aip-cli/cmd/protoc-gen-go-aip-cli
 
 ### Step 2: Configure the code generator
 
-The following example uses a [buf generate](https://docs.buf.build/generate/usage) template to configure the CLI generator.
+The following example uses a
+[buf generate](https://docs.buf.build/generate/usage) template to configure the
+CLI generator.
 
 [buf.gen.example.yaml](./proto/buf.gen.example.yaml):
 
