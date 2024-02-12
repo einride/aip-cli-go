@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: aip-cli-go
+  title: AIP CLI Go
+  description: Generate command line interfaces to your AIP gRPC services.
+spec:
+  type: library
+  lifecycle: production
+  owner: platform-engineering
+  system: backend-sdk
