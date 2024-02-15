@@ -62,7 +62,7 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 			initContext(cmd, config)
 		},
 		Annotations: map[string]string{
@@ -74,7 +74,7 @@ This command can fail for the following reasons:
 	resource := cmd.Flags().String("resource", "", "Resource for which the policy is being requested")
 	_ = cmd.MarkFlagRequired("resource")
 	_ = cmd.RegisterFlagCompletionFunc("resource", completeResource)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		return invoke(
 			cmd,
 			"/google.iam.v1.IAMPolicy/GetIamPolicy",
@@ -102,7 +102,7 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to 
     access the given resource's IAM policies.
 `),
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 			initContext(cmd, config)
 		},
 		Annotations: map[string]string{
@@ -119,7 +119,7 @@ This command can fail for the following reasons:
 	_ = cmd.MarkFlagRequired("policy-file")
 	_ = cmd.MarkFlagFilename("policy-file", "json")
 	_ = cmd.Flags().SetAnnotation("policy-file", flagArgumentAnnotation, []string{})
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		data, err := os.ReadFile(*policyFile)
 		if err != nil {
 			return err
@@ -153,7 +153,7 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 			initContext(cmd, config)
 		},
 		Annotations: map[string]string{
@@ -174,7 +174,7 @@ This command can fail for the following reasons:
 	_ = cmd.MarkFlagRequired("role")
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
 	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		var policy iampb.Policy
 		if err := invoke(
 			cmd,
@@ -209,7 +209,7 @@ This command can fail for the following reasons:
   ▪ The active account does not have permission to access the given
 	resource's IAM policies.
 `),
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 			initContext(cmd, config)
 		},
 		Annotations: map[string]string{
@@ -230,7 +230,7 @@ This command can fail for the following reasons:
 	_ = cmd.MarkFlagRequired("role")
 	_ = cmd.RegisterFlagCompletionFunc("role", completeRole)
 	_ = cmd.Flags().SetAnnotation("role", flagArgumentAnnotation, nil)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		var policy iampb.Policy
 		if err := invoke(
 			cmd,

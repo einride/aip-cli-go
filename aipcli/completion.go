@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-type CompletionFunc func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective)
+type CompletionFunc func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective)
 
 func getResourceNameActiveHelp(comment string, patterns ...string) string {
 	result := trimFieldComment(comment)
@@ -26,21 +26,21 @@ func getResourceNameActiveHelp(comment string, patterns ...string) string {
 }
 
 func fieldCompletionFunc(comment string) CompletionFunc {
-	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
 		return cobra.AppendActiveHelp(nil, trimFieldComment(comment)),
 			cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
 	}
 }
 
 func enumFieldCompletionFunc(comment string, values protoreflect.EnumValueDescriptors) CompletionFunc {
-	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return func(_ *cobra.Command, _ []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return cobra.AppendActiveHelp(protoshell.CompleteEnumValue(toComplete, values), trimFieldComment(comment)),
 			cobra.ShellCompDirectiveNoFileComp
 	}
 }
 
 func timestampCompletionFunc(comment string) CompletionFunc {
-	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
 		activeHelp := trimFieldComment(comment)
 		activeHelp += " [tip: prefix with = to evaluate a CEL expression, e.g. ='now()-duration(\"2h\")']"
 		return cobra.AppendActiveHelp(nil, activeHelp),
@@ -49,7 +49,7 @@ func timestampCompletionFunc(comment string) CompletionFunc {
 }
 
 func resourceNameCompletionFunc(comment string, patterns ...string) CompletionFunc {
-	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return func(_ *cobra.Command, _ []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		result := make([]string, 0, len(patterns))
 		for _, pattern := range patterns {
 			if completion, ok := protoshell.CompleteResourceName(toComplete, pattern); ok {
@@ -62,7 +62,7 @@ func resourceNameCompletionFunc(comment string, patterns ...string) CompletionFu
 }
 
 func resourceNameListCompletionFunc(comment string, patterns ...string) CompletionFunc {
-	return func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return func(_ *cobra.Command, _ []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		toCompleteElements := strings.Split(toComplete, ",")
 		lastToCompleteElement := toCompleteElements[len(toCompleteElements)-1]
 		result := make([]string, 0, len(patterns))
