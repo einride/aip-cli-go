@@ -68,7 +68,7 @@ func usageFunc(cmd *cobra.Command) error {
 		cmd.PrintErrln("CONNECTION FLAGS")
 		printFlags(cmd, connectionFlags)
 	}
-	if otherFlags := getFlags(cmd, func(command *cobra.Command, flag *pflag.Flag) bool {
+	if otherFlags := getFlags(cmd, func(_ *cobra.Command, flag *pflag.Flag) bool {
 		return !isConnectionFlag(cmd, flag) && !isArgumentFlag(cmd, flag) && !isHostFlag(cmd, flag)
 	}); len(otherFlags) > 0 {
 		cmd.PrintErrln()

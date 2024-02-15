@@ -81,7 +81,7 @@ func NewMethodCommand(
 	fromFile := cmd.Flags().StringP("from-file", "f", "", "path to a JSON file containing the request payload")
 	_ = cmd.MarkFlagFilename("from-file", "json")
 	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		if cmd.Flags().Changed("from-file") {
 			data, err := os.ReadFile(*fromFile)
 			if err != nil {
