@@ -275,9 +275,9 @@ func completeRole(*cobra.Command, []string, string) ([]string, cobra.ShellCompDi
 
 func addBinding(policy *iampb.Policy, member, role string) {
 	// look for existing binding with this role and member
-	for _, binding := range policy.Bindings {
-		if binding.Role == role {
-			for _, bindingMember := range binding.Members {
+	for _, binding := range policy.GetBindings() {
+		if binding.GetRole() == role {
+			for _, bindingMember := range binding.GetMembers() {
 				if bindingMember == member {
 					// already have a binding with this role and member
 					return
@@ -296,11 +296,11 @@ func addBinding(policy *iampb.Policy, member, role string) {
 }
 
 func removeBinding(policy *iampb.Policy, member, role string) {
-	for _, binding := range policy.Bindings {
-		if binding.Role == role {
-			binding.Members = removeMember(binding.Members, member)
-			if len(binding.Members) == 0 {
-				policy.Bindings = removeRole(policy.Bindings, role)
+	for _, binding := range policy.GetBindings() {
+		if binding.GetRole() == role {
+			binding.Members = removeMember(binding.GetMembers(), member)
+			if len(binding.GetMembers()) == 0 {
+				policy.Bindings = removeRole(policy.GetBindings(), role)
 			}
 			return
 		}
@@ -318,7 +318,7 @@ func removeMember(members []string, member string) []string {
 
 func removeRole(bindings []*iampb.Binding, role string) []*iampb.Binding {
 	for i, binding := range bindings {
-		if binding.Role == role {
+		if binding.GetRole() == role {
 			return append(bindings[:i], bindings[i+1:]...)
 		}
 	}
