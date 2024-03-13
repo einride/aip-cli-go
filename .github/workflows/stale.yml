@@ -7,11 +7,15 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    # At 08:00 on every day-of-week from Monday through Friday.
-    - cron: "0 8 * * 1-5"
+    # At 08:00 on every Monday.
+    - cron: "0 8 * * 1"
 
 jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/stale@v9
+        with:
+          days-before-pr-close: 14
+          days-before-pr-stale: 180
+          stale-pr-message: "This PR has been open for **180 days** with no activity. Remove the stale label or add a comment or it will be closed in **14 days**."
