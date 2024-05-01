@@ -2,7 +2,6 @@ package aipcli
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -32,7 +31,7 @@ func identityTokenFromConfigFile(tokenFile string) (string, error) {
 		return "", err
 	}
 	configFile := path.Join(configDir, tokenFile)
-	file, err := ioutil.ReadFile(configFile)
+	file, err := os.ReadFile(configFile)
 	if err != nil {
 		return "", err
 	}
