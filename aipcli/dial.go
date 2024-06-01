@@ -85,7 +85,7 @@ func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
 		return nil, err
 	}
 	opts = append(opts, grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(systemCertPool, "")))
-	return grpc.DialContext(cmd.Context(), withDefaultPort(address, 443), opts...)
+	return grpc.NewClient(withDefaultPort(address, 443), opts...)
 }
 
 func dialInsecure(cmd *cobra.Command) (*grpc.ClientConn, error) {
@@ -101,7 +101,7 @@ func dialInsecure(cmd *cobra.Command) (*grpc.ClientConn, error) {
 	if token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(insecureTokenCredentials(token)))
 	}
-	return grpc.DialContext(cmd.Context(), withDefaultPort(address, 443), opts...)
+	return grpc.NewClient(withDefaultPort(address, 443), opts...)
 }
 
 func methodURI(method protoreflect.MethodDescriptor) string {
