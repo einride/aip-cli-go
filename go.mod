@@ -3,16 +3,16 @@ module go.einride.tech/aip-cli
 go 1.22
 
 require (
-	cloud.google.com/go/iam v1.1.12
-	github.com/google/cel-go v0.20.1
+	cloud.google.com/go/iam v1.2.0
+	github.com/google/cel-go v0.21.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.3.0
 	go.einride.tech/aip v0.68.0
-	golang.org/x/oauth2 v0.21.0
-	google.golang.org/genproto v0.0.0-20240722135656-d784300faade
-	google.golang.org/genproto/googleapis/api v0.0.0-20240722135656-d784300faade
-	google.golang.org/grpc v1.65.0
+	golang.org/x/oauth2 v0.22.0
+	google.golang.org/genproto v0.0.0-20240814211410-ddb44dafa142
+	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142
+	google.golang.org/grpc v1.66.0
 	google.golang.org/protobuf v1.34.2
 	gotest.tools/v3 v3.5.1
 )
@@ -23,8 +23,8 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
-	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240722135656-d784300faade // indirect
+	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/sys v0.24.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240814211410-ddb44dafa142 // indirect
 )
