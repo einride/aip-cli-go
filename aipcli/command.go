@@ -9,6 +9,8 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
+const fromFileFlag = "from-file"
+
 // NewCommand initializes a new *cobra.Command with AIP CLI flags and help functions.
 func NewCommand(cmd *cobra.Command, commands ...*cobra.Command) *cobra.Command {
 	initPersistentFlags(cmd)
@@ -78,11 +80,11 @@ func NewMethodCommand(
 		},
 	})
 	setConfig(cmd, config)
-	fromFile := cmd.Flags().StringP("from-file", "f", "", "path to a JSON file containing the request payload")
-	_ = cmd.MarkFlagFilename("from-file", "json")
+	fromFile := cmd.Flags().StringP(fromFileFlag, "f", "", "path to a JSON file containing the request payload")
+	_ = cmd.MarkFlagFilename(fromFileFlag, "json")
 	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
 	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
-		if cmd.Flags().Changed("from-file") {
+		if cmd.Flags().Changed(fromFileFlag) {
 			data, err := os.ReadFile(*fromFile)
 			if err != nil {
 				return err

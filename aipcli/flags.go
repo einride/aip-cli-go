@@ -212,7 +212,7 @@ func markRequiredFlags(
 	).([]annotations.FieldBehavior); ok {
 		for _, fieldBehavior := range fieldBehaviors {
 			if fieldBehavior == annotations.FieldBehavior_REQUIRED {
-				_ = cmd.MarkFlagRequired(flag.Name)
+				cmd.MarkFlagsOneRequired(flag.Name, fromFileFlag)
 				return
 			}
 		}
