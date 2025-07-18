@@ -1,6 +1,6 @@
 module go.einride.tech/aip-cli
 
-go 1.23
+go 1.23.0
 
 require (
 	cloud.google.com/go/iam v1.2.1
@@ -9,7 +9,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stoewer/go-strcase v1.3.0
 	go.einride.tech/aip v0.68.0
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/oauth2 v0.27.0
 	google.golang.org/genproto v0.0.0-20241021214115-324edc3d5d38
 	google.golang.org/genproto/googleapis/api v0.0.0-20241021214115-324edc3d5d38
 	google.golang.org/grpc v1.67.1
