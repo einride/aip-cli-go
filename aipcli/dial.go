@@ -32,7 +32,11 @@ func dial(cmd *cobra.Command) (*grpc.ClientConn, error) {
 		cmd.PrintErrln(">> address:", address)
 	}
 	var opts []grpc.DialOption
-	if token, ok := getToken(cmd); ok {
+	token, err := getToken(cmd)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get bearer token: %v", err)
+	}
+	if token != "" {
 		opts = append(
 			opts,
 			grpc.WithPerRPCCredentials(
