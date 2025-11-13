@@ -57,10 +57,52 @@ func generateRootModuleFile(gen *protogen.Plugin, config Config) error {
 		GoImportPath: "go.einride.tech/aip-cli/aipcli",
 		GoName:       "NewModuleCommand",
 	})
+	aipCLINewModule := g.QualifiedGoIdent(protogen.GoIdent{
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
+		GoName:       "NewModule",
+	})
+	aipCLIOptFunc := g.QualifiedGoIdent(protogen.GoIdent{
+		GoImportPath: "go.einride.tech/aip-cli/aipcli",
+		GoName:       "OptFunc",
+	})
 	g.P()
+	g.P("// Deprecated: Use NewModule().Command() instead.")
 	g.P("func NewModuleCommand(use string, short string, commands ...*", cobraCommand, ") *", cobraCommand, " {")
 	g.P("config := NewConfig()")
 	g.P("return ", aipCLINewModuleCommand, "(")
+	g.P("use,")
+	g.P("short,")
+	g.P("config,")
+	g.P("append(")
+	g.P("[]*", cobraCommand, "{")
+	for _, file := range gen.Files {
+		if !file.Generate {
+			continue
+		}
+		for _, service := range file.Services {
+			newCommandFunction := g.QualifiedGoIdent(protogen.GoIdent{
+				GoImportPath: file.GoImportPath,
+				GoName:       "New" + service.GoName + "Command",
+			})
+			g.P(newCommandFunction, "(config),")
+		}
+	}
+	g.P("},")
+	g.P("commands...,")
+	g.P(")...,")
+	g.P(")")
+	g.P("}")
+	g.P()
+	g.P("type Module struct {")
+	g.P("options []", aipCLIOptFunc, "")
+	g.P("}")
+	g.P("func NewModule(options ...", aipCLIOptFunc, ") *Module {")
+	g.P("return &Module{options: options}")
+	g.P("}")
+	g.P()
+	g.P("func (m *Module) Command(use string, short string, commands ...*", cobraCommand, ") *", cobraCommand, " {")
+	g.P("config := NewConfig()")
+	g.P("return ", aipCLINewModule, "(m.options...).Command(")
 	g.P("use,")
 	g.P("short,")
 	g.P("config,")

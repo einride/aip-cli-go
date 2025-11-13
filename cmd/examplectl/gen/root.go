@@ -7,9 +7,33 @@ import (
 	v1 "go.einride.tech/aip-cli/cmd/examplectl/gen/einride/example/freight/v1"
 )
 
+// Deprecated: Use NewModule().Command() instead.
 func NewModuleCommand(use string, short string, commands ...*cobra.Command) *cobra.Command {
 	config := NewConfig()
 	return aipcli.NewModuleCommand(
+		use,
+		short,
+		config,
+		append(
+			[]*cobra.Command{
+				v1.NewFreightServiceCommand(config),
+			},
+			commands...,
+		)...,
+	)
+}
+
+type Module struct {
+	options []aipcli.OptFunc
+}
+
+func NewModule(options ...aipcli.OptFunc) *Module {
+	return &Module{options: options}
+}
+
+func (m *Module) Command(use string, short string, commands ...*cobra.Command) *cobra.Command {
+	config := NewConfig()
+	return aipcli.NewModule(m.options...).Command(
 		use,
 		short,
 		config,

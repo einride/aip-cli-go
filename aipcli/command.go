@@ -21,9 +21,26 @@ func NewCommand(cmd *cobra.Command, commands ...*cobra.Command) *cobra.Command {
 	return cmd
 }
 
-// NewModuleCommand initializes a new *cobra.Command for a CLI module.
-// A module is a collection of services with a common CLI config.
-func NewModuleCommand(
+type Module struct {
+	options Options
+}
+
+// A Module is a collection of gRPC services that can be grouped under a common CLI configuration,
+// such as a shared authorization strategy or other CLI options.
+// When creating a Module, you can pass options (using OptFunc) to control its behavior;
+// these options do not necessarily affect only the given module command, but can influence parents
+// and children commands as well. See option specific documentation for details.
+func NewModule(opts ...OptFunc) *Module {
+	options := Options{}
+	for _, opt := range opts {
+		opt(&options)
+	}
+	return &Module{
+		options: options,
+	}
+}
+
+func (m *Module) Command(
 	use string,
 	short string,
 	config Config,
@@ -37,7 +54,21 @@ func NewModuleCommand(
 		},
 	}, commands...)
 	setConfig(cmd, config)
+	setCommandOptions(cmd, m.options)
+
 	return cmd
+}
+
+// NewModuleCommand initializes a new *cobra.Command for a CLI module.
+// A module is a collection of services with a common CLI config.
+// Deprecated: Use NewModule().Command() instead.
+func NewModuleCommand(
+	use string,
+	short string,
+	config Config,
+	commands ...*cobra.Command,
+) *cobra.Command {
+	return NewModule().Command(use, short, config, commands...)
 }
 
 // NewServiceCommand initializes a new *cobra.Command for the provided gRPC service.

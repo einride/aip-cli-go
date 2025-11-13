@@ -9,7 +9,16 @@ import (
 )
 
 func main() {
-	if err := examplectl.NewModuleCommand(
+	// It is also possible to pass options to NewModule(), for example
+	//
+	// examplectl.NewModule(
+	// 	aipcli.WithGlobalTokenFunc(
+	// 		func(cmd *cobra.Command) (string, error) {
+	//			return <my bearer token>, nil
+	// 		},
+	// 	),
+	// )
+	if err := examplectl.NewModule().Command(
 		"examplectl",
 		"Example CLI tool",
 		aipcli.NewIAMModuleCommand("iam", examplectl.NewConfig()),
