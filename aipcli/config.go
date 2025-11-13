@@ -149,24 +149,21 @@ func getAddress(cmd *cobra.Command) (string, bool) {
 	return defaultHostFromProto(cmd)
 }
 
-func getToken(cmd *cobra.Command) (string, bool) {
+func getToken(cmd *cobra.Command) (string, error) {
 	if flagToken, err := cmd.Flags().GetString(tokenFlag); err == nil && flagToken != "" {
-		return flagToken, true
+		return flagToken, nil
 	}
 
-	if GetConfig(cmd).CachedIdentityTokenPath != "" {
-		tokenFile := GetConfig(cmd).CachedIdentityTokenPath
-		identityToken, err := identityTokenFromConfigFile(tokenFile)
-		if err != nil {
-			return "", false
-		}
-		return identityToken, true
+	tokenFunc := getGlobalTokenFunc(cmd)
+	if tokenFunc != nil {
+		return tokenFunc(cmd)
 	}
 
-	if GetConfig(cmd).GoogleCloudIdentityTokens {
-		return gcloudAuthPrintIdentityToken()
+	token, err := defaultTokenFunc(cmd)
+	if err != nil {
+		return "", err
 	}
-	return "", false
+	return token, nil
 }
 
 func isInsecure(cmd *cobra.Command) bool {
