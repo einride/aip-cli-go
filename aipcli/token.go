@@ -1,6 +1,7 @@
 package aipcli
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"os/exec"
@@ -13,7 +14,7 @@ func gcloudAuthPrintIdentityToken() (string, bool) {
 		return "", false
 	}
 	var stdout strings.Builder
-	cmd := exec.Command("gcloud", "auth", "print-identity-token")
+	cmd := exec.CommandContext(context.Background(), "gcloud", "auth", "print-identity-token")
 	cmd.Stdout = &stdout
 	if err := cmd.Run(); err != nil {
 		return "", false
