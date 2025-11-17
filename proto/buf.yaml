@@ -3,8 +3,11 @@ version: v1
 name: buf.build/einride/aip-cli
 
 deps:
-  - buf.build/einride/aip
+  - buf.build/googleapis/googleapis
 
 lint:
   use:
     - DEFAULT
+  except:
+    - RPC_RESPONSE_STANDARD_NAME
+    - RPC_REQUEST_RESPONSE_UNIQUE

@@ -68,7 +68,7 @@ func (Proto) BufGenerateExample(ctx context.Context) error {
 	cmd := sgbuf.Command(
 		ctx,
 		"generate",
-		"buf.build/einride/aip",
+
 		"--output",
 		sg.FromGitRoot(),
 		"--template",
