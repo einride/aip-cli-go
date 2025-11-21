@@ -33,9 +33,10 @@ func NewFreightServiceCommand(config aipcli.Config) *cobra.Command {
 			&ListShippersRequest{},
 			&ListShippersResponse{},
 			map[protoreflect.FullName]string{
-				"einride.example.freight.v1.FreightService.ListShippers":    " List shippers.\n\n See: https://google.aip.dev/132 (Standard methods: List).\n",
-				"einride.example.freight.v1.ListShippersRequest.page_size":  " Requested page size. Server may return fewer shippers than requested.\n If unspecified, server will pick an appropriate default.\n",
-				"einride.example.freight.v1.ListShippersRequest.page_token": " A token identifying a page of results the server should return.\n Typically, this is the value of\n [ListShippersResponse.next_page_token][einride.example.freight.v1.ListShippersResponse.next_page_token]\n returned from the previous call to `ListShippers` method.\n",
+				"einride.example.freight.v1.FreightService.ListShippers":           " List shippers.\n\n See: https://google.aip.dev/132 (Standard methods: List).\n",
+				"einride.example.freight.v1.ListShippersRequest.my_optional_field": " Custom field to test code generation for optional fields.\n",
+				"einride.example.freight.v1.ListShippersRequest.page_size":         " Requested page size. Server may return fewer shippers than requested.\n If unspecified, server will pick an appropriate default.\n",
+				"einride.example.freight.v1.ListShippersRequest.page_token":        " A token identifying a page of results the server should return.\n Typically, this is the value of\n [ListShippersResponse.next_page_token][einride.example.freight.v1.ListShippersResponse.next_page_token]\n returned from the previous call to `ListShippers` method.\n",
 			},
 		),
 		aipcli.NewMethodCommand(

@@ -4,9 +4,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 const fromFileFlag = "from-file"
@@ -93,7 +95,38 @@ func NewMethodCommand(
 				return err
 			}
 		}
+		resetOptionalFlags(cmd, in)
 		return invoke(cmd, methodURI(method), in, out)
 	}
 	return cmd
+}
+
+// Resets to nil the fields that:
+// - correspond to an optional field in the protos AND
+// - didn't have any value specified in the command invocation.
+func resetOptionalFlags(cmd *cobra.Command, request proto.Message) {
+	cmd.Flags().VisitAll(func(flag *pflag.Flag) {
+		// If a value was provided by the user, continue.
+		if flag.Changed {
+			return
+		}
+		// If the field doesn't correspond to a proto field (e.g. connection flags), continue.
+		fieldNames, ok := flag.Annotations[fieldNameAnnotation]
+		if !ok || len(fieldNames) == 0 {
+			return
+		}
+		fieldName := protoreflect.FullName(fieldNames[0])
+		field, err := protoregistry.GlobalFiles.FindDescriptorByName(fieldName)
+		if err != nil {
+			return
+		}
+		fieldDescriptor, ok := field.(protoreflect.FieldDescriptor)
+		if !ok {
+			return
+		}
+		// If the field is optional, clear the value.
+		if fieldDescriptor.Cardinality() == protoreflect.Optional {
+			request.ProtoReflect().Clear(fieldDescriptor)
+		}
+	})
 }

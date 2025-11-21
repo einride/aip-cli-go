@@ -67,6 +67,10 @@ buf-push: $(sagefile)
 clean-generated-proto: $(sagefile)
 	@$(sagefile) Proto:CleanGeneratedProto
 
+.PHONY: copy-generated-proto
+copy-generated-proto: $(sagefile)
+	@$(sagefile) Proto:CopyGeneratedProto
+
 .PHONY: protoc-gen-go
 protoc-gen-go: $(sagefile)
 	@$(sagefile) Proto:ProtocGenGo

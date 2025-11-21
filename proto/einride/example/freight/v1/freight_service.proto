@@ -192,6 +192,9 @@ message ListShippersRequest {
   // [ListShippersResponse.next_page_token][einride.example.freight.v1.ListShippersResponse.next_page_token]
   // returned from the previous call to `ListShippers` method.
   string page_token = 2;
+
+  // Custom field to test code generation for optional fields.
+  optional string my_optional_field = 3;
 }
 
 // Response message for FreightService.ListShippers.
