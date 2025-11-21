@@ -15,6 +15,7 @@ func (Proto) All(ctx context.Context) error {
 	sg.Deps(ctx, Proto.BufFormat, Proto.BufLint)
 	sg.Deps(ctx, Proto.CleanGeneratedProto)
 	sg.Deps(ctx, Proto.BufGenerateExample)
+	sg.Deps(ctx, Proto.CopyGeneratedProto)
 	return nil
 }
 
@@ -60,6 +61,19 @@ func (Proto) ProtocGenGoAIPCLI(ctx context.Context) error {
 func (Proto) CleanGeneratedProto(ctx context.Context) error {
 	sg.Logger(ctx).Println("cleaning generated proto files...")
 	return os.RemoveAll(sg.FromGitRoot("cmd", "examplectl", "gen"))
+}
+
+func (Proto) CopyGeneratedProto(ctx context.Context) error {
+	sg.Logger(ctx).Println("copying generated pb files...")
+	return sg.Command(
+		ctx,
+		"cp",
+		"cmd/examplectl/gen/einride/example/freight/v1/freight_service.pb.go",
+		"cmd/examplectl/gen/einride/example/freight/v1/shipment.pb.go",
+		"cmd/examplectl/gen/einride/example/freight/v1/shipper.pb.go",
+		"cmd/examplectl/gen/einride/example/freight/v1/site.pb.go",
+		"aipcli/testservice",
+	).Run()
 }
 
 func (Proto) BufGenerateExample(ctx context.Context) error {
