@@ -83,7 +83,8 @@ type ListShippersRequest struct {
 	// Typically, this is the value of
 	// [ListShippersResponse.next_page_token][einride.example.freight.v1.ListShippersResponse.next_page_token]
 	// returned from the previous call to `ListShippers` method.
-	PageToken       string  `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Custom field to test code generation for optional fields.
 	MyOptionalField *string `protobuf:"bytes,3,opt,name=my_optional_field,json=myOptionalField,proto3,oneof" json:"my_optional_field,omitempty"`
 }
 
