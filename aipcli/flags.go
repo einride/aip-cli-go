@@ -30,6 +30,10 @@ func setFlags(
 ) {
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
+		if isOutputOnly(field) {
+			// Field is a OUTPUT_ONLY field, omit generating any flags.
+			continue
+		}
 		switch field.Kind() {
 		case protoreflect.MessageKind:
 			switch field.Message().FullName() {
@@ -381,4 +385,18 @@ func flagName(field protoreflect.FieldDescriptor, parentFields []protoreflect.Fi
 
 func isMethodType(cmd *cobra.Command, methodType string) bool {
 	return strings.HasPrefix(string(protoreflect.FullName(cmd.Annotations[methodAnnotation]).Name()), methodType)
+}
+
+func isOutputOnly(field protoreflect.FieldDescriptor) bool {
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_OUTPUT_ONLY {
+				return true
+			}
+		}
+	}
+	return false
 }
