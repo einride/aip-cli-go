@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package einride.deploy.v1;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+
+// Map resource.
+message Map {
+  option (google.api.resource) = {
+    type: "autonomous.einride.tech/Map"
+    pattern: "maps/{map}"
+    plural: "maps"
+    singular: "map"
+  };
+
+  // The resource name of the map, pattern `maps/{map}`.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Time the map was created.
+  google.protobuf.Timestamp create_time = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Time the map was updated.
+  google.protobuf.Timestamp update_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Time the map was deleted.
+  google.protobuf.Timestamp delete_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Authenticated identity that created this map.
+  string creator_identity = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Human-readable name of the map.
+  string display_name = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // Description for this map.
+  string description = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // The site where this map was created.
+  string site = 8 [(google.api.field_behavior) = REQUIRED];
+
+  // Enum describing the supported map formats.
+  enum Type {
+    // The unset value. Do not use.
+    TYPE_UNSPECIFIED = 0;
+
+    // SD Map.
+    TYPE_SD_MAP = 1;
+
+    // HD Map.
+    TYPE_HD_MAP = 2;
+  }
+
+  // The type of the map.
+  Type type = 9 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // Map source data provided directly as file bytes.
+  message File {
+    // The map data corresponding to the given map type.
+    bytes data = 1 [
+      (google.api.field_behavior) = INPUT_ONLY,
+      (google.api.field_behavior) = REQUIRED
+    ];
+  }
+
+  // Optional source file data for direct upload during map creation.
+  // Mutually exclusive with `source_cloud_storage`.
+  File source_file = 11 [
+    (google.api.field_behavior) = INPUT_ONLY,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Models Google Cloud Storage file.
+  message CloudStorage {
+    // Bucket name containing the map file.
+    string bucket = 1 [(google.api.field_behavior) = REQUIRED];
+    // Object path to the map file.
+    string object = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // Optional Google Cloud Storage source for map data during creation.
+  // Mutually exclusive with `source_file`.
+  CloudStorage source_cloud_storage = 12 [
+    (google.api.field_behavior) = INPUT_ONLY,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Annotations is a generic key-value map.
+  map<string, string> annotations = 13 [(google.api.field_behavior) = OPTIONAL];
+
+  // Map file contains information where the map is stored.
+  CloudStorage map_file = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Checksum of the uploaded map.
+  string map_checksum = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Size of the uploaded map in bytes.
+  int64 map_size_bytes = 19 [(google.api.field_behavior) = OUTPUT_ONLY];
+}

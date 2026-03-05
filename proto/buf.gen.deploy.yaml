@@ -1,0 +1,20 @@
+version: v2
+managed:
+  enabled: true
+  disable:
+    - file_option: go_package
+      module: buf.build/googleapis/googleapis
+  override:
+    - file_option: go_package_prefix
+      value: go.einride.tech/aip-cli/cmd/deployctl/gen
+plugins:
+  - local: protoc-gen-go
+    out: cmd/deployctl/gen
+    opt: module=go.einride.tech/aip-cli/cmd/deployctl/gen
+  - local: protoc-gen-go-aip-cli
+    out: cmd/deployctl/gen
+    opt:
+      - module=go.einride.tech/aip-cli/cmd/deployctl/gen
+      - root=deployctl
+      - gcloud_identity_tokens=true
+    strategy: all
