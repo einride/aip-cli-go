@@ -3,13 +3,15 @@ modules:
   - path: .
     name: buf.build/einride/aip-cli
 deps:
-  - buf.build/einride/aip
+  - buf.build/googleapis/googleapis
 lint:
   use:
     - STANDARD
   except:
     - FIELD_NOT_REQUIRED
     - PACKAGE_NO_IMPORT_CYCLE
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - RPC_RESPONSE_STANDARD_NAME
   disallow_comment_ignores: true
 breaking:
   except:

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"os"
 
 	"go.einride.tech/sage/sg"
@@ -15,6 +16,7 @@ func (Proto) All(ctx context.Context) error {
 	sg.Deps(ctx, Proto.BufFormat, Proto.BufLint)
 	sg.Deps(ctx, Proto.CleanGeneratedProto)
 	sg.Deps(ctx, Proto.BufGenerateExample)
+	sg.Deps(ctx, Proto.BufGenerateDeploy)
 	return nil
 }
 
@@ -59,7 +61,10 @@ func (Proto) ProtocGenGoAIPCLI(ctx context.Context) error {
 
 func (Proto) CleanGeneratedProto(ctx context.Context) error {
 	sg.Logger(ctx).Println("cleaning generated proto files...")
-	return os.RemoveAll(sg.FromGitRoot("cmd", "examplectl", "gen"))
+	return errors.Join(
+		os.RemoveAll(sg.FromGitRoot("cmd", "examplectl", "gen")),
+		os.RemoveAll(sg.FromGitRoot("cmd", "deployctl", "gen")),
+	)
 }
 
 func (Proto) BufGenerateExample(ctx context.Context) error {
@@ -75,6 +80,24 @@ func (Proto) BufGenerateExample(ctx context.Context) error {
 		"buf.gen.example.yaml",
 		"--path",
 		"einride/example/freight",
+	)
+	cmd.Dir = sg.FromGitRoot("proto")
+	return cmd.Run()
+}
+
+func (Proto) BufGenerateDeploy(ctx context.Context) error {
+	sg.Deps(ctx, Proto.ProtocGenGo, Proto.ProtocGenGoAIPCLI)
+	sg.Logger(ctx).Println("generating deploy proto stubs...")
+	cmd := sgbuf.Command(
+		ctx,
+		"generate",
+		".",
+		"--output",
+		sg.FromGitRoot(),
+		"--template",
+		"buf.gen.deploy.yaml",
+		"--path",
+		"einride",
 	)
 	cmd.Dir = sg.FromGitRoot("proto")
 	return cmd.Run()

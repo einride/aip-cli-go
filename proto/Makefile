@@ -51,6 +51,10 @@ all: $(sagefile)
 buf-format: $(sagefile)
 	@$(sagefile) Proto:BufFormat
 
+.PHONY: buf-generate-deploy
+buf-generate-deploy: $(sagefile)
+	@$(sagefile) Proto:BufGenerateDeploy
+
 .PHONY: buf-generate-example
 buf-generate-example: $(sagefile)
 	@$(sagefile) Proto:BufGenerateExample

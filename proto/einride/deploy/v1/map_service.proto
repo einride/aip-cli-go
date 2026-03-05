@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package einride.deploy.v1;
+
+import "einride/deploy/v1/map.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+// Map service is responsible for managing a map.
+service MapService {
+  // Create a new map.
+  rpc CreateMap(CreateMapRequest) returns (Map) {
+    option (google.api.method_signature) = "map,map_id";
+    option (google.api.http) = {
+      post: "/v1/maps"
+      body: "map"
+    };
+  }
+
+  // Retrieves a specific map.
+  rpc GetMap(GetMapRequest) returns (Map) {
+    option (google.api.method_signature) = "name";
+    option (google.api.http) = {get: "/v1/{name=maps/*}"};
+  }
+
+  // Retrieves multiple maps by their names.
+  rpc BatchGetMaps(BatchGetMapsRequest) returns (BatchGetMapsResponse) {
+    option (google.api.http) = {get: "/v1/maps:batchGet"};
+  }
+
+  // Download map data via signed URL.
+  rpc DownloadMap(DownloadMapRequest) returns (DownloadMapResponse) {
+    option (google.api.method_signature) = "name";
+    option (google.api.http) = {get: "/v1/{name=maps/*}:download"};
+  }
+
+  // Update an existing map.
+  rpc UpdateMap(UpdateMapRequest) returns (Map) {
+    option (google.api.http) = {
+      patch: "/v1/{map.name=maps/*}"
+      body: "map"
+    };
+    option (google.api.method_signature) = "map,update_mask";
+  }
+
+  // Lists all maps.
+  rpc ListMaps(ListMapsRequest) returns (ListMapsResponse) {
+    option (google.api.http) = {get: "/v1/maps"};
+  }
+
+  // Delete a map.
+  rpc DeleteMap(DeleteMapRequest) returns (Map) {
+    option (google.api.method_signature) = "name";
+    option (google.api.http) = {delete: "/v1/{name=maps/*}"};
+  }
+}
+
+// Request message for the CreateMap method.
+message CreateMapRequest {
+  // The map resource to create.
+  Map map = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The ID to use for the map, which will become the final
+  // component of the map's name. If not provided, the server will
+  // generate a id.
+  string map_id = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for the GetMap method.
+message GetMapRequest {
+  // Required. The name of the map to retrieve.
+  // Format: maps/{map}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "autonomous.einride.tech/Map"
+  ];
+}
+
+// Request message for the DownloadMap method.
+message DownloadMapRequest {
+  // Required. The name of the map to download.
+  // Format: maps/{map}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "autonomous.einride.tech/Map"
+  ];
+}
+
+// Response message for the DownloadMap method.
+message DownloadMapResponse {
+  // Signed URL for downloading the map data.
+  //
+  // Valid until `url_expires_at`. URL is single-use and expires
+  // after first successful download.
+  string url = 1;
+
+  // Timestamp when the URL expires.
+  google.protobuf.Timestamp expire_time = 2;
+}
+
+// Request message to UpdateMap RPC.
+message UpdateMapRequest {
+  // The map to update.
+  // The map's `name` field is used to identify the map to be updated.
+  Map map = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The list of fields to update. Definition can be found here:
+  // https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for the ListMaps method.
+message ListMapsRequest {
+  // Optional. The maximum number of maps to return. The service may return fewer than
+  // this value. If unspecified, at most 50 maps will be returned. The
+  // maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. A page token, received from a previous `ListMaps` call. Provide this to
+  // retrieve the subsequent page.
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for the ListMaps method.
+message ListMapsResponse {
+  // The list of maps in the specified parent.
+  repeated Map maps = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+
+  // The total number of maps that can be retrieved across all pages,
+  // using the filter in the request.
+  int32 total_size = 3;
+}
+
+// Request message for the DeleteMap method.
+message DeleteMapRequest {
+  // The name of the map to delete.
+  // Format: `maps/{map}`
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {type: "autonomous.einride.tech/Map"}
+  ];
+}
+
+// Request message for the BatchGetMaps method.
+message BatchGetMapsRequest {
+  // Required. The names of the maps to retrieve.
+  // Format: maps/{map}
+  repeated string names = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {type: "autonomous.einride.tech/Map"}
+  ];
+}
+
+// Response message for the BatchGetMaps method.
+message BatchGetMapsResponse {
+  // The maps requested.
+  repeated Map maps = 1;
+}
