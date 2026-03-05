@@ -9,9 +9,9 @@ ARGUMENT FLAGS
   --map.description                  [O]   string               Description for this map
   --map.site                         [R]   string               Site where this map was created
   --map.type                         [RI]  enum[Type]           Type of the map
-  --map.source-file.data             [IR]  bytes                Map data corresponding to the given map type
-  --map.source-cloud-storage.bucket  [R]   string               Bucket name containing the map file
-  --map.source-cloud-storage.object  [R]   string               Object path to the map file
+  --map.source-file.data             [IO]  bytes                Map data corresponding to the given map type
+  --map.source-cloud-storage.bucket  [O]   string               Bucket name containing the map file
+  --map.source-cloud-storage.object  [O]   string               Object path to the map file
   --map.annotations                  [O]   map<string, string>  Annotations is a generic key-value map
   --map-id                           [O]   string               Optional
 
