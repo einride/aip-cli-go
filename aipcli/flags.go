@@ -188,8 +188,8 @@ func addFlag(
 	}
 	cmd.Flags().AddFlag(flag)
 	_ = cmd.Flags().SetAnnotation(flag.Name, flagArgumentAnnotation, []string{})
-	annotateFlagWithFieldBehaviors(flag, field)
-	markRequiredFlags(cmd, flag, field)
+	annotateFlagWithFieldBehaviors(flag, field, parentFields)
+	markRequiredFlags(cmd, flag, field, parentFields)
 	hideOutputOnlyFields(cmd, flag, field)
 	registerCompletion(cmd, flag, field, comment)
 	hideImmutableForUpdateMethods(cmd, flag, field)
@@ -201,6 +201,7 @@ func markRequiredFlags(
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
+	parentFields []protoreflect.FieldDescriptor,
 ) {
 	if isMethodType(cmd, "Update") {
 		// Update methods have no required fields due to field masks.
@@ -208,6 +209,10 @@ func markRequiredFlags(
 	}
 	if os.Getenv("AIP_CLI_DISABLE_FIELD_BEHAVIOR") == "true" {
 		// A secret escape hatch for ignoring required fields.
+		return
+	}
+	if anyParentIsOptional(parentFields) {
+		// Omit marking flag as required if any parent is optional, it has higher precedence.
 		return
 	}
 	if fieldBehaviors, ok := proto.GetExtension(
@@ -248,6 +253,7 @@ func hideOutputOnlyFields(
 func annotateFlagWithFieldBehaviors(
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
+	parentFields []protoreflect.FieldDescriptor,
 ) {
 	if fieldBehaviors, ok := proto.GetExtension(
 		field.Options(),
@@ -257,9 +263,16 @@ func annotateFlagWithFieldBehaviors(
 			if flag.Annotations == nil {
 				flag.Annotations = map[string][]string{}
 			}
+			fb := fieldBehavior
+			if fieldBehavior == annotations.FieldBehavior_REQUIRED && anyParentIsOptional(parentFields) {
+				// Omit marking flag as required if any parent is optional, it has higher precedence.
+				// This to relax the requirements if two fields are optional, but their children has
+				// required field behavior.
+				fb = annotations.FieldBehavior_OPTIONAL
+			}
 			flag.Annotations[fieldBehaviorsAnnotation] = append(
 				flag.Annotations[fieldBehaviorsAnnotation],
-				fieldBehavior.String(),
+				fb.String(),
 			)
 		}
 	}
@@ -394,6 +407,29 @@ func isOutputOnly(field protoreflect.FieldDescriptor) bool {
 	).([]annotations.FieldBehavior); ok {
 		for _, fieldBehavior := range fieldBehaviors {
 			if fieldBehavior == annotations.FieldBehavior_OUTPUT_ONLY {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func anyParentIsOptional(parentFields []protoreflect.FieldDescriptor) bool {
+	for _, field := range parentFields {
+		if isOptional(field) {
+			return true
+		}
+	}
+	return false
+}
+
+func isOptional(field protoreflect.FieldDescriptor) bool {
+	if fieldBehaviors, ok := proto.GetExtension(
+		field.Options(),
+		annotations.E_FieldBehavior,
+	).([]annotations.FieldBehavior); ok {
+		for _, fieldBehavior := range fieldBehaviors {
+			if fieldBehavior == annotations.FieldBehavior_OPTIONAL {
 				return true
 			}
 		}
