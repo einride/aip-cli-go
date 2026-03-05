@@ -13,8 +13,6 @@ ARGUMENT FLAGS
   --map.source-cloud-storage.bucket  [R]   string               Bucket name containing the map file
   --map.source-cloud-storage.object  [R]   string               Object path to the map file
   --map.annotations                  [O]   map<string, string>  Annotations is a generic key-value map
-  --map.map-file.bucket              [R]   string               Bucket name containing the map file
-  --map.map-file.object              [R]   string               Object path to the map file
   --map-id                           [O]   string               Optional
 
 CONNECTION FLAGS
