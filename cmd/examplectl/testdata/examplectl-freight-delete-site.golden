@@ -1,0 +1,22 @@
+
+Delete a site.
+
+See: https://google.aip.dev/135 (Standard methods: Delete).
+See: https://google.aip.dev/164 (Soft delete).
+
+USAGE
+  delete-site <command>
+
+ARGUMENT FLAGS
+  --name  [R]  string  Resource name of the site to delete
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

@@ -1,0 +1,25 @@
+
+Update a site.
+
+See: https://google.aip.dev/134 (Standard methods: Update).
+
+USAGE
+  update-site <command>
+
+ARGUMENT FLAGS
+  --site.name                    string      Resource name of the site
+  --site.display-name       [R]  string      Display name of the site
+  --site.lat-lng.latitude        double      Latitude in degrees
+  --site.lat-lng.longitude       double      Longitude in degrees
+  --update-mask                  field-mask  List of fields to be updated
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

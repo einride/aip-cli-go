@@ -1,0 +1,29 @@
+
+Set the IAM policy associated with a resource.
+
+This command can fail for the following reasons:
+
+  ▪ The resource specified does not exist.
+
+  ▪ The specified policy contains invalid or non-existent 
+    roles or members.
+
+  ▪ The active account does not have permission to 
+    access the given resource's IAM policies.
+
+USAGE
+  set-iam-policy <command>
+
+ARGUMENT FLAGS
+  --resource       string  Resource name for which the policy is being specified
+  --policy-file    string  Path to a local JSON file containing a valid policy
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -h  --help       bool  Show help for command
+  -v  --verbose    bool  Enable verbose output

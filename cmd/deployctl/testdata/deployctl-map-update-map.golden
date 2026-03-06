@@ -1,0 +1,29 @@
+
+Update an existing map.
+
+USAGE
+  update-map <command>
+
+ARGUMENT FLAGS
+  --map.name                         [I]   string               Resource name of the map, pattern `maps/{map}`
+  --map.display-name                 [O]   string               Human-readable name of the map
+  --map.description                  [O]   string               Description for this map
+  --map.site                         [R]   string               Site where this map was created
+  --map.source-file.data             [IR]  bytes                Map data corresponding to the given map type
+  --map.source-cloud-storage.bucket  [R]   string               Bucket name containing the map file
+  --map.source-cloud-storage.object  [R]   string               Object path to the map file
+  --map.annotations                  [O]   map<string, string>  Annotations is a generic key-value map
+  --map.map-file.bucket              [R]   string               Bucket name containing the map file
+  --map.map-file.object              [R]   string               Object path to the map file
+  --update-mask                      [O]   field-mask           List of fields to update
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output
