@@ -1,0 +1,22 @@
+
+List shippers.
+
+See: https://google.aip.dev/132 (Standard methods: List).
+
+USAGE
+  list-shippers <command>
+
+ARGUMENT FLAGS
+  --page-size     int32   Requested page size
+  --page-token    string  A token identifying a page of results the server should return
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

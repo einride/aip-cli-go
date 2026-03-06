@@ -1,0 +1,27 @@
+
+Removes an IAM policy binding from the IAM policy of a resource. 
+One binding consists of a member, a role, and an optional condition.
+
+This command can fail for the following reasons:
+
+  ▪ The resource specified does not exist.
+  ▪ The active account does not have permission to access the given
+  resource's IAM policies.
+
+USAGE
+  remove-iam-policy-binding <command>
+
+ARGUMENT FLAGS
+  --resource    string  Resource name for which the policy binding is being removed
+  --member      string  Principal to remove the binding for
+  --role        string  Role name to remove the principal from
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -h  --help       bool  Show help for command
+  -v  --verbose    bool  Enable verbose output

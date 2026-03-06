@@ -1,0 +1,29 @@
+
+Update a shipment.
+
+See: https://google.aip.dev/134 (Standard methods: Update).
+
+USAGE
+  update-shipment <command>
+
+ARGUMENT FLAGS
+  --shipment.name                         string               Resource name of the shipment
+  --shipment.origin-site             [R]  string               Resource name of the origin site of the shipment
+  --shipment.destination-site        [R]  string               Resource name of the destination site of the shipment
+  --shipment.pickup-earliest-time    [R]  timestamp            Earliest pickup time of the shipment at the origin site
+  --shipment.pickup-latest-time      [R]  timestamp            Latest pickup time of the shipment at the origin site
+  --shipment.delivery-earliest-time  [R]  timestamp            Earliest delivery time of the shipment at the destination site
+  --shipment.delivery-latest-time    [R]  timestamp            Latest delivery time of the shipment at the destination site
+  --shipment.annotations                  map<string, string>  Annotations of the shipment
+  --update-mask                           field-mask           List of fields to be updated
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

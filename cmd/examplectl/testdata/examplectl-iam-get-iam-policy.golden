@@ -1,0 +1,27 @@
+
+Get the IAM policy associated with a resource. 
+
+The output includes an "etag" identifier that is used to check for 
+concurrent policy updates. An edited policy should include the same 
+etag so that set-iam-policy applies the changes to the correct policy 
+version.
+
+This command can fail for the following reasons:
+
+  ▪ The resource specified does not exist.
+  ▪ The active account does not have permission to access the given
+  resource's IAM policies.
+
+USAGE
+  get-iam-policy <command>
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+      --resource    string  Resource for which the policy is being requested
+  -h  --help        bool    Show help for command
+  -v  --verbose     bool    Enable verbose output

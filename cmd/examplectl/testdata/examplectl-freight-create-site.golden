@@ -1,0 +1,24 @@
+
+Create a site.
+
+See: https://google.aip.dev/133 (Standard methods: Create).
+
+USAGE
+  create-site <command>
+
+ARGUMENT FLAGS
+  --parent                  [R]  string  Resource name of the parent shipper for which this site will be created
+  --site.display-name       [R]  string  Display name of the site
+  --site.lat-lng.latitude        double  Latitude in degrees
+  --site.lat-lng.longitude       double  Longitude in degrees
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

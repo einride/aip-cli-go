@@ -1,0 +1,22 @@
+
+Batch get sites.
+
+See: https://google.aip.dev/231 (Batch methods: Get).
+
+USAGE
+  batch-get-sites <command>
+
+ARGUMENT FLAGS
+  --parent       string    Parent resource shared by all sites being retrieved
+  --names   [R]  [string]  Names of the sites to retrieve
+
+CONNECTION FLAGS
+  --address        string  Connect to address
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output
