@@ -98,3 +98,8 @@ Global Flags:
 
 Use "examplectl freight [command] --help" for more information about a command.
 ```
+
+### Note
+
+The generate CLI performs as much validation as possible without hindering
+usability; however, the backend is ultimately responsible for validating input.
