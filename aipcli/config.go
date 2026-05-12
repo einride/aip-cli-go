@@ -3,6 +3,7 @@ package aipcli
 import (
 	"context"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -131,6 +132,15 @@ func GetConfig(cmd *cobra.Command) Config {
 }
 
 func getAddress(cmd *cobra.Command) (string, bool) {
+	// With TraverseChildren, --address before a subcommand is parsed at each ancestor's
+	// level and stored in that ancestor's own persistent flags — not the leaf's merged
+	// flagset (where a local proto field --address would shadow it). Walk the parent
+	// chain first to find the connection address before falling back to the leaf flag.
+	for c := cmd.Parent(); c != nil; c = c.Parent() {
+		if f := c.PersistentFlags().Lookup(addressFlag); f != nil && f.Changed {
+			return f.Value.String(), true
+		}
+	}
 	if flagAddress, err := cmd.Flags().GetString(addressFlag); err == nil && flagAddress != "" {
 		return flagAddress, true
 	}
@@ -168,15 +178,39 @@ func getToken(cmd *cobra.Command) (string, error) {
 
 func isInsecure(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(insecureFlag)
-	return result && err == nil
+	if result && err == nil {
+		return true
+	}
+	return ancestorPersistentBool(cmd, insecureFlag)
 }
 
 func IsVerbose(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(verboseFlag)
-	return result && err == nil
+	if result && err == nil {
+		return true
+	}
+	return ancestorPersistentBool(cmd, verboseFlag)
 }
 
 func isForceTrace(cmd *cobra.Command) bool {
 	result, err := cmd.Flags().GetBool(forceTraceFlag)
-	return result && err == nil
+	if result && err == nil {
+		return true
+	}
+	return ancestorPersistentBool(cmd, forceTraceFlag)
+}
+
+// ancestorPersistentBool walks the parent chain looking for a Changed bool persistent
+// flag. This is needed when TraverseChildren routes flags passed before a subcommand to
+// each ancestor's own persistent flagset rather than the leaf's merged flagset.
+func ancestorPersistentBool(cmd *cobra.Command, name string) bool {
+	for c := cmd.Parent(); c != nil; c = c.Parent() {
+		f := c.PersistentFlags().Lookup(name)
+		if f == nil || !f.Changed {
+			continue
+		}
+		v, err := strconv.ParseBool(f.Value.String())
+		return v && err == nil
+	}
+	return false
 }
