@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -131,18 +132,23 @@ func GetConfig(cmd *cobra.Command) Config {
 	return Config{}
 }
 
-func getAddress(cmd *cobra.Command) (string, bool) {
-	// With TraverseChildren, --address before a subcommand is parsed at each ancestor's
-	// level and stored in that ancestor's own persistent flags — not the leaf's merged
-	// flagset (where a local proto field --address would shadow it). Walk the parent
-	// chain first to find the connection address before falling back to the leaf flag.
-	for c := cmd.Parent(); c != nil; c = c.Parent() {
-		if f := c.PersistentFlags().Lookup(addressFlag); f != nil && f.Changed {
-			return f.Value.String(), true
+// lookupChangedPersistentFlag walks cmd and its ancestors looking for a persistent flag
+// with the given name that the user explicitly set (Changed == true). Using
+// PersistentFlags() rather than Flags() means local proto-field flags (registered via
+// cmd.Flags()) are never returned, so starting from cmd itself is safe even when a proto
+// field shares a name with a connection flag.
+func lookupChangedPersistentFlag(cmd *cobra.Command, name string) *pflag.Flag {
+	for c := cmd; c != nil; c = c.Parent() {
+		if f := c.PersistentFlags().Lookup(name); f != nil && f.Changed {
+			return f
 		}
 	}
-	if flagAddress, err := cmd.Flags().GetString(addressFlag); err == nil && flagAddress != "" {
-		return flagAddress, true
+	return nil
+}
+
+func getAddress(cmd *cobra.Command) (string, bool) {
+	if f := lookupChangedPersistentFlag(cmd, addressFlag); f != nil {
+		return f.Value.String(), true
 	}
 	for host, hostAddress := range GetConfig(cmd).Hosts {
 		if useHost, err := cmd.Flags().GetBool(host); err == nil && useHost {
@@ -177,40 +183,25 @@ func getToken(cmd *cobra.Command) (string, error) {
 }
 
 func isInsecure(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(insecureFlag)
-	if result && err == nil {
-		return true
+	if f := lookupChangedPersistentFlag(cmd, insecureFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
 	}
-	return ancestorPersistentBool(cmd, insecureFlag)
+	return false
 }
 
 func IsVerbose(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(verboseFlag)
-	if result && err == nil {
-		return true
+	if f := lookupChangedPersistentFlag(cmd, verboseFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
 	}
-	return ancestorPersistentBool(cmd, verboseFlag)
+	return false
 }
 
 func isForceTrace(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(forceTraceFlag)
-	if result && err == nil {
-		return true
-	}
-	return ancestorPersistentBool(cmd, forceTraceFlag)
-}
-
-// ancestorPersistentBool walks the parent chain looking for a Changed bool persistent
-// flag. This is needed when TraverseChildren routes flags passed before a subcommand to
-// each ancestor's own persistent flagset rather than the leaf's merged flagset.
-func ancestorPersistentBool(cmd *cobra.Command, name string) bool {
-	for c := cmd.Parent(); c != nil; c = c.Parent() {
-		f := c.PersistentFlags().Lookup(name)
-		if f == nil || !f.Changed {
-			continue
-		}
-		v, err := strconv.ParseBool(f.Value.String())
-		return v && err == nil
+	if f := lookupChangedPersistentFlag(cmd, forceTraceFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
 	}
 	return false
 }
