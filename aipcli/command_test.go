@@ -3,9 +3,56 @@ package aipcli
 import (
 	"testing"
 
+	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"gotest.tools/v3/assert"
 )
+
+func Test_getAddress_rootFlagNotShadowedByLocalField(t *testing.T) {
+	// Regression test: a proto request with a field named "address" causes the generated
+	// subcommand to register a local --address flag that shadows the root persistent
+	// connection flag in the merged flagset. With TraverseChildren the connection address
+	// lands in the root's own persistent flags; getAddress must walk the parent chain to
+	// find it rather than reading from the (shadowed) merged flagset.
+	root := &cobra.Command{Use: "root", TraverseChildren: true}
+	initPersistentFlags(root)
+	setConfig(root, Config{})
+
+	sub := &cobra.Command{Use: "sub"}
+	root.AddCommand(sub)
+	initPersistentFlags(sub) // every command level registers its own persistent flags
+	// Simulate the generated local --address flag for a proto "address" string field.
+	sub.Flags().String(addressFlag, "", "postal address proto field")
+
+	// Simulate TraverseChildren parsing --address localhost:50051 at root level.
+	if err := root.PersistentFlags().Set(addressFlag, "localhost:50051"); err != nil {
+		t.Fatal(err)
+	}
+
+	addr, ok := getAddress(sub)
+	assert.Assert(t, ok)
+	assert.Equal(t, addr, "localhost:50051")
+}
+
+func Test_isInsecure_rootFlagNotShadowedByLeafPersistent(t *testing.T) {
+	// Regression test: each command level registers its own --insecure persistent flag
+	// via initPersistentFlags. With TraverseChildren the root-level --insecure lands on
+	// root's own persistent flag, not the leaf's. isInsecure must walk the parent chain.
+	root := &cobra.Command{Use: "root", TraverseChildren: true}
+	initPersistentFlags(root)
+	setConfig(root, Config{})
+
+	sub := &cobra.Command{Use: "sub"}
+	root.AddCommand(sub)
+	initPersistentFlags(sub) // leaf has its own --insecure, not set
+
+	// Simulate TraverseChildren parsing --insecure at root level.
+	if err := root.PersistentFlags().Set(insecureFlag, "true"); err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Assert(t, isInsecure(sub))
+}
 
 func Test_qualifiedServiceUse(t *testing.T) {
 	for _, tt := range []struct {

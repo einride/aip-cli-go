@@ -47,8 +47,9 @@ func (m *Module) Command(
 	commands ...*cobra.Command,
 ) *cobra.Command {
 	cmd := NewCommand(&cobra.Command{
-		Use:   use,
-		Short: short,
+		Use:              use,
+		Short:            short,
+		TraverseChildren: true,
 		Annotations: map[string]string{
 			moduleAnnotation: use,
 		},
