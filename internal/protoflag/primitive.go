@@ -11,7 +11,7 @@ func Primitive[T any](
 	valueOf func(T) protoreflect.Value,
 	parser func(string) (T, error),
 ) pflag.Value {
-	return primitiveValue[T]{
+	return &primitiveValue[T]{
 		mutable: mutable,
 		field:   field,
 		valueOf: valueOf,
@@ -24,21 +24,25 @@ type primitiveValue[T any] struct {
 	field   protoreflect.FieldDescriptor
 	valueOf func(T) protoreflect.Value
 	parser  func(string) (T, error)
+	strVal  string
 }
 
-func (v primitiveValue[T]) String() string {
-	return ""
+// String returns the last value passed to Set, or "" if Set has not been called.
+// This makes cmd.Flags().GetString() work correctly for proto string fields.
+func (v *primitiveValue[T]) String() string {
+	return v.strVal
 }
 
-func (v primitiveValue[T]) Set(s string) error {
+func (v *primitiveValue[T]) Set(s string) error {
 	parsed, err := v.parser(s)
 	if err != nil {
 		return err
 	}
 	v.mutable().Set(v.field, v.valueOf(parsed))
+	v.strVal = s
 	return nil
 }
 
-func (v primitiveValue[T]) Type() string {
+func (v *primitiveValue[T]) Type() string {
 	return v.field.Kind().String()
 }
