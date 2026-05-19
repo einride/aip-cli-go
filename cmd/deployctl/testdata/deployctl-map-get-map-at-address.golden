@@ -1,0 +1,23 @@
+
+Get a map at an address.
+Regression test for the construction-time flag-redefined panic (PR #284):
+name is REQUIRED and precedes address, which collides with the persistent
+--address connection flag.
+
+USAGE
+  get-map-at-address <command>
+
+ARGUMENT FLAGS
+  --name     [R]  string  Required
+  --address       string  Postal address — field name chosen to collide with the persistent --address connection flag and regression-test PR #284
+
+CONNECTION FLAGS
+  --address        string  Postal address — field name chosen to collide with the persistent --address connection flag and regression-test PR #284
+  --force-trace    bool    Enable forced Google Cloud Trace header
+  --insecure       bool    Make insecure connection (only on localhost)
+  --token          string  Authenticate with a bearer token
+
+OTHER FLAGS
+  -f  --from-file    string  path to a JSON file containing the request payload
+  -h  --help         bool    Show help for command
+  -v  --verbose      bool    Enable verbose output

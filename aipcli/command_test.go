@@ -54,6 +54,26 @@ func Test_isInsecure_rootFlagNotShadowedByLeafPersistent(t *testing.T) {
 	assert.Assert(t, isInsecure(sub))
 }
 
+// Test_NewMethodCommand_flagRedefinedWhenRequiredFieldPrecedesAddress is a regression
+// test for the construction-time panic (PR #284). Before the fix, markRequiredFlags
+// called cmd.MarkFlagsOneRequired during proto-field iteration; that triggered
+// mergePersistentFlags(), which copied --address from PersistentFlags() into local
+// Flags() before the colliding proto-field flag was added. The fix defers
+// MarkFlagsOneRequired until after every proto-field flag is registered; pflag's
+// AddFlagSet then skips the persistent --address copy because the local one already
+// exists.
+func Test_NewMethodCommand_flagRedefinedWhenRequiredFieldPrecedesAddress(t *testing.T) {
+	cmd := &cobra.Command{Use: "get-book"}
+	initPersistentFlags(cmd)
+	_ = cmd.Flags().StringP(fromFileFlag, "f", "", "")
+	// Register all proto-field flags first (including the colliding "address").
+	_ = cmd.Flags().String("name", "", "")
+	_ = cmd.Flags().String(addressFlag, "", "") // proto field "address" — must precede MarkFlagsOneRequired
+	// Deferred MarkFlagsOneRequired: by now local Flags() already has --address,
+	// so the subsequent mergePersistentFlags() skips the persistent copy silently.
+	cmd.MarkFlagsOneRequired("name", fromFileFlag) // must not panic
+}
+
 func Test_qualifiedServiceUse(t *testing.T) {
 	for _, tt := range []struct {
 		name     string

@@ -158,5 +158,18 @@ func NewMapServiceCommand(config aipcli.Config) *cobra.Command {
 				"einride.deploy.v1.MapService.DeleteMap":  " Delete a map.\n",
 			},
 		),
+		aipcli.NewMethodCommand(
+			config,
+			File_einride_deploy_v1_map_service_proto.
+				Services().ByName("MapService").Methods().ByName("GetMapAtAddress"),
+			&GetMapAtAddressRequest{},
+			&Map{},
+			map[protoreflect.FullName]string{
+				"einride.deploy.v1.GetMapAtAddressRequest":         " Request message for the GetMapAtAddress method.\n",
+				"einride.deploy.v1.GetMapAtAddressRequest.address": " Postal address — field name chosen to collide with the persistent\n --address connection flag and regression-test PR #284.\n",
+				"einride.deploy.v1.GetMapAtAddressRequest.name":    " Required. Resource name of the map.\n Format: maps/{map}\n",
+				"einride.deploy.v1.MapService.GetMapAtAddress":     " Get a map at an address.\n Regression test for the construction-time flag-redefined panic (PR #284):\n name is REQUIRED and precedes address, which collides with the persistent\n --address connection flag.\n",
+			},
+		),
 	)
 }
