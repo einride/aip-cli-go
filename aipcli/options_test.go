@@ -13,6 +13,7 @@ func TestDefaultTokenFunc_behavior(t *testing.T) {
 	t.Run("returns error with missing file if CachedIdentityTokenPath set", func(t *testing.T) {
 		// Given
 		cmd := &cobra.Command{}
+		//nolint:gosec // test fixture path, not credentials
 		initContext(cmd, Config{CachedIdentityTokenPath: "not_a_file.json"})
 		// When
 		token, err := defaultTokenFunc(cmd)

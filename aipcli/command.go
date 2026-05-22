@@ -61,6 +61,7 @@ func (m *Module) Command(
 
 // NewModuleCommand initializes a new *cobra.Command for a CLI module.
 // A module is a collection of services with a common CLI config.
+//
 // Deprecated: Use NewModule().Command() instead.
 func NewModuleCommand(
 	use string,
