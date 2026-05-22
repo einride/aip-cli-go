@@ -1,8 +1,6 @@
 module go.einride.tech/aip-cli
 
-go 1.24.10
-
-toolchain go1.25.10
+go 1.25.10
 
 require (
 	cloud.google.com/go/iam v1.2.1
