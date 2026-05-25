@@ -57,6 +57,15 @@ service MapService {
     option (google.api.method_signature) = "name";
     option (google.api.http) = {delete: "/v1/{name=maps/*}"};
   }
+
+  // Get a map at an address.
+  // Regression test for the construction-time flag-redefined panic (PR #284):
+  // name is REQUIRED and precedes address, which collides with the persistent
+  // --address connection flag.
+  rpc GetMapAtAddress(GetMapAtAddressRequest) returns (Map) {
+    option (google.api.method_signature) = "name";
+    option (google.api.http) = {get: "/v1/{name=maps/*}:atAddress"};
+  }
 }
 
 // Request message for the CreateMap method.
@@ -163,4 +172,18 @@ message BatchGetMapsRequest {
 message BatchGetMapsResponse {
   // The maps requested.
   repeated Map maps = 1;
+}
+
+// Request message for the GetMapAtAddress method.
+message GetMapAtAddressRequest {
+  // Required. Resource name of the map.
+  // Format: maps/{map}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "autonomous.einride.tech/Map"
+  ];
+
+  // Postal address — field name chosen to collide with the persistent
+  // --address connection flag and regression-test PR #284.
+  string address = 2;
 }

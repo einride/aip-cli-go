@@ -47,8 +47,9 @@ func (m *Module) Command(
 	commands ...*cobra.Command,
 ) *cobra.Command {
 	cmd := NewCommand(&cobra.Command{
-		Use:   use,
-		Short: short,
+		Use:              use,
+		Short:            short,
+		TraverseChildren: true,
 		Annotations: map[string]string{
 			moduleAnnotation: use,
 		},
@@ -114,7 +115,11 @@ func NewMethodCommand(
 	setConfig(cmd, config)
 	fromFile := cmd.Flags().StringP(fromFileFlag, "f", "", "path to a JSON file containing the request payload")
 	_ = cmd.MarkFlagFilename(fromFileFlag, "json")
-	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect)
+	var requiredFlagNames []string
+	setFlags(comments, cmd, nil, in.ProtoReflect().Descriptor(), in.ProtoReflect, &requiredFlagNames)
+	for _, name := range requiredFlagNames {
+		cmd.MarkFlagsOneRequired(name, fromFileFlag)
+	}
 	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
 		if cmd.Flags().Changed(fromFileFlag) {
 			data, err := os.ReadFile(*fromFile)

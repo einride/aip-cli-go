@@ -27,6 +27,7 @@ func setFlags(
 	parentFields []protoreflect.FieldDescriptor,
 	msg protoreflect.MessageDescriptor,
 	mutable func() protoreflect.Message,
+	requiredFlagNames *[]string,
 ) {
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
@@ -39,17 +40,17 @@ func setFlags(
 			switch field.Message().FullName() {
 			case "google.protobuf.Duration":
 				if !field.IsList() {
-					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Duration(mutable, field))
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Duration(mutable, field), requiredFlagNames)
 				}
 				// TODO: Implement support for repeated durations.
 			case "google.protobuf.Timestamp":
 				if !field.IsList() {
-					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Timestamp(mutable, field))
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Timestamp(mutable, field), requiredFlagNames)
 				}
 				// TODO: Implement support for repeated timestamps.
 			case "google.protobuf.FieldMask":
 				if !field.IsList() {
-					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.FieldMask(mutable, field))
+					addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.FieldMask(mutable, field), requiredFlagNames)
 				}
 				// Repeated field masks is intentionally not supported.
 			default:
@@ -64,6 +65,7 @@ func setFlags(
 							parentFields,
 							comments[field.FullName()],
 							protovalue.MapStringString(mutable, field),
+							requiredFlagNames,
 						)
 					default:
 						// TODO: Implement support for more map types.
@@ -79,18 +81,19 @@ func setFlags(
 						func() protoreflect.Message {
 							return mutable().Mutable(field).Message()
 						},
+						requiredFlagNames,
 					)
 				}
 			}
 		case protoreflect.EnumKind:
 			if field.IsList() {
-				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.EnumList(mutable, field))
+				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.EnumList(mutable, field), requiredFlagNames)
 			} else {
-				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Enum(mutable, field))
+				addFlag(cmd, field, parentFields, comments[field.FullName()], protovalue.Enum(mutable, field), requiredFlagNames)
 			}
 		case protoreflect.StringKind, protoreflect.BoolKind, protoreflect.BytesKind, protoreflect.DoubleKind,
 			protoreflect.FloatKind, protoreflect.Int64Kind, protoreflect.Int32Kind:
-			setPrimitiveFlag(comments, cmd, parentFields, mutable, field)
+			setPrimitiveFlag(comments, cmd, parentFields, mutable, field, requiredFlagNames)
 		}
 	}
 }
@@ -101,6 +104,7 @@ func setPrimitiveFlag(
 	parentFields []protoreflect.FieldDescriptor,
 	mutable func() protoreflect.Message,
 	field protoreflect.FieldDescriptor,
+	requiredFlagNames *[]string,
 ) {
 	var value pflag.Value
 	switch field.Kind() {
@@ -168,7 +172,7 @@ func setPrimitiveFlag(
 	default:
 		panic(fmt.Errorf("unhandled primitive kind: %v", field.Kind())) // shouldn't happen
 	}
-	addFlag(cmd, field, parentFields, comments[field.FullName()], value)
+	addFlag(cmd, field, parentFields, comments[field.FullName()], value, requiredFlagNames)
 }
 
 func addFlag(
@@ -177,6 +181,7 @@ func addFlag(
 	parentFields []protoreflect.FieldDescriptor,
 	comment string,
 	value pflag.Value,
+	requiredFlagNames *[]string,
 ) {
 	flag := &pflag.Flag{
 		Name:  flagName(field, parentFields),
@@ -189,7 +194,7 @@ func addFlag(
 	cmd.Flags().AddFlag(flag)
 	_ = cmd.Flags().SetAnnotation(flag.Name, flagArgumentAnnotation, []string{})
 	annotateFlagWithFieldBehaviors(flag, field, parentFields)
-	markRequiredFlags(cmd, flag, field, parentFields)
+	markRequiredFlags(requiredFlagNames, cmd, flag, field, parentFields)
 	hideOutputOnlyFields(cmd, flag, field)
 	registerCompletion(cmd, flag, field, comment)
 	hideImmutableForUpdateMethods(cmd, flag, field)
@@ -198,6 +203,7 @@ func addFlag(
 }
 
 func markRequiredFlags(
+	requiredFlagNames *[]string,
 	cmd *cobra.Command,
 	flag *pflag.Flag,
 	field protoreflect.FieldDescriptor,
@@ -221,7 +227,11 @@ func markRequiredFlags(
 	).([]annotations.FieldBehavior); ok {
 		for _, fieldBehavior := range fieldBehaviors {
 			if fieldBehavior == annotations.FieldBehavior_REQUIRED {
-				cmd.MarkFlagsOneRequired(flag.Name, fromFileFlag)
+				// Defer the MarkFlagsOneRequired call until after all proto-field flags are
+				// registered. Calling it here would trigger mergePersistentFlags(), which
+				// copies persistent flags (e.g. --address) into local Flags() before the
+				// colliding proto-field flag is added, causing a "flag redefined" panic.
+				*requiredFlagNames = append(*requiredFlagNames, flag.Name)
 				return
 			}
 		}

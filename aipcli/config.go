@@ -3,8 +3,10 @@ package aipcli
 import (
 	"context"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -130,9 +132,23 @@ func GetConfig(cmd *cobra.Command) Config {
 	return Config{}
 }
 
+// lookupChangedPersistentFlag walks cmd and its ancestors looking for a persistent flag
+// with the given name that the user explicitly set (Changed == true). Using
+// PersistentFlags() rather than Flags() means local proto-field flags (registered via
+// cmd.Flags()) are never returned, so starting from cmd itself is safe even when a proto
+// field shares a name with a connection flag.
+func lookupChangedPersistentFlag(cmd *cobra.Command, name string) *pflag.Flag {
+	for c := cmd; c != nil; c = c.Parent() {
+		if f := c.PersistentFlags().Lookup(name); f != nil && f.Changed {
+			return f
+		}
+	}
+	return nil
+}
+
 func getAddress(cmd *cobra.Command) (string, bool) {
-	if flagAddress, err := cmd.Flags().GetString(addressFlag); err == nil && flagAddress != "" {
-		return flagAddress, true
+	if f := lookupChangedPersistentFlag(cmd, addressFlag); f != nil {
+		return f.Value.String(), true
 	}
 	for host, hostAddress := range GetConfig(cmd).Hosts {
 		if useHost, err := cmd.Flags().GetBool(host); err == nil && useHost {
@@ -167,16 +183,25 @@ func getToken(cmd *cobra.Command) (string, error) {
 }
 
 func isInsecure(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(insecureFlag)
-	return result && err == nil
+	if f := lookupChangedPersistentFlag(cmd, insecureFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
+	}
+	return false
 }
 
 func IsVerbose(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(verboseFlag)
-	return result && err == nil
+	if f := lookupChangedPersistentFlag(cmd, verboseFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
+	}
+	return false
 }
 
 func isForceTrace(cmd *cobra.Command) bool {
-	result, err := cmd.Flags().GetBool(forceTraceFlag)
-	return result && err == nil
+	if f := lookupChangedPersistentFlag(cmd, forceTraceFlag); f != nil {
+		v, _ := strconv.ParseBool(f.Value.String())
+		return v
+	}
+	return false
 }
