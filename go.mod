@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/iam v1.15.1
 	github.com/google/cel-go v0.21.0
 	github.com/spf13/cobra v1.10.2
-	github.com/spf13/pflag v1.0.9
+	github.com/spf13/pflag v1.1.0
 	github.com/stoewer/go-strcase v1.3.1
 	go.einride.tech/aip v0.86.3
 	golang.org/x/oauth2 v0.37.0
